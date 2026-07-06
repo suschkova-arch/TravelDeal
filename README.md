@@ -129,7 +129,7 @@ TravelDeal/
 ## 📧 Контакты
 
 - **Email:** [MILEDI_HR@mail.ru](mailto:MILEDI_HR@mail.ru)
-- **Сайт:** [sushkova-emma.ru/TravelDeal](https://github.com/suschkova-arch/TravelDeal.git/]/)
+- **Сайт:** [suschkova-arch.github.io/TravelDeal](https://github.com/suschkova-arch/TravelDeal.git/]/)
 
 ---
 
