@@ -1,6 +1,6 @@
 # ✈️ TravelDeal — Агрегатор путешествий с реальными ценами
 
-**[🌍 Открыть сайт](https://sushkova-emma.ru/TravelDeal/)** | **[📧 Контакты](mailto:MILEDI_HR@mail.ru)**
+**[🌍 Открыть сайт]([https://github.com/suschkova-arch/TravelDeal.git/])** | **[📧 Контакты](mailto:MILEDI_HR@mail.ru)**
 
 ---
 
@@ -129,7 +129,7 @@ TravelDeal/
 ## 📧 Контакты
 
 - **Email:** [MILEDI_HR@mail.ru](mailto:MILEDI_HR@mail.ru)
-- **Сайт:** [sushkova-emma.ru/TravelDeal](https://sushkova-emma.ru/TravelDeal/)
+- **Сайт:** [sushkova-emma.ru/TravelDeal](https://github.com/suschkova-arch/TravelDeal.git/]/)
 
 ---
 
