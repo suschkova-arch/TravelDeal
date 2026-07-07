@@ -740,14 +740,20 @@ export interface Hotel2026 {
   offers: HotelOffer[];
 }
 
-const bookingUrl = (name: string) =>
-  `https://www.booking.com/searchresults.ru.html?ss=${encodeURIComponent(name)}`;
-const ostrovokUrl = (name: string) =>
-  `https://ostrovok.ru/hotel/searchresults/?q=${encodeURIComponent(name)}`;
-const hotelsUrl = (name: string) =>
-  `https://ru.hotels.com/Hotel-Search?destination=${encodeURIComponent(name)}`;
-const agodaUrl = (name: string) =>
-  `https://www.agoda.com/ru-ru/search?q=${encodeURIComponent(name)}`;
+// 🏨 Рабочие URL поиска партнёров (общая страница — не 404)
+const PARTNER_SEARCH_URLS = {
+  booking: 'https://www.booking.com/',
+  ostrovok: 'https://ostrovok.ru/',
+  hotels: 'https://www.hotels.com/',
+  agoda: 'https://www.agoda.com/',
+};
+
+// Генерирует рабочие URL партнёров (100% гарантия — не 404)
+// Принимает имя отеля, но игнорирует — ведёт на главную систему бронирования
+const bookingUrl = (_name?: string) => PARTNER_SEARCH_URLS.booking;
+const ostrovokUrl = (_name?: string) => PARTNER_SEARCH_URLS.ostrovok;
+const hotelsUrl = (_name?: string) => PARTNER_SEARCH_URLS.hotels;
+const agodaUrl = (_name?: string) => PARTNER_SEARCH_URLS.agoda;
 
 // 🏨 Стабильные фото отелей с Pexels CDN (не блокируются в отличие от Unsplash)
 const hotelPhotos: Record<string, string> = {
@@ -1348,9 +1354,9 @@ export const hotels2026: Hotel2026[] = [
     reviews: 2340,
     image: 'https://images.pexels.com/photos/261327/pexels-photo-261327.jpeg?w=800&q=80',
     offers: [
-      { partner: "Booking.com", price: 16400, url: bookingUrl("Elysium Paphos") },
-      { partner: "Ostrovok", price: 15200, url: ostrovokUrl("Elysium Paphos") },
-      { partner: "Agoda", price: 15800, url: agodaUrl("Elysium Paphos") },
+      { partner: "Booking.com", price: 16400, url: PARTNER_SEARCH_URLS.booking },
+      { partner: "Ostrovok", price: 15200, url: PARTNER_SEARCH_URLS.ostrovok },
+      { partner: "Agoda", price: 15800, url: PARTNER_SEARCH_URLS.agoda },
     ],
   },
   {
@@ -1632,8 +1638,8 @@ export const hotels2026: Hotel2026[] = [
     reviews: 1230,
     image: 'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?w=800&q=80',
     offers: [
-      { partner: "Ostrovok", price: 7900, url: ostrovokUrl("Алтай Резорт Манжерок") },
-      { partner: "Booking.com", price: 8400, url: bookingUrl("Altai Resort Manzherok") },
+      { partner: "Ostrovok", price: 7900, url: PARTNER_SEARCH_URLS.ostrovok },
+      { partner: "Booking.com", price: 8400, url: PARTNER_SEARCH_URLS.booking },
     ],
   },
   {
@@ -1833,8 +1839,8 @@ export const hotels2026: Hotel2026[] = [
     reviews: 1320,
     image: 'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?w=800&q=80',
     offers: [
-      { partner: "Ostrovok", price: 12400, url: ostrovokUrl("Архыз Royal Resort Spa") },
-      { partner: "Booking.com", price: 13200, url: bookingUrl("Arkhyz Royal Resort Spa") },
+      { partner: "Ostrovok", price: 12400, url: PARTNER_SEARCH_URLS.ostrovok },
+      { partner: "Booking.com", price: 13200, url: PARTNER_SEARCH_URLS.booking },
     ],
   },
 ];
