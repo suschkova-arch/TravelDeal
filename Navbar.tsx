@@ -1,101 +1,68 @@
 import { useState } from 'react';
 
-const links = [
-  { label: 'Направления', href: '#destinations' },
-  { label: 'Отели', href: '#hotels' },
-  { label: 'Авиабилеты', href: '#flights' },
-  { label: 'Ж/Д', href: '#railway' },
-  { label: 'Партнёры', href: '#partners' },
-];
-
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const links = [
+    { href: '#hotels', label: 'Отели' },
+    { href: '#flights', label: 'Авиабилеты' },
+    { href: '#railway', label: 'Ж/Д билеты' },
+    { href: '#search', label: 'Поиск' },
+    { href: '#partners', label: 'Партнёры' },
+    { href: '#reviews', label: 'Отзывы' },
+  ];
 
   return (
-    <nav style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-      background: 'rgba(10,15,30,0.85)',
-      backdropFilter: 'blur(20px)',
-      borderBottom: '1px solid rgba(255,255,255,0.06)',
-    }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
-        {/* Logo */}
-        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <div style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
-          }}>✈️</div>
-          <span style={{ fontSize: 20, fontWeight: 800, background: 'linear-gradient(135deg, #667eea, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            TravelDeal
-          </span>
-        </a>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <a href="#" className="flex items-center gap-2">
+            <span className="text-2xl">✈️</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+              TravelDeal
+            </span>
+          </a>
 
-        {/* Desktop links */}
-        <div className="nav-links" style={{ display: 'flex', gap: 8 }}>
-          {links.map(l => (
-            <a key={l.href} href={l.href} style={{
-              color: 'rgba(255,255,255,0.7)', textDecoration: 'none',
-              padding: '8px 14px', borderRadius: 8, fontSize: 14, fontWeight: 500,
-              transition: 'all 0.2s',
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fff'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-            >{l.label}</a>
-          ))}
-        </div>
+          {/* Desktop */}
+          <div className="hidden md:flex items-center gap-6">
+            {links.map(l => (
+              <a key={l.href} href={l.href} className="text-sm text-gray-600 hover:text-indigo-600 transition-colors font-medium">
+                {l.label}
+              </a>
+            ))}
+          </div>
 
-        {/* CTA */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <a href="https://tp.media/r?marker=547188&trs=189015&p=4114&u=https%3A%2F%2Fwww.aviasales.ru" target="_blank" rel="noopener noreferrer"
-            style={{
-              padding: '9px 20px', borderRadius: 10,
-              background: 'linear-gradient(135deg, #667eea, #764ba2)',
-              color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: 13,
-              boxShadow: '0 4px 15px rgba(102,126,234,0.35)',
-              transition: 'all 0.2s',
-            }}
-            className="nav-links"
-          >🔍 Найти тур</a>
-
-          {/* Burger */}
+          {/* Mobile toggle */}
           <button
-            className="burger-btn"
-            onClick={() => setMenuOpen(!menuOpen)}
-            style={{
-              display: 'none', alignItems: 'center', justifyContent: 'center',
-              width: 40, height: 40, background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, cursor: 'pointer', flexDirection: 'column', gap: 5,
-            }}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+            onClick={() => setMobileOpen(!mobileOpen)}
           >
-            <span style={{ display: 'block', width: 20, height: 2, background: '#fff', borderRadius: 2, transition: 'all 0.3s', transform: menuOpen ? 'rotate(45deg) translateY(7px)' : '' }} />
-            <span style={{ display: 'block', width: 20, height: 2, background: '#fff', borderRadius: 2, transition: 'all 0.3s', opacity: menuOpen ? 0 : 1 }} />
-            <span style={{ display: 'block', width: 20, height: 2, background: '#fff', borderRadius: 2, transition: 'all 0.3s', transform: menuOpen ? 'rotate(-45deg) translateY(-7px)' : '' }} />
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
         </div>
-      </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div style={{
-          background: 'rgba(10,15,30,0.98)', borderTop: '1px solid rgba(255,255,255,0.08)',
-          padding: '16px 24px 24px',
-        }}>
-          {links.map(l => (
-            <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} style={{
-              display: 'block', color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
-              padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
-              fontSize: 15, fontWeight: 500,
-            }}>{l.label}</a>
-          ))}
-          <a href="https://tp.media/r?marker=547188&trs=189015&p=4114&u=https%3A%2F%2Fwww.aviasales.ru" target="_blank" rel="noopener noreferrer"
-            style={{
-              display: 'block', marginTop: 16, padding: '12px', textAlign: 'center',
-              background: 'linear-gradient(135deg, #667eea, #764ba2)',
-              borderRadius: 10, color: '#fff', textDecoration: 'none', fontWeight: 700,
-            }}>🔍 Найти тур</a>
-        </div>
-      )}
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div className="md:hidden pb-4 border-t border-gray-100 pt-2">
+            {links.map(l => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="block py-2 px-3 text-sm text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                onClick={() => setMobileOpen(false)}
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
     </nav>
   );
 }

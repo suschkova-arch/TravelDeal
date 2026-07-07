@@ -1,208 +1,148 @@
-import { useState } from 'react';
-
-const CITIES = [
-  // Россия
-  { name: 'Москва', code: 'MOW', flag: '🇷🇺' },
-  { name: 'Санкт-Петербург', code: 'LED', flag: '🇷🇺' },
-  { name: 'Сочи', code: 'AER', flag: '🇷🇺' },
-  { name: 'Калининград', code: 'KGD', flag: '🇷🇺' },
-  { name: 'Казань', code: 'KZN', flag: '🇷🇺' },
-  { name: 'Екатеринбург', code: 'SVX', flag: '🇷🇺' },
-  { name: 'Новосибирск', code: 'OVB', flag: '🇷🇺' },
-  { name: 'Иркутск', code: 'IKT', flag: '🇷🇺' },
-  { name: 'Владивосток', code: 'VVO', flag: '🇷🇺' },
-  { name: 'Краснодар', code: 'KRR', flag: '🇷🇺' },
-  // Кавказ
-  { name: 'Махачкала', code: 'MCX', flag: '🇷🇺' },
-  { name: 'Грозный', code: 'GRV', flag: '🇷🇺' },
-  { name: 'Кисловодск', code: 'MRV', flag: '🇷🇺' },
-  // Курорты
-  { name: 'Анталья', code: 'AYT', flag: '🇹🇷' },
-  { name: 'Стамбул', code: 'IST', flag: '🇹🇷' },
-  { name: 'Бодрум', code: 'BJV', flag: '🇹🇷' },
-  { name: 'Хургада', code: 'HRG', flag: '🇪🇬' },
-  { name: 'Шарм-эль-Шейх', code: 'SSH', flag: '🇪🇬' },
-  { name: 'Дубай', code: 'DXB', flag: '🇦🇪' },
-  { name: 'Абу-Даби', code: 'AUH', flag: '🇦🇪' },
-  { name: 'Пхукет', code: 'HKT', flag: '🇹🇭' },
-  { name: 'Бангкок', code: 'BKK', flag: '🇹🇭' },
-  { name: 'Паттайя', code: 'UTP', flag: '🇹🇭' },
-  { name: 'Бали', code: 'DPS', flag: '🇮🇩' },
-  { name: 'Мале', code: 'MLE', flag: '🇲🇻' },
-  { name: 'Варадеро', code: 'VRA', flag: '🇨🇺' },
-  { name: 'Гавана', code: 'HAV', flag: '🇨🇺' },
-  // Европа
-  { name: 'Рим', code: 'FCO', flag: '🇮🇹' },
-  { name: 'Венеция', code: 'VCE', flag: '🇮🇹' },
-  { name: 'Барселона', code: 'BCN', flag: '🇪🇸' },
-  { name: 'Мадрид', code: 'MAD', flag: '🇪🇸' },
-  { name: 'Тенерифе', code: 'TFS', flag: '🇪🇸' },
-  { name: 'Айя-Напа', code: 'LCA', flag: '🇨🇾' },
-  // Азия
-  { name: 'Пекин', code: 'PEK', flag: '🇨🇳' },
-  { name: 'Токио', code: 'NRT', flag: '🇯🇵' },
-  { name: 'Себу', code: 'CEB', flag: '🇵🇭' },
-  // Абхазия
-  { name: 'Сухум', code: 'SUI', flag: '🏳️' },
-  { name: 'Гагра', code: 'GGR', flag: '🏳️' },
-];
-
-function getCheckinDate(daysFromNow = 14) {
-  const d = new Date();
-  d.setDate(d.getDate() + daysFromNow);
-  return d.toISOString().slice(0, 10);
-}
-
-function getCheckoutDate(daysFromNow = 21) {
-  const d = new Date();
-  d.setDate(d.getDate() + daysFromNow);
-  return d.toISOString().slice(0, 10);
-}
+import { useState, useMemo } from 'react';
+import { cities } from '../data/travelData';
 
 export default function LiveHotelSearch() {
-  const [city, setCity] = useState(CITIES[18]); // Дубай
-  const [checkin, setCheckin] = useState(getCheckinDate());
-  const [checkout, setCheckout] = useState(getCheckoutDate());
-  const [nights, setNights] = useState(7);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [search, setSearch] = useState('');
+  const [query, setQuery] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [guests, setGuests] = useState(2);
 
-  const filtered = CITIES.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredCities = useMemo(() => {
+    if (!query) return [];
+    const q = query.toLowerCase();
+    return cities.filter(c =>
+      c.name.toLowerCase().includes(q) ||
+      c.region.toLowerCase().includes(q) ||
+      c.country.toLowerCase().includes(q)
+    ).slice(0, 10);
+  }, [query]);
+
+  const groupedCities = useMemo(() => {
+    const groups: Record<string, typeof cities> = {};
+    filteredCities.forEach(c => {
+      if (!groups[c.country]) groups[c.country] = [];
+      groups[c.country].push(c);
+    });
+    return groups;
+  }, [filteredCities]);
 
   const handleSearch = () => {
-    const url = `https://tp.media/r?marker=547188&trs=189015&p=4114&u=https%3A%2F%2Fhotels.aviasales.ru%2F${city.code}%3FcheckIn%3D${checkin}%26checkOut%3D${checkout}%26adults%3D2`;
-    window.open(url, '_blank');
-  };
-
-  const updateNights = (n: number) => {
-    setNights(n);
-    const co = new Date(checkin);
-    co.setDate(co.getDate() + n);
-    setCheckout(co.toISOString().slice(0, 10));
+    const city = selectedCity || query;
+    if (!city) return;
+    window.open(`https://hotellook.ru/?marker=547188&location=${encodeURIComponent(city)}`, '_blank');
   };
 
   return (
-    <section id="hotel-search" style={{ padding: '80px 24px', background: 'linear-gradient(180deg, rgba(13,18,40,1) 0%, rgba(10,15,30,1) 100%)' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 40 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 100, padding: '6px 16px', marginBottom: 16 }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444', display: 'inline-block', animation: 'pulse 2s infinite' }} />
-            <span style={{ color: '#f87171', fontSize: 13, fontWeight: 600 }}>🔴 Живой поиск отелей — 63+ города</span>
-          </div>
-          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-            Найдите отель прямо сейчас
+    <section id="search" className="py-16 bg-gradient-to-b from-gray-50 to-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+            🔴 Живой поиск отелей
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>
-            Реальные цены из базы Hotellook (Aviasales Group) — вся Россия, Турция, Египет, ОАЭ и ещё 60 направлений
+          <p className="text-gray-600 text-lg">
+            Реальные цены из базы Hotellook для {cities.length}+ городов мира
           </p>
         </div>
 
-        {/* Search Card */}
-        <div style={{
-          background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: 24, padding: '32px',
-        }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
-            {/* City select */}
-            <div style={{ position: 'relative', gridColumn: '1 / -1' }}>
-              <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 6 }}>📍 Город / курорт</label>
-              <button onClick={() => setDropdownOpen(!dropdownOpen)} style={{
-                width: '100%', padding: '14px 18px', borderRadius: 12, textAlign: 'left',
-                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)',
-                color: '#fff', fontSize: 15, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
-              }}>
-                <span>{city.flag}</span> <span>{city.name}</span>
-                <span style={{ marginLeft: 'auto', opacity: 0.5 }}>▼</span>
-              </button>
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
+          {/* City search */}
+          <div className="relative mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Куда вы хотите поехать?</label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+              <input
+                type="text"
+                value={query}
+                onChange={e => { setQuery(e.target.value); setSelectedCity(''); }}
+                placeholder="Введите город: Казань, Камчатка, Венеция..."
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-gray-900"
+              />
+            </div>
 
-              {dropdownOpen && (
-                <div style={{
-                  position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 100, marginTop: 4,
-                  background: '#1a1f35', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 12, overflow: 'hidden',
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-                }}>
-                  <div style={{ padding: '8px' }}>
-                    <input
-                      type="text"
-                      placeholder="Поиск города..."
-                      value={search}
-                      onChange={e => setSearch(e.target.value)}
-                      style={{
-                        width: '100%', padding: '10px 12px', borderRadius: 8,
-                        background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-                        color: '#fff', fontSize: 14, outline: 'none',
-                      }}
-                    />
-                  </div>
-                  <div style={{ maxHeight: 240, overflowY: 'auto' }}>
-                    {filtered.map(c => (
-                      <button key={c.code} onClick={() => { setCity(c); setDropdownOpen(false); setSearch(''); }} style={{
-                        width: '100%', padding: '10px 16px', textAlign: 'left', cursor: 'pointer',
-                        background: c.code === city.code ? 'rgba(102,126,234,0.2)' : 'transparent',
-                        border: 'none', color: '#fff', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
-                        transition: 'background 0.15s',
-                      }}
-                        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
-                        onMouseLeave={e => (e.currentTarget.style.background = c.code === city.code ? 'rgba(102,126,234,0.2)' : 'transparent')}
+            {/* Dropdown */}
+            {Object.keys(groupedCities).length > 0 && (
+              <div className="absolute z-20 left-0 right-0 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 max-h-72 overflow-y-auto">
+                {Object.entries(groupedCities).map(([country, countryCities]) => (
+                  <div key={country}>
+                    <div className="px-4 py-2 bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                      {country}
+                    </div>
+                    {countryCities.map(city => (
+                      <button
+                        key={city.name}
+                        className="w-full text-left px-4 py-2.5 hover:bg-indigo-50 flex items-center justify-between transition-colors"
+                        onClick={() => {
+                          setSelectedCity(city.name);
+                          setQuery(city.name);
+                        }}
                       >
-                        <span>{c.flag}</span> {c.name}
+                        <span className="text-gray-800">{city.name}</span>
+                        <span className="text-xs text-gray-400">{city.region}</span>
                       </button>
                     ))}
                   </div>
-                </div>
-              )}
-            </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-            {/* Checkin */}
+          {/* Dates & Guests */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
             <div>
-              <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 6 }}>📅 Заезд</label>
-              <input type="date" value={checkin} onChange={e => setCheckin(e.target.value)} style={{
-                width: '100%', padding: '14px 18px', borderRadius: 12,
-                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)',
-                color: '#fff', fontSize: 15, outline: 'none', colorScheme: 'dark',
-              }} />
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Заезд</label>
+              <input
+                type="date"
+                value={checkIn}
+                onChange={e => setCheckIn(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              />
             </div>
-
-            {/* Checkout */}
             <div>
-              <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 6 }}>📅 Выезд</label>
-              <input type="date" value={checkout} onChange={e => setCheckout(e.target.value)} style={{
-                width: '100%', padding: '14px 18px', borderRadius: 12,
-                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)',
-                color: '#fff', fontSize: 15, outline: 'none', colorScheme: 'dark',
-              }} />
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Выезд</label>
+              <input
+                type="date"
+                value={checkOut}
+                onChange={e => setCheckOut(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Гости</label>
+              <select
+                value={guests}
+                onChange={e => setGuests(Number(e.target.value))}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              >
+                {[1,2,3,4,5,6].map(n => (
+                  <option key={n} value={n}>{n} {n === 1 ? 'гость' : n < 5 ? 'гостя' : 'гостей'}</option>
+                ))}
+              </select>
             </div>
           </div>
 
-          {/* Nights quick select */}
-          <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
-            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Ночей:</span>
-            {[3, 5, 7, 10, 14, 21].map(n => (
-              <button key={n} onClick={() => updateNights(n)} style={{
-                padding: '6px 14px', borderRadius: 8, cursor: 'pointer', fontSize: 13, fontWeight: 600,
-                background: nights === n ? 'rgba(102,126,234,0.2)' : 'rgba(255,255,255,0.04)',
-                border: nights === n ? '1px solid rgba(102,126,234,0.4)' : '1px solid rgba(255,255,255,0.1)',
-                color: nights === n ? '#a78bfa' : 'rgba(255,255,255,0.6)',
-              }}>{n}</button>
-            ))}
-          </div>
-
-          <button onClick={handleSearch} style={{
-            width: '100%', padding: '16px', borderRadius: 14,
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            border: 'none', color: '#fff', fontWeight: 800, fontSize: 16, cursor: 'pointer',
-            boxShadow: '0 8px 25px rgba(102,126,234,0.4)', transition: 'transform 0.2s',
-          }}
-            onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
-            onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
+          <button
+            onClick={handleSearch}
+            className="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-violet-700 transition-all shadow-lg hover:shadow-xl text-lg pulse-glow"
           >
-            🔍 Найти отели в {city.name} — от {nights} ночей
+            🏨 Найти отели в {selectedCity || query || '...'}
           </button>
 
-          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, textAlign: 'center', marginTop: 12 }}>
-            Цены обновляются в реальном времени из базы Hotellook · Более 30 систем бронирования
-          </p>
+          {/* Popular cities */}
+          <div className="mt-6">
+            <p className="text-sm text-gray-500 mb-2">Популярные направления:</p>
+            <div className="flex flex-wrap gap-2">
+              {['Сочи', 'Казань', 'Камчатка', 'Дубай', 'Анталья', 'Бали', 'Венеция', 'Кипр', 'Алтай', 'Кавказ', 'Абхазия', 'Мальдивы'].map(city => (
+                <button
+                  key={city}
+                  onClick={() => { setQuery(city); setSelectedCity(city); }}
+                  className="px-3 py-1.5 bg-gray-100 hover:bg-indigo-100 hover:text-indigo-700 text-gray-600 text-sm rounded-lg transition-colors"
+                >
+                  {city}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

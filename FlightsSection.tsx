@@ -1,144 +1,71 @@
-import { useState, useEffect } from 'react';
 import { flights } from '../data/travelData';
-import type { Flight } from '../data/travelData';
-
-// Simulated live price variation ±5%
-function livePrice(base: number) {
-  const variation = (Math.random() - 0.5) * 0.1;
-  return Math.round(base * (1 + variation) / 100) * 100;
-}
-
-function FlightCard({ flight }: { flight: Flight & { livePrice: number } }) {
-  const savings = Math.round((flight.livePrice * 0.15) / 100) * 100;
-
-  return (
-    <div style={{
-      background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.08)',
-      borderRadius: 18, padding: '20px 22px',
-      transition: 'all 0.3s',
-    }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
-        (e.currentTarget as HTMLElement).style.boxShadow = '0 16px 32px rgba(0,0,0,0.3)';
-        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(102,126,234,0.3)';
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-        (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
-      }}
-    >
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(102,126,234,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>
-            {flight.airlineLogo}
-          </div>
-          <div>
-            <div style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>{flight.airline}</div>
-            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>{flight.date}</div>
-          </div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4ade80', display: 'inline-block', animation: 'pulse 2s infinite' }} />
-          <span style={{ color: '#4ade80', fontSize: 11, fontWeight: 600 }}>LIVE</span>
-        </div>
-      </div>
-
-      {/* Route */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ color: '#fff', fontSize: 22, fontWeight: 900 }}>{flight.fromCode}</div>
-          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>{flight.from}</div>
-        </div>
-        <div style={{ flex: 1, position: 'relative' }}>
-          <div style={{ height: 1, background: 'rgba(255,255,255,0.15)', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: -6, left: '50%', transform: 'translateX(-50%)', fontSize: 14 }}>✈️</div>
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 10, color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>
-            {flight.duration} · {flight.direct ? '✅ Прямой' : '🔄 С пересадкой'}
-          </div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ color: '#fff', fontSize: 22, fontWeight: 900 }}>{flight.toCode}</div>
-          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>{flight.to}</div>
-        </div>
-      </div>
-
-      {/* Price & Book */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div>
-          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>от</div>
-          <div style={{ color: '#a78bfa', fontSize: 26, fontWeight: 900 }}>{flight.livePrice.toLocaleString('ru')}₽</div>
-          {savings > 0 && (
-            <div style={{ color: '#4ade80', fontSize: 11, fontWeight: 600 }}>сэкономьте ~{savings.toLocaleString('ru')}₽</div>
-          )}
-        </div>
-        <a href={flight.url} target="_blank" rel="noopener noreferrer" style={{
-          padding: '12px 20px', borderRadius: 12,
-          background: 'linear-gradient(135deg, #667eea, #764ba2)',
-          color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: 13,
-          boxShadow: '0 4px 15px rgba(102,126,234,0.3)',
-        }}>Купить билет →</a>
-      </div>
-    </div>
-  );
-}
 
 export default function FlightsSection() {
-  const [livePrices, setLivePrices] = useState<Record<string, number>>({});
-  const [lastUpdated, setLastUpdated] = useState(new Date());
-
-  useEffect(() => {
-    const update = () => {
-      const prices: Record<string, number> = {};
-      flights.forEach(f => { prices[f.id] = livePrice(f.price); });
-      setLivePrices(prices);
-      setLastUpdated(new Date());
-    };
-    update();
-    const interval = setInterval(update, 15000); // refresh every 15s
-    return () => clearInterval(interval);
-  }, []);
-
-  const flightsWithLive = flights.map(f => ({ ...f, livePrice: livePrices[f.id] ?? f.price }));
-
   return (
-    <section id="flights" style={{ padding: '80px 24px', background: 'rgba(10,15,30,1)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 100, padding: '6px 16px', marginBottom: 16 }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444', display: 'inline-block', animation: 'pulse 2s infinite' }} />
-            <span style={{ color: '#f87171', fontSize: 13, fontWeight: 600 }}>
-              ✈️ Авиабилеты · Обновлено в {lastUpdated.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })}
-            </span>
-          </div>
-          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-            Авиабилеты с LIVE-ценами
+    <section id="flights" className="py-16 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+            ✈️ Авиабилеты — LIVE-цены
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, maxWidth: 500, margin: '0 auto' }}>
-            Реальные цены из базы Aviasales — 13 популярных маршрутов, обновляются каждые 15 секунд
+          <p className="text-gray-600 text-lg">
+            {flights.length} популярных маршрутов с актуальными ценами из базы Aviasales
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 20, marginBottom: 40 }}>
-          {flightsWithLive.map(f => <FlightCard key={f.id} flight={f} />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {flights.map(flight => (
+            <a
+              key={flight.id}
+              href={`https://www.aviasales.ru/search/${flight.fromCode}0104${flight.toCode}2${flight.date?.replace(' ', '')}?marker=547188`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all group"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">
+                    {flight.fromCode}
+                  </span>
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                  <span className="text-xs font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">
+                    {flight.toCode}
+                  </span>
+                </div>
+                <span className="text-xs text-gray-400">{flight.date}</span>
+              </div>
+
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="font-semibold text-gray-900">{flight.from} → {flight.to}</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {flight.airline} • {flight.duration} • {flight.stops === 0 ? 'Прямой' : `${flight.stops} пересадка`}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xl font-bold text-indigo-600 group-hover:text-indigo-700">
+                    {flight.price.toLocaleString('ru-RU')} ₽
+                  </p>
+                  <p className="text-xs text-gray-400">туда</p>
+                </div>
+              </div>
+            </a>
+          ))}
         </div>
 
-        {/* Aviasales CTA */}
-        <div style={{ textAlign: 'center' }}>
-          <a href="https://tp.media/r?marker=547188&trs=189015&p=4114&u=https%3A%2F%2Fwww.aviasales.ru" target="_blank" rel="noopener noreferrer" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 36px',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            borderRadius: 14, color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: 15,
-            boxShadow: '0 8px 25px rgba(102,126,234,0.35)',
-            transition: 'transform 0.2s',
-          }}
-            onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
-            onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
+        <div className="text-center mt-8">
+          <a
+            href="https://www.aviasales.ru/?marker=547188"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg"
           >
-            ✈️ Найти все рейсы на Aviasales →
+            Найти все билеты на Aviasales
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
           </a>
         </div>
       </div>

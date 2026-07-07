@@ -1,94 +1,91 @@
+import { useState } from 'react';
 import { partners } from '../data/travelData';
 
-const HOW_IT_WORKS = [
-  { icon: '🔍', title: 'Ищете тур', desc: 'Выбираете направление и даты на TravelDeal' },
-  { icon: '📊', title: 'Сравниваем цены', desc: 'Агрегируем предложения от 23+ партнёров' },
-  { icon: '💸', title: 'Экономите', desc: 'Переходите на сайт партнёра и бронируете' },
-];
+type Category = 'all' | 'hotel' | 'flight' | 'railway' | 'taxi' | 'tour' | 'search';
+
+const categoryLabels: Record<Category, string> = {
+  all: 'Все партнёры',
+  search: '🔍 Поисковые системы',
+  hotel: '🏨 Бронирование отелей',
+  flight: '✈️ Авиаперевозчики',
+  railway: '🚆 Ж/Д перевозки',
+  taxi: '🚗 Аренда авто',
+  tour: '🌍 Туры и экскурсии',
+};
+
+const categoryColors: Record<string, string> = {
+  search: 'bg-purple-100 text-purple-700 border-purple-200',
+  hotel: 'bg-blue-100 text-blue-700 border-blue-200',
+  flight: 'bg-sky-100 text-sky-700 border-sky-200',
+  railway: 'bg-green-100 text-green-700 border-green-200',
+  taxi: 'bg-amber-100 text-amber-700 border-amber-200',
+  tour: 'bg-rose-100 text-rose-700 border-rose-200',
+};
 
 export default function PartnersSection() {
+  const [activeCategory, setActiveCategory] = useState<Category>('all');
+
+  const filtered = activeCategory === 'all'
+    ? partners
+    : partners.filter(p => p.category === activeCategory);
+
+  const categories = Object.keys(categoryLabels) as Category[];
+
   return (
-    <section id="partners" style={{ padding: '80px 24px', background: 'rgba(10,15,30,1)' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 60 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(102,126,234,0.15)', border: '1px solid rgba(102,126,234,0.3)', borderRadius: 100, padding: '6px 16px', marginBottom: 16 }}>
-            <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>🤝 Наши партнёры</span>
-          </div>
-          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-            Работаем с лучшими
+    <section id="partners" className="py-16 bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+            🤝 Наши партнёры
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, maxWidth: 500, margin: '0 auto' }}>
-            Прямые ссылки на сайты партнёров без скрытых наценок
+          <p className="text-gray-600 text-lg">
+            {partners.length} проверенных партнёров — нажмите для перехода на сайт
           </p>
         </div>
 
-        {/* How it works */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24, marginBottom: 60 }}>
-          {HOW_IT_WORKS.map((step, i) => (
-            <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: '28px', textAlign: 'center', position: 'relative' }}>
-              <div style={{ position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)', width: 28, height: 28, background: 'linear-gradient(135deg, #667eea, #764ba2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: 13 }}>{i + 1}</div>
-              <div style={{ fontSize: 40, marginBottom: 12, marginTop: 8 }}>{step.icon}</div>
-              <div style={{ color: '#fff', fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{step.title}</div>
-              <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, lineHeight: 1.5 }}>{step.desc}</div>
-            </div>
+        {/* Category tabs */}
+        <div className="flex flex-wrap gap-2 mb-8 justify-center">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeCategory === cat
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              {categoryLabels[cat]}
+            </button>
           ))}
         </div>
 
         {/* Partners grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
-          {partners.map(p => (
-            <div key={p.id} style={{
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 20, padding: '24px', transition: 'all 0.3s',
-            }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)';
-                (e.currentTarget as HTMLElement).style.borderColor = `${p.color}44`;
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
-              }}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filtered.map(partner => (
+            <a
+              key={partner.id}
+              href={partner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white rounded-xl p-5 border border-gray-100 hover:shadow-lg hover:border-indigo-200 transition-all group"
             >
-              {/* Header */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
-                <div style={{ width: 52, height: 52, background: `${p.color}22`, border: `1px solid ${p.color}44`, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26 }}>{p.logo}</div>
-                <div>
-                  <div style={{ color: '#fff', fontWeight: 700, fontSize: 16 }}>{p.name}</div>
-                  <div style={{ background: `${p.color}22`, border: `1px solid ${p.color}44`, borderRadius: 100, padding: '2px 10px', color: p.color, fontSize: 11, fontWeight: 600, display: 'inline-block' }}>{p.category}</div>
-                </div>
-                <div style={{ marginLeft: 'auto' }}>
-                  <div style={{ background: 'linear-gradient(135deg, #f97316, #ef4444)', borderRadius: 10, padding: '4px 12px', color: '#fff', fontSize: 13, fontWeight: 700 }}>{p.discount}</div>
-                </div>
+              <div className="flex items-start justify-between mb-2">
+                <h3 className="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
+                  {partner.name}
+                </h3>
+                <svg className="w-4 h-4 text-gray-300 group-hover:text-indigo-400 transition-colors mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
               </div>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>{p.description}</p>
-              <a href={p.url} target="_blank" rel="noopener noreferrer" style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                padding: '10px', background: `${p.color}22`, border: `1px solid ${p.color}44`,
-                borderRadius: 10, color: p.color, textDecoration: 'none', fontWeight: 700, fontSize: 13,
-                transition: 'all 0.2s',
-              }}
-                onMouseEnter={e => (e.currentTarget.style.background = `${p.color}33`)}
-                onMouseLeave={e => (e.currentTarget.style.background = `${p.color}22`)}
-              >Перейти на {p.name} →</a>
-            </div>
-          ))}
-        </div>
 
-        {/* CTA */}
-        <div style={{ marginTop: 60, background: 'linear-gradient(135deg, rgba(102,126,234,0.15), rgba(167,139,250,0.15))', border: '1px solid rgba(102,126,234,0.3)', borderRadius: 20, padding: '40px', textAlign: 'center' }}>
-          <h3 style={{ color: '#fff', fontSize: 24, fontWeight: 700, marginBottom: 12 }}>Хотите стать партнёром?</h3>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15, marginBottom: 24 }}>
-            Разместите свои предложения на TravelDeal и получите доступ к 2.4 млн путешественников
-          </p>
-          <a href="mailto:MILEDI_HR@mail.ru" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px',
-            background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            borderRadius: 12, color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: 15,
-            boxShadow: '0 8px 25px rgba(102,126,234,0.4)',
-          }}>📧 MILEDI_HR@mail.ru</a>
+              <p className="text-sm text-gray-500 mb-3">{partner.description}</p>
+
+              <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded border ${categoryColors[partner.category]}`}>
+                {categoryLabels[partner.category]}
+              </span>
+            </a>
+          ))}
         </div>
       </div>
     </section>

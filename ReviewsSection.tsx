@@ -2,67 +2,43 @@ import { reviews } from '../data/travelData';
 
 export default function ReviewsSection() {
   return (
-    <section id="reviews" style={{ padding: '80px 24px', background: 'rgba(10,15,30,1)' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(102,126,234,0.15)', border: '1px solid rgba(102,126,234,0.3)', borderRadius: 100, padding: '6px 16px', marginBottom: 16 }}>
-            <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>💬 Отзывы путешественников</span>
-          </div>
-          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-            Реальные истории экономии
+    <section id="reviews" className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+            💬 Реальные отзывы
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, maxWidth: 500, margin: '0 auto' }}>
-            2026 год — отзывы наших пользователей о реально сэкономленных деньгах
+          <p className="text-gray-600 text-lg">
+            Истории экономии наших путешественников
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
-          {reviews.map(r => (
-            <div key={r.id} style={{
-              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: 20, padding: '24px',
-              transition: 'all 0.3s',
-            }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(102,126,234,0.25)';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
-              }}
-            >
-              {/* Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(102,126,234,0.15)', border: '1px solid rgba(102,126,234,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{r.avatar}</div>
-                  <div>
-                    <div style={{ color: '#fff', fontWeight: 700 }}>{r.name}</div>
-                    <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>📍 {r.destination} · {r.date}</div>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reviews.map(review => (
+            <div key={review.id} className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-3xl">{review.avatar}</span>
+                <div>
+                  <p className="font-semibold text-gray-900">{review.name}</p>
+                  <p className="text-xs text-gray-400">{review.date}</p>
                 </div>
-                <div style={{ color: '#fbbf24', fontSize: 14 }}>{'★'.repeat(r.rating)}</div>
+                <div className="ml-auto flex gap-0.5">
+                  {Array.from({ length: review.rating }).map((_, i) => (
+                    <span key={i} className="text-amber-400 text-sm">⭐</span>
+                  ))}
+                </div>
               </div>
 
-              {/* Savings badge */}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(74,222,128,0.1)', border: '1px solid rgba(74,222,128,0.25)', borderRadius: 10, padding: '6px 14px', marginBottom: 14 }}>
-                <span style={{ color: '#4ade80', fontSize: 13, fontWeight: 800 }}>💰 Сэкономлено: {r.saved.toLocaleString('ru')}₽</span>
-              </div>
+              <p className="text-gray-700 text-sm leading-relaxed mb-4">{review.text}</p>
 
-              {/* Text */}
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, lineHeight: 1.6 }}>"{r.text}"</p>
+              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                <span className="text-xs text-gray-500">📍 {review.destination}</span>
+                <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">
+                  Сэкономил {review.savings.toLocaleString('ru-RU')} ₽
+                </span>
+              </div>
             </div>
           ))}
-        </div>
-
-        {/* Summary */}
-        <div style={{ marginTop: 48, background: 'linear-gradient(135deg, rgba(102,126,234,0.15), rgba(167,139,250,0.1))', border: '1px solid rgba(102,126,234,0.25)', borderRadius: 20, padding: '32px', textAlign: 'center' }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>🏆</div>
-          <h3 style={{ color: '#fff', fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Среднее: 29 500₽ экономии</h3>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15 }}>
-            Наши пользователи экономят в среднем <strong style={{ color: '#a78bfa' }}>29 500₽</strong> на каждой поездке,
-            сравнивая цены через TravelDeal
-          </p>
         </div>
       </div>
     </section>
