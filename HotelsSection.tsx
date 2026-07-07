@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { hotels2026, hotelCountries, mealTypes } from '../data/travelData';
 import LiveHotelSearch from './LiveHotelSearch';
+import HotelPhoto from './HotelPhoto';
 
 const starOptions = ['Все', '5★', '4★', '3★'];
 
@@ -220,24 +221,11 @@ const HotelsSection = () => {
                   (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
                 }}
               >
-                <div style={{ position: 'relative', height: 190, background: 'rgba(255,255,255,0.05)' }}>
-                  <img
-                    src={hotel.image}
-                    alt={hotel.name}
-                    loading="lazy"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = 'none';
-                      const parent = (e.currentTarget as HTMLImageElement).parentElement;
-                      if (parent && !parent.querySelector('.img-fallback')) {
-                        const fb = document.createElement('div');
-                        fb.className = 'img-fallback';
-                        fb.style.cssText =
-                          'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:48px;';
-                        fb.textContent = '🏨';
-                        parent.appendChild(fb);
-                      }
-                    }}
+                <div style={{ position: 'relative', height: 190, background: 'rgba(255,255,255,0.05)', overflow: 'hidden' }}>
+                  <HotelPhoto
+                    id={hotel.id}
+                    country={hotel.country}
+                    stars={hotel.stars}
                   />
                   <div
                     style={{
