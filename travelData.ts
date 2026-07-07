@@ -737,6 +737,74 @@ const hotelsUrl = (name: string) =>
 const agodaUrl = (name: string) =>
   `https://www.agoda.com/ru-ru/search?q=${encodeURIComponent(name)}`;
 
+// 🏨 Стабильные фото отелей с Pexels CDN (не блокируются в отличие от Unsplash)
+const hotelPhotos: Record<string, string> = {
+  turkish_pool: 'https://images.pexels.com/photos/261327/pexels-photo-261327.jpeg?w=800&q=80',
+  bali_villa: 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?w=800&q=80',
+  paris_grand: 'https://images.pexels.com/photos/161901/paris-sunset-france-monument-161901.jpeg?w=800&q=80',
+  tokyo_modern: 'https://images.pexels.com/photos/2506923/pexels-photo-2506923.jpeg?w=800&q=80',
+  barcelona_hotel: 'https://images.pexels.com/photos/290386/pexels-photo-290386.jpeg?w=800&q=80',
+  maldives_water: 'https://images.pexels.com/photos/3155666/pexels-photo-3155666.jpeg?w=800&q=80',
+  dubai_luxury: 'https://images.pexels.com/photos/3237808/pexels-photo-3237808.jpeg?w=800&q=80',
+  city_hotel: 'https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?w=800&q=80',
+  sochi_sea: 'https://images.pexels.com/photos/261039/pexels-photo-261039.jpeg?w=800&q=80',
+  moscow_grand: 'https://images.pexels.com/photos/1862482/pexels-photo-1862482.jpeg?w=800&q=80',
+  crimea_palace: 'https://images.pexels.com/photos/1582712/pexels-photo-1582712.jpeg?w=800&q=80',
+  vladivostok: 'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?w=800&q=80',
+  sahalin: 'https://images.pexels.com/photos/2034335/pexels-photo-2034335.jpeg?w=800&q=80',
+  beijing: 'https://images.pexels.com/photos/2412603/pexels-photo-2412603.jpeg?w=800&q=80',
+  shanghai: 'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?w=800&q=80',
+  sanya: 'https://images.pexels.com/photos/237272/pexels-photo-237272.jpeg?w=800&q=80',
+  bangkok: 'https://images.pexels.com/photos/2034335/pexels-photo-2034335.jpeg?w=800&q=80',
+  pattaya: 'https://images.pexels.com/photos/261327/pexels-photo-261327.jpeg?w=800&q=80',
+  bodrum: 'https://images.pexels.com/photos/261039/pexels-photo-261039.jpeg?w=800&q=80',
+  elbrus: 'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?w=800&q=80',
+  derbent: 'https://images.pexels.com/photos/2041556/pexels-photo-2041556.jpeg?w=800&q=80',
+  kislovodsk: 'https://images.pexels.com/photos/3522880/pexels-photo-3522880.jpeg?w=800&q=80',
+  pitsunda: 'https://images.pexels.com/photos/237272/pexels-photo-237272.jpeg?w=800&q=80',
+  kaliningrad: 'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?w=800&q=80',
+  default: 'https://images.pexels.com/photos/261327/pexels-photo-261327.jpeg?w=800&q=80',
+};
+
+/** Универсальная функция: получает надёжное фото отеля по его ID */
+export function getHotelPhoto(id: number): string {
+  const map: Record<number, string> = {
+    1: hotelPhotos.turkish_pool, // Rixos Belek
+    2: hotelPhotos.turkish_pool, // Titanic Beach
+    3: hotelPhotos.turkish_pool, // Club Sera
+    4: hotelPhotos.turkish_pool, // Steigenberger Hurghada
+    5: hotelPhotos.turkish_pool, // Rixos Sharm
+    6: hotelPhotos.dubai_luxury, // Atlantis
+    7: hotelPhotos.city_hotel, // Rove
+    8: hotelPhotos.bali_villa, // Katathani
+    9: hotelPhotos.bali_villa, // Ibis Phuket
+    10: hotelPhotos.bali_villa, // Kempinski Bali
+    11: hotelPhotos.maldives_water, // Adaaran
+    12: hotelPhotos.maldives_water, // Gili
+    13: hotelPhotos.barcelona_hotel, // W Barcelona
+    14: hotelPhotos.tokyo_modern, // Park Hyatt Tokyo
+    15: hotelPhotos.paris_grand, // Mystique
+    16: hotelPhotos.paris_grand, // Le Meurice
+    17: hotelPhotos.kaliningrad, // Crystal House
+    18: hotelPhotos.sochi_sea, // Swissotel
+    19: hotelPhotos.moscow_grand, // Metropol
+    20: hotelPhotos.crimea_palace, // Mriya
+    21: hotelPhotos.vladivostok, // Lotte
+    22: hotelPhotos.sahalin, // Pacific Plaza
+    23: hotelPhotos.beijing, // Peninsula Beijing
+    24: hotelPhotos.shanghai, // Jinjiang
+    25: hotelPhotos.sanya, // Atlantis Sanya
+    26: hotelPhotos.bangkok, // Mandarin
+    27: hotelPhotos.pattaya, // Hilton
+    28: hotelPhotos.bodrum, // Voyage Bodrum
+    29: hotelPhotos.elbrus, // Elbrus
+    30: hotelPhotos.derbent, // Derbent
+    31: hotelPhotos.kislovodsk, // Alean Spa
+    32: hotelPhotos.pitsunda, // Bridge Resort
+  };
+  return map[id] || hotelPhotos.default;
+}
+
 export const hotels2026: Hotel2026[] = [
   {
     id: 1,
@@ -747,7 +815,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Ультра всё включено",
     rating: 4.9,
     reviews: 4213,
-    image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+    image: getHotelPhoto(1),
     offers: [
       { partner: "Booking.com", price: 48500, url: bookingUrl("Rixos Premium Belek") },
       { partner: "Ostrovok", price: 45900, url: ostrovokUrl("Rixos Premium Belek") },
@@ -780,7 +848,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Всё включено",
     rating: 4.4,
     reviews: 2890,
-    image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&q=80",
+    image: getHotelPhoto(3),
     offers: [
       { partner: "Booking.com", price: 16900, url: bookingUrl("Club Hotel Sera Antalya") },
       { partner: "Ostrovok", price: 15700, url: ostrovokUrl("Club Hotel Sera Antalya") },
@@ -796,7 +864,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Всё включено",
     rating: 4.6,
     reviews: 3542,
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80",
+    image: getHotelPhoto(4),
     offers: [
       { partner: "Booking.com", price: 19400, url: bookingUrl("Steigenberger Aqua Magic Hurghada") },
       { partner: "Ostrovok", price: 18200, url: ostrovokUrl("Steigenberger Aqua Magic Hurghada") },
@@ -812,7 +880,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Ультра всё включено",
     rating: 4.8,
     reviews: 5011,
-    image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80",
+    image: getHotelPhoto(5),
     offers: [
       { partner: "Booking.com", price: 29800, url: bookingUrl("Rixos Sharm El Sheikh") },
       { partner: "Ostrovok", price: 28300, url: ostrovokUrl("Rixos Sharm El Sheikh") },
@@ -829,7 +897,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.8,
     reviews: 8930,
-    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80",
+    image: getHotelPhoto(6),
     offers: [
       { partner: "Booking.com", price: 62000, url: bookingUrl("Atlantis The Palm Dubai") },
       { partner: "Ostrovok", price: 59500, url: ostrovokUrl("Atlantis The Palm Dubai") },
@@ -846,7 +914,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Без питания",
     rating: 4.5,
     reviews: 7215,
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80",
+    image: getHotelPhoto(7),
     offers: [
       { partner: "Booking.com", price: 10400, url: bookingUrl("Rove Downtown Dubai") },
       { partner: "Ostrovok", price: 9800, url: ostrovokUrl("Rove Downtown Dubai") },
@@ -862,7 +930,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.7,
     reviews: 4467,
-    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",
+    image: getHotelPhoto(8),
     offers: [
       { partner: "Booking.com", price: 17800, url: bookingUrl("Katathani Phuket Beach Resort") },
       { partner: "Ostrovok", price: 16900, url: ostrovokUrl("Katathani Phuket Beach Resort") },
@@ -878,7 +946,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Без питания",
     rating: 4.2,
     reviews: 3310,
-    image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
+    image: getHotelPhoto(9),
     offers: [
       { partner: "Booking.com", price: 4900, url: bookingUrl("Ibis Phuket Patong") },
       { partner: "Ostrovok", price: 4600, url: ostrovokUrl("Ibis Phuket Patong") },
@@ -894,7 +962,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.8,
     reviews: 2154,
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+    image: getHotelPhoto(10),
     offers: [
       { partner: "Booking.com", price: 21500, url: bookingUrl("The Apurva Kempinski Bali") },
       { partner: "Ostrovok", price: 20300, url: ostrovokUrl("The Apurva Kempinski Bali") },
@@ -911,7 +979,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Всё включено",
     rating: 4.5,
     reviews: 1876,
-    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80",
+    image: getHotelPhoto(11),
     offers: [
       { partner: "Booking.com", price: 47500, url: bookingUrl("Adaaran Club Rannalhi") },
       { partner: "Ostrovok", price: 45200, url: ostrovokUrl("Adaaran Club Rannalhi") },
@@ -927,7 +995,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Полупансион",
     rating: 5.0,
     reviews: 943,
-    image: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80",
+    image: getHotelPhoto(12),
     offers: [
       { partner: "Booking.com", price: 128000, url: bookingUrl("Gili Lankanfushi Maldives") },
       { partner: "Hotels.com", price: 132000, url: hotelsUrl("Gili Lankanfushi Maldives") },
@@ -943,7 +1011,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.7,
     reviews: 5321,
-    image: "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&q=80",
+    image: getHotelPhoto(13),
     offers: [
       { partner: "Booking.com", price: 36800, url: bookingUrl("W Barcelona") },
       { partner: "Ostrovok", price: 35400, url: ostrovokUrl("W Barcelona") },
@@ -959,7 +1027,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Без питания",
     rating: 4.8,
     reviews: 2789,
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80",
+    image: getHotelPhoto(14),
     offers: [
       { partner: "Booking.com", price: 58500, url: bookingUrl("Park Hyatt Tokyo") },
       { partner: "Hotels.com", price: 60200, url: hotelsUrl("Park Hyatt Tokyo") },
@@ -975,7 +1043,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.9,
     reviews: 1432,
-    image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80",
+    image: getHotelPhoto(15),
     offers: [
       { partner: "Booking.com", price: 72500, url: bookingUrl("Mystique Santorini") },
       { partner: "Ostrovok", price: 70800, url: ostrovokUrl("Mystique Santorini") },
@@ -991,7 +1059,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.9,
     reviews: 3105,
-    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
+    image: getHotelPhoto(16),
     offers: [
       { partner: "Booking.com", price: 89000, url: bookingUrl("Le Meurice Paris") },
       { partner: "Hotels.com", price: 92500, url: hotelsUrl("Le Meurice Paris") },
@@ -1008,7 +1076,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.8,
     reviews: 1650,
-    image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=800&q=80",
+    image: getHotelPhoto(17),
     offers: [
       { partner: "Ostrovok", price: 12800, url: ostrovokUrl("Crystal House Kaliningrad") },
       { partner: "Booking.com", price: 13500, url: bookingUrl("Crystal House Kaliningrad") },
@@ -1024,7 +1092,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.8,
     reviews: 3240,
-    image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80",
+    image: getHotelPhoto(18),
     offers: [
       { partner: "Ostrovok", price: 21500, url: ostrovokUrl("Swissotel Resort Sochi Kamelia") },
       { partner: "Booking.com", price: 23000, url: bookingUrl("Swissotel Resort Sochi Kamelia") },
@@ -1040,7 +1108,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.9,
     reviews: 4870,
-    image: "https://images.unsplash.com/photo-1520106212299-d99c443e4568?w=800&q=80",
+    image: getHotelPhoto(19),
     offers: [
       { partner: "Ostrovok", price: 24900, url: ostrovokUrl("Метрополь Москва") },
       { partner: "Booking.com", price: 26800, url: bookingUrl("Metropol Hotel Moscow") },
@@ -1056,7 +1124,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Всё включено",
     rating: 4.9,
     reviews: 2980,
-    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
+    image: getHotelPhoto(20),
     offers: [
       { partner: "Ostrovok", price: 34500, url: ostrovokUrl("Mriya Resort") },
       { partner: "Booking.com", price: 36200, url: bookingUrl("Mriya Resort Yalta") },
@@ -1071,7 +1139,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.7,
     reviews: 1420,
-    image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80",
+    image: getHotelPhoto(21),
     offers: [
       { partner: "Ostrovok", price: 14200, url: ostrovokUrl("Lotte Hotel Vladivostok") },
       { partner: "Booking.com", price: 15100, url: bookingUrl("Lotte Hotel Vladivostok") },
@@ -1087,7 +1155,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.5,
     reviews: 890,
-    image: "https://images.unsplash.com/photo-1548704806-074a1cd77f01?w=800&q=80",
+    image: getHotelPhoto(22),
     offers: [
       { partner: "Ostrovok", price: 9800, url: ostrovokUrl("Pacific Plaza Sakhalin") },
       { partner: "Booking.com", price: 10500, url: bookingUrl("Pacific Plaza Sakhalin") },
@@ -1103,7 +1171,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.8,
     reviews: 2340,
-    image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80",
+    image: getHotelPhoto(23),
     offers: [
       { partner: "Agoda", price: 26800, url: agodaUrl("The Peninsula Beijing") },
       { partner: "Booking.com", price: 28500, url: bookingUrl("The Peninsula Beijing") },
@@ -1119,7 +1187,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Без питания",
     rating: 4.3,
     reviews: 3150,
-    image: "https://images.unsplash.com/photo-1545893835-abaa50cbe628?w=800&q=80",
+    image: getHotelPhoto(24),
     offers: [
       { partner: "Agoda", price: 4200, url: agodaUrl("Jinjiang Inn Shanghai") },
       { partner: "Booking.com", price: 4800, url: bookingUrl("Jinjiang Inn Shanghai") },
@@ -1135,7 +1203,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.7,
     reviews: 4560,
-    image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800&q=80",
+    image: getHotelPhoto(25),
     offers: [
       { partner: "Agoda", price: 22400, url: agodaUrl("Atlantis Sanya") },
       { partner: "Ostrovok", price: 23100, url: ostrovokUrl("Atlantis Sanya") },
@@ -1152,7 +1220,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.9,
     reviews: 3890,
-    image: "https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80",
+    image: getHotelPhoto(26),
     offers: [
       { partner: "Agoda", price: 32500, url: agodaUrl("Mandarin Oriental Bangkok") },
       { partner: "Booking.com", price: 34800, url: bookingUrl("Mandarin Oriental Bangkok") },
@@ -1168,7 +1236,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.6,
     reviews: 5230,
-    image: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80",
+    image: getHotelPhoto(27),
     offers: [
       { partner: "Agoda", price: 8900, url: agodaUrl("Hilton Pattaya") },
       { partner: "Ostrovok", price: 9400, url: ostrovokUrl("Hilton Pattaya") },
@@ -1185,7 +1253,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Ультра всё включено",
     rating: 4.7,
     reviews: 2670,
-    image: "https://images.unsplash.com/photo-1600011689032-8b628b8bfc7f?w=800&q=80",
+    image: getHotelPhoto(28),
     offers: [
       { partner: "Ostrovok", price: 28700, url: ostrovokUrl("Voyage Bodrum") },
       { partner: "Booking.com", price: 30200, url: bookingUrl("Voyage Bodrum") },
@@ -1202,7 +1270,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Полупансион",
     rating: 4.7,
     reviews: 1430,
-    image: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=800&q=80",
+    image: getHotelPhoto(29),
     offers: [
       { partner: "Ostrovok", price: 6500, url: ostrovokUrl("Горный курорт Эльбрус Терскол") },
       { partner: "Booking.com", price: 7100, url: bookingUrl("Elbrus Mountain Resort Terskol") },
@@ -1217,7 +1285,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Завтрак",
     rating: 4.5,
     reviews: 890,
-    image: "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&q=80",
+    image: getHotelPhoto(30),
     offers: [
       { partner: "Ostrovok", price: 3400, url: ostrovokUrl("Отель Дербент") },
       { partner: "Booking.com", price: 3800, url: bookingUrl("Hotel Derbent Dagestan") },
@@ -1233,7 +1301,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Полный пансион + лечение",
     rating: 4.8,
     reviews: 2340,
-    image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80",
+    image: getHotelPhoto(31),
     offers: [
       { partner: "Ostrovok", price: 8900, url: ostrovokUrl("Alean Spa Resort Кисловодск") },
       { partner: "Booking.com", price: 9500, url: bookingUrl("Alean Spa Kislovodsk") },
@@ -1249,7 +1317,7 @@ export const hotels2026: Hotel2026[] = [
     meal: "Всё включено",
     rating: 4.6,
     reviews: 1890,
-    image: "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&q=80",
+    image: getHotelPhoto(32),
     offers: [
       { partner: "Ostrovok", price: 7800, url: ostrovokUrl("Bridge Resort Пицунда") },
       { partner: "Booking.com", price: 8400, url: bookingUrl("Bridge Resort Pitsunda") },
