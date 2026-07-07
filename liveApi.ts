@@ -161,3 +161,25 @@ export function aviasalesSearchUrl(
     `https://www.aviasales.ru/search/${origin}${dm(departDate)}${destination}${dm(returnDate)}1`,
   );
 }
+
+// ============================================================
+// Ж/Д БИЛЕТЫ (Россия и Европа)
+// Aviasales имеет API для ж/д — aviasales.ru/poezda
+// ============================================================
+
+export interface RailwayRide {
+  trainNumber: string;
+  trainName: string;
+  departure: string;
+  arrival: string;
+  duration: string;
+  price: number;
+  seatsLeft: number;
+}
+
+/** Ссылка на живой поиск ж/д билетов Туту.ру с датами */
+export function tutuRailwayUrl(from: string, to: string, date: string): string {
+  return withMarker(
+    `https://www.tutu.ru/poezda/?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${date}`,
+  );
+}

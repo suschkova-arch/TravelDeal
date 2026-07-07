@@ -1,0 +1,1530 @@
+export interface Destination {
+  id: number;
+  name: string;
+  country: string;
+  image: string;
+  price: number;
+  oldPrice: number;
+  rating: number;
+  reviews: number;
+  tags: string[];
+  description: string;
+  partner: string;
+  partnerUrl: string;
+}
+
+export interface Hotel {
+  id: number;
+  name: string;
+  city: string;
+  country: string;
+  image: string;
+  price: number;
+  oldPrice: number;
+  rating: number;
+  reviews: number;
+  stars: number;
+  amenities: string[];
+  discount: number;
+  partner: string;
+  partnerUrl: string;
+}
+
+export interface Flight {
+  id: number;
+  from: string;
+  to: string;
+  fromCode: string;
+  toCode: string;
+  airline: string;
+  airlineLogo: string;
+  departTime: string;
+  arriveTime: string;
+  duration: string;
+  stops: number;
+  price: number;
+  oldPrice: number;
+  date: string;
+  returnDate: string;
+  partner: string;
+  partnerUrl: string;
+  baggage: string;
+  aircraft: string;
+}
+
+export interface Partner {
+  id: number;
+  name: string;
+  logo: string;
+  description: string;
+  discount: string;
+  url: string;
+  category: string;
+  color: string;
+}
+
+export interface Review {
+  id: number;
+  name: string;
+  avatar: string;
+  destination: string;
+  rating: number;
+  text: string;
+  saved: number;
+  date: string;
+  verified: boolean;
+}
+
+export const destinations: Destination[] = [
+  {
+    id: 1,
+    name: "Дубай",
+    country: "ОАЭ",
+    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80",
+    price: 45000,
+    oldPrice: 68000,
+    rating: 4.9,
+    reviews: 2847,
+    tags: ["Люкс", "Шопинг", "Пляж"],
+    description: "Город будущего с золотыми пляжами и небоскрёбами",
+    partner: "Booking.com",
+    partnerUrl: "https://booking.com/city/ae/dubai.html",
+  },
+  {
+    id: 2,
+    name: "Бали",
+    country: "Индонезия",
+    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",
+    price: 38000,
+    oldPrice: 55000,
+    rating: 4.8,
+    reviews: 3241,
+    tags: ["Природа", "Релакс", "Духовность"],
+    description: "Остров богов с рисовыми террасами и храмами",
+    partner: "Aviasales",
+    partnerUrl: "https://aviasales.ru/",
+  },
+  {
+    id: 3,
+    name: "Париж",
+    country: "Франция",
+    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
+    price: 52000,
+    oldPrice: 78000,
+    rating: 4.7,
+    reviews: 5123,
+    tags: ["Романтика", "Культура", "Гастрономия"],
+    description: "Город любви с Эйфелевой башней и haute cuisine",
+    partner: "Booking.com",
+    partnerUrl: "https://booking.com/city/fr/paris.html",
+  },
+  {
+    id: 4,
+    name: "Токио",
+    country: "Япония",
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80",
+    price: 65000,
+    oldPrice: 95000,
+    rating: 4.9,
+    reviews: 1987,
+    tags: ["Технологии", "Аниме", "Еда"],
+    description: "Мегаполис контрастов между традицией и будущим",
+    partner: "Skyscanner",
+    partnerUrl: "https://skyscanner.ru/",
+  },
+  {
+    id: 5,
+    name: "Барселона",
+    country: "Испания",
+    image: "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&q=80",
+    price: 41000,
+    oldPrice: 62000,
+    rating: 4.8,
+    reviews: 4312,
+    tags: ["Архитектура", "Пляж", "Ночная жизнь"],
+    description: "Гауди, тапас и средиземноморское солнце",
+    partner: "KAYAK",
+    partnerUrl: "https://kayak.ru/",
+  },
+  {
+    id: 6,
+    name: "Мальдивы",
+    country: "Мальдивы",
+    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80",
+    price: 89000,
+    oldPrice: 130000,
+    rating: 5.0,
+    reviews: 1456,
+    tags: ["Роскошь", "Дайвинг", "Уединение"],
+    description: "Бунгало над бирюзовым океаном для двоих",
+    partner: "Hotels.com",
+    partnerUrl: "https://hotels.com/",
+  },
+];
+
+export const hotels: Hotel[] = [
+  {
+    id: 1,
+    name: "Burj Al Arab Jumeirah",
+    city: "Дубай",
+    country: "ОАЭ",
+    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80",
+    price: 45000,
+    oldPrice: 68000,
+    rating: 4.9,
+    reviews: 1247,
+    stars: 5,
+    amenities: ["Бассейн", "СПА", "Рестораны", "WiFi", "Трансфер"],
+    discount: 34,
+    partner: "Booking.com",
+    partnerUrl: "https://booking.com/",
+  },
+  {
+    id: 2,
+    name: "Kempinski Bali",
+    city: "Нуса-Дуа",
+    country: "Индонезия",
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+    price: 12000,
+    oldPrice: 18500,
+    rating: 4.8,
+    reviews: 892,
+    stars: 5,
+    amenities: ["Частный пляж", "Бассейн", "СПА", "WiFi", "Завтрак"],
+    discount: 35,
+    partner: "Ostrovok",
+    partnerUrl: "https://ostrovok.ru/",
+  },
+  {
+    id: 3,
+    name: "Le Meurice Paris",
+    city: "Париж",
+    country: "Франция",
+    image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
+    price: 28000,
+    oldPrice: 42000,
+    rating: 4.9,
+    reviews: 2103,
+    stars: 5,
+    amenities: ["Рестораны", "СПА", "Консьерж", "WiFi", "Бар"],
+    discount: 33,
+    partner: "Hotels.com",
+    partnerUrl: "https://hotels.com/",
+  },
+  {
+    id: 4,
+    name: "Park Hyatt Tokyo",
+    city: "Токио",
+    country: "Япония",
+    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80",
+    price: 22000,
+    oldPrice: 35000,
+    rating: 4.8,
+    reviews: 1567,
+    stars: 5,
+    amenities: ["Панорамный вид", "Бассейн", "СПА", "WiFi", "Тренажёрный зал"],
+    discount: 37,
+    partner: "Booking.com",
+    partnerUrl: "https://booking.com/",
+  },
+  {
+    id: 5,
+    name: "W Barcelona",
+    city: "Барселона",
+    country: "Испания",
+    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
+    price: 18000,
+    oldPrice: 27000,
+    rating: 4.7,
+    reviews: 3421,
+    stars: 5,
+    amenities: ["Пляж", "Бассейн на крыше", "Ночной клуб", "WiFi", "СПА"],
+    discount: 33,
+    partner: "Ostrovok",
+    partnerUrl: "https://ostrovok.ru/",
+  },
+  {
+    id: 6,
+    name: "Gili Lankanfushi",
+    city: "Северный Мале",
+    country: "Мальдивы",
+    image: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80",
+    price: 65000,
+    oldPrice: 95000,
+    rating: 5.0,
+    reviews: 743,
+    stars: 5,
+    amenities: ["Бунгало над водой", "Дайвинг", "СПА", "Включено всё", "Трансфер на гидроплане"],
+    discount: 32,
+    partner: "Hotels.com",
+    partnerUrl: "https://hotels.com/",
+  },
+];
+
+export const flights: Flight[] = [
+  {
+    id: 1,
+    from: "Москва",
+    to: "Дубай",
+    fromCode: "SVO",
+    toCode: "DXB",
+    airline: "Emirates",
+    airlineLogo: "✈️",
+    departTime: "06:30",
+    arriveTime: "11:45",
+    duration: "5ч 15м",
+    stops: 0,
+    price: 24500,
+    oldPrice: 38000,
+    date: "15 мар 2025",
+    returnDate: "22 мар 2025",
+    partner: "Aviasales",
+    partnerUrl: "https://aviasales.ru/",
+    baggage: "23 кг включено",
+    aircraft: "Boeing 777",
+  },
+  {
+    id: 2,
+    from: "Москва",
+    to: "Бали",
+    fromCode: "SVO",
+    toCode: "DPS",
+    airline: "Singapore Airlines",
+    airlineLogo: "✈️",
+    departTime: "09:15",
+    arriveTime: "06:30+1",
+    duration: "13ч 15м",
+    stops: 1,
+    price: 32000,
+    oldPrice: 52000,
+    date: "1 апр 2025",
+    returnDate: "15 апр 2025",
+    partner: "Skyscanner",
+    partnerUrl: "https://skyscanner.ru/",
+    baggage: "30 кг включено",
+    aircraft: "Airbus A380",
+  },
+  {
+    id: 3,
+    from: "Москва",
+    to: "Париж",
+    fromCode: "SVO",
+    toCode: "CDG",
+    airline: "Air France",
+    airlineLogo: "✈️",
+    departTime: "11:20",
+    arriveTime: "13:45",
+    duration: "3ч 25м",
+    stops: 0,
+    price: 18900,
+    oldPrice: 29000,
+    date: "20 апр 2025",
+    returnDate: "27 апр 2025",
+    partner: "KAYAK",
+    partnerUrl: "https://kayak.ru/",
+    baggage: "23 кг включено",
+    aircraft: "Airbus A320",
+  },
+  {
+    id: 4,
+    from: "Москва",
+    to: "Токио",
+    fromCode: "SVO",
+    toCode: "NRT",
+    airline: "Japan Airlines",
+    airlineLogo: "✈️",
+    departTime: "14:00",
+    arriveTime: "06:15+1",
+    duration: "10ч 15м",
+    stops: 0,
+    price: 41000,
+    oldPrice: 68000,
+    date: "5 мая 2025",
+    returnDate: "19 мая 2025",
+    partner: "Aviasales",
+    partnerUrl: "https://aviasales.ru/",
+    baggage: "23 кг включено",
+    aircraft: "Boeing 787 Dreamliner",
+  },
+  {
+    id: 5,
+    from: "Москва",
+    to: "Барселона",
+    fromCode: "SVO",
+    toCode: "BCN",
+    airline: "Vueling",
+    airlineLogo: "✈️",
+    departTime: "16:45",
+    arriveTime: "19:30",
+    duration: "4ч 45м",
+    stops: 0,
+    price: 15600,
+    oldPrice: 24000,
+    date: "10 июн 2025",
+    returnDate: "24 июн 2025",
+    partner: "Skyscanner",
+    partnerUrl: "https://skyscanner.ru/",
+    baggage: "10 кг ручная кладь",
+    aircraft: "Airbus A319",
+  },
+  {
+    id: 6,
+    from: "Москва",
+    to: "Мале",
+    fromCode: "SVO",
+    toCode: "MLE",
+    airline: "Maldivian",
+    airlineLogo: "✈️",
+    departTime: "22:30",
+    arriveTime: "09:45+1",
+    duration: "7ч 15м",
+    stops: 1,
+    price: 48000,
+    oldPrice: 76000,
+    date: "1 июл 2025",
+    returnDate: "14 июл 2025",
+    partner: "KAYAK",
+    partnerUrl: "https://kayak.ru/",
+    baggage: "30 кг включено",
+    aircraft: "Airbus A330",
+  },
+];
+
+// Личные партнёрские ссылки Travelpayouts (marker 547188 внутри)
+export const partners: Partner[] = [
+  {
+    id: 1,
+    name: "Aviasales",
+    logo: "✈️",
+    description: "Умный поиск дешёвых авиабилетов среди 100+ авиакомпаний",
+    discount: "до 60%",
+    url: "https://aviasales.tpk.lu/u9lFIAmF",
+    category: "Авиабилеты",
+    color: "#ff6d00",
+  },
+  {
+    id: 2,
+    name: "Ostrovok",
+    logo: "🏝️",
+    description: "Бронирование отелей по всему миру — от России до Мальдив",
+    discount: "до 50%",
+    url: "https://ostrovok.tpk.lu/qm3uUcuL",
+    category: "Отели",
+    color: "#00b4d8",
+  },
+  {
+    id: 3,
+    name: "Яндекс.Путешествия",
+    logo: "🔍",
+    description: "Отели, авиабилеты и ж/д — с кэшбэком баллами Плюса",
+    discount: "кэшбэк до 20%",
+    url: "https://yandex.tpk.lu/n2k5ulFQ",
+    category: "Всё включено",
+    color: "#fc3f1d",
+  },
+  {
+    id: 4,
+    name: "Травелата",
+    logo: "🌴",
+    description: "Пакетные туры от всех туроператоров — Турция, Египет, ОАЭ",
+    discount: "до 50%",
+    url: "https://travelata.tpk.lu/iXthmQlV",
+    category: "Туры",
+    color: "#ffa000",
+  },
+  {
+    id: 5,
+    name: "Level.Travel",
+    logo: "🧳",
+    description: "Горящие туры онлайн — бронирование за 5 минут",
+    discount: "до 45%",
+    url: "https://level.tpk.lu/pEKE6u4T",
+    category: "Туры",
+    color: "#5c6bc0",
+  },
+  {
+    id: 6,
+    name: "Onlinetours",
+    logo: "🔥",
+    description: "Поиск туров по 120 туроператорам с рассрочкой",
+    discount: "до 40%",
+    url: "https://onlinetours.tpk.lu/9gx8uXiK",
+    category: "Туры",
+    color: "#e91e63",
+  },
+  {
+    id: 7,
+    name: "Слетать.ру",
+    logo: "🎒",
+    description: "Сравнение туров от 120 туроператоров России, горящие предложения",
+    discount: "до 50%",
+    url: "https://sletat.tpk.lu/qOge5Itj",
+    category: "Туры",
+    color: "#7b1fa2",
+  },
+  {
+    id: 8,
+    name: "Путёвка.ру",
+    logo: "🛫",
+    description: "Поиск туров и путёвок по всем направлениям с кэшбэком",
+    discount: "до 45%",
+    url: "https://putevka.tpk.lu/LLOG5aJa",
+    category: "Туры",
+    color: "#d32f2f",
+  },
+  {
+    id: 9,
+    name: "Экскурсии",
+    logo: "🎫",
+    description: "Авторские экскурсии от местных гидов по всему миру",
+    discount: "до 25%",
+    url: "https://ektatraveling.tpk.lu/9aHvFarq",
+    category: "Экскурсии",
+    color: "#f57c00",
+  },
+  {
+    id: 10,
+    name: "Большая Страна",
+    logo: "🏔️",
+    description: "Авторские туры по России — Байкал, Камчатка, Алтай, Карелия",
+    discount: "уникальные маршруты",
+    url: "https://bolshayastrana.tpk.lu/tDKbPrzA",
+    category: "Туры по России",
+    color: "#2e7d32",
+  },
+  {
+    id: 11,
+    name: "Санатории.ру",
+    logo: "💆",
+    description: "Бронирование санаториев России и СНГ — лечение и отдых",
+    discount: "до 35%",
+    url: "https://sanatoriums.tpk.lu/9jud9LjB",
+    category: "Здоровье",
+    color: "#00897b",
+  },
+  {
+    id: 12,
+    name: "Туту.ру",
+    logo: "🚆",
+    description: "Ж/д и авиабилеты, автобусы и электрички по России",
+    discount: "без наценок",
+    url: "https://tutu.tpk.lu/35nYuIo5",
+    category: "Ж/Д + Авиа",
+    color: "#00acc1",
+  },
+  {
+    id: 13,
+    name: "Суточно.ру",
+    logo: "🏠",
+    description: "Квартиры и дома посуточно — от Калининграда до Сахалина",
+    discount: "до 30%",
+    url: "https://sutochno.tpk.lu/uTSAebHB",
+    category: "Жильё",
+    color: "#26a69a",
+  },
+  {
+    id: 14,
+    name: "Avito Путешествия",
+    logo: "🏡",
+    description: "Жильё для отпуска от собственников по всей России",
+    discount: "выгодно",
+    url: "https://avito.tpk.lu/vQaFIi9P",
+    category: "Жильё",
+    color: "#97cf26",
+  },
+  {
+    id: 15,
+    name: "VIP-залы",
+    logo: "✨",
+    description: "Бизнес-залы аэропортов — отдых перед рейсом от 1900₽",
+    discount: "до 40%",
+    url: "https://vip-zal.tpk.lu/gQ8g0epq",
+    category: "Комфорт",
+    color: "#ffd54f",
+  },
+  {
+    id: 16,
+    name: "Qeeq.com",
+    logo: "🚗",
+    description: "Аренда авто в аэропортах мира — без депозита и кредитной карты",
+    discount: "до 35%",
+    url: "https://qeeq.tpk.lu/z8sf6b95",
+    category: "Авто",
+    color: "#0288d1",
+  },
+  {
+    id: 17,
+    name: "Localrent",
+    logo: "🚙",
+    description: "Аренда авто у местных прокатов — Турция, Грузия, ОАЭ, Таиланд",
+    discount: "без депозита",
+    url: "https://localrent.tpk.lu/axWJbRm1",
+    category: "Авто",
+    color: "#3f51b5",
+  },
+  {
+    id: 18,
+    name: "EconomyBookings",
+    logo: "🚖",
+    description: "Аренда автомобилей в 150 странах мира",
+    discount: "до 35%",
+    url: "https://economybookings.tpk.lu/ANU2xTqv",
+    category: "Авто",
+    color: "#5e35b1",
+  },
+  {
+    id: 19,
+    name: "BikesBooking",
+    logo: "🛵",
+    description: "Аренда скутеров, байков и велосипедов на курортах",
+    discount: "до 30%",
+    url: "https://bikesbooking.tpk.lu/UHyVjzq5",
+    category: "Байки",
+    color: "#ff5722",
+  },
+  {
+    id: 20,
+    name: "SeaRadar",
+    logo: "⚓",
+    description: "Прогулочные яхты и катера в любой точке мира",
+    discount: "до 30%",
+    url: "https://searadar.tpk.lu/pus6EpES",
+    category: "Яхты",
+    color: "#0277bd",
+  },
+  {
+    id: 21,
+    name: "Круиз-Онлайн",
+    logo: "🚢",
+    description: "Морские и речные круизы — Волга, Карибы, Средиземное море",
+    discount: "до 25%",
+    url: "https://kruiz-online.tpk.lu/ctXuG3FL",
+    category: "Круизы",
+    color: "#1976d2",
+  },
+  {
+    id: 22,
+    name: "Radical Storage",
+    logo: "🧳",
+    description: "Хранение багажа в 1000+ городах мира — от 100₽ в сутки",
+    discount: "до 50%",
+    url: "https://radicalstorage.tpk.lu/lkM8cN3r",
+    category: "Сервис",
+    color: "#ef6c00",
+  },
+  {
+    id: 23,
+    name: "LaVoyage",
+    logo: "✈️",
+    description: "Авиабилеты с гибкими датами и мультимаршруты",
+    discount: "до 40%",
+    url: "https://lavoyage.tpk.lu/PC4ITkPJ",
+    category: "Авиабилеты",
+    color: "#1e88e5",
+  },
+];
+
+export const reviews: Review[] = [
+  {
+    id: 1,
+    name: "Анна К.",
+    avatar: "👩",
+    destination: "Дубай, ОАЭ",
+    rating: 5,
+    text: "Нашла тур в Дубай за 45 000₽ вместо 78 000₽! Бронировала через Booking.com по ссылке с TravelDeal — скидка применилась автоматически. Отель Atlantis The Palm превзошёл все ожидания, а живой поиск реально показал актуальные цены!",
+    saved: 33000,
+    date: "Июнь 2026",
+    verified: true,
+  },
+  {
+    id: 2,
+    name: "Михаил Р.",
+    avatar: "👨",
+    destination: "Бали, Индонезия",
+    rating: 5,
+    text: "Сравнил цены на билеты через TravelDeal и сэкономил 28 000₽ на двоих! Aviasales предложил лучшую цену на август 2026. Бали — это просто рай на земле, обязательно вернёмся!",
+    saved: 28000,
+    date: "Май 2026",
+    verified: true,
+  },
+  {
+    id: 3,
+    name: "Елена В.",
+    avatar: "👩‍🦰",
+    destination: "Санкт-Петербург, Россия",
+    rating: 5,
+    text: "Поезд из Москвы в Питер на Сапсане за 2100₽ — нашла здесь! Яндекс.Путешествия с кэшбэком баллами. Плюс отель в центре за 6500₽/ночь. Итого 14 000₽ за выходные — уложилась в подарок мужу на годовщину!",
+    saved: 14000,
+    date: "Апрель 2026",
+    verified: true,
+  },
+  {
+    id: 4,
+    name: "Дмитрий С.",
+    avatar: "👨‍💼",
+    destination: "Камчатка, Россия",
+    rating: 5,
+    text: "Подписался на email-алерт для Петропавловска-Камчатского и через неделю получил уведомление о скидке 45%! Успел купить билеты Аэрофлота. Плюс авторский тур от «Большой Страны» — медведи, вулканы, гейзеры. Незабываемо!",
+    saved: 42000,
+    date: "Март 2026",
+    verified: true,
+  },
+  {
+    id: 5,
+    name: "Ольга М.",
+    avatar: "👩‍🦳",
+    destination: "Мальдивы",
+    rating: 5,
+    text: "Медовый месяц на Мальдивах мечты! Бунгало над водой в Gili Lankanfushi за 128 000₽/ночь вместо 175 000₽. Островок + скидка TravelDeal = магия. Уже планируем вторую годовщину!",
+    saved: 47000,
+    date: "Февраль 2026",
+    verified: true,
+  },
+  {
+    id: 6,
+    name: "Игорь П.",
+    avatar: "🧔",
+    destination: "Анапа, Россия",
+    rating: 5,
+    text: "Вся семья (4 человека) поехала в Анапу поездом за 8500₽ на семью! Плюс отель всё включено за 7800₽/ночь через Ostrovok. Жена довольна, дети счастливы, я сэкономил на нервах. Будем планировать Сочи на следующее лето!",
+    saved: 38600,
+    date: "Январь 2026",
+    verified: true,
+  },
+];
+
+// ===== Отели 2026 со сравнением цен партнёров =====
+
+export interface HotelOffer {
+  partner: string;
+  price: number; // ₽ за ночь, ориентировочно на сезон 2026
+  url: string;
+}
+
+export interface Hotel2026 {
+  id: number;
+  name: string;
+  city: string;
+  country: string;
+  stars: number;
+  meal: string; // Питание
+  rating: number;
+  reviews: number;
+  image: string;
+  offers: HotelOffer[];
+}
+
+const bookingUrl = (name: string) =>
+  `https://www.booking.com/searchresults.ru.html?ss=${encodeURIComponent(name)}`;
+const ostrovokUrl = (name: string) =>
+  `https://ostrovok.ru/hotel/searchresults/?q=${encodeURIComponent(name)}`;
+const hotelsUrl = (name: string) =>
+  `https://ru.hotels.com/Hotel-Search?destination=${encodeURIComponent(name)}`;
+const agodaUrl = (name: string) =>
+  `https://www.agoda.com/ru-ru/search?q=${encodeURIComponent(name)}`;
+
+export const hotels2026: Hotel2026[] = [
+  {
+    id: 1,
+    name: "Rixos Premium Belek",
+    city: "Белек",
+    country: "Турция",
+    stars: 5,
+    meal: "Ультра всё включено",
+    rating: 4.9,
+    reviews: 4213,
+    image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 48500, url: bookingUrl("Rixos Premium Belek") },
+      { partner: "Ostrovok", price: 45900, url: ostrovokUrl("Rixos Premium Belek") },
+      { partner: "Hotels.com", price: 49800, url: hotelsUrl("Rixos Premium Belek") },
+      { partner: "Agoda", price: 47200, url: agodaUrl("Rixos Premium Belek") },
+    ],
+  },
+  {
+    id: 2,
+    name: "Titanic Beach Lara",
+    city: "Анталья",
+    country: "Турция",
+    stars: 5,
+    meal: "Всё включено",
+    rating: 4.7,
+    reviews: 6120,
+    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 34200, url: bookingUrl("Titanic Beach Lara") },
+      { partner: "Ostrovok", price: 32800, url: ostrovokUrl("Titanic Beach Lara") },
+      { partner: "Agoda", price: 33500, url: agodaUrl("Titanic Beach Lara") },
+    ],
+  },
+  {
+    id: 3,
+    name: "Club Hotel Sera",
+    city: "Анталья",
+    country: "Турция",
+    stars: 4,
+    meal: "Всё включено",
+    rating: 4.4,
+    reviews: 2890,
+    image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 16900, url: bookingUrl("Club Hotel Sera Antalya") },
+      { partner: "Ostrovok", price: 15700, url: ostrovokUrl("Club Hotel Sera Antalya") },
+      { partner: "Hotels.com", price: 17400, url: hotelsUrl("Club Hotel Sera Antalya") },
+    ],
+  },
+  {
+    id: 4,
+    name: "Steigenberger Aqua Magic",
+    city: "Хургада",
+    country: "Египет",
+    stars: 5,
+    meal: "Всё включено",
+    rating: 4.6,
+    reviews: 3542,
+    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 19400, url: bookingUrl("Steigenberger Aqua Magic Hurghada") },
+      { partner: "Ostrovok", price: 18200, url: ostrovokUrl("Steigenberger Aqua Magic Hurghada") },
+      { partner: "Agoda", price: 18900, url: agodaUrl("Steigenberger Aqua Magic Hurghada") },
+    ],
+  },
+  {
+    id: 5,
+    name: "Rixos Sharm El Sheikh",
+    city: "Шарм-эль-Шейх",
+    country: "Египет",
+    stars: 5,
+    meal: "Ультра всё включено",
+    rating: 4.8,
+    reviews: 5011,
+    image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 29800, url: bookingUrl("Rixos Sharm El Sheikh") },
+      { partner: "Ostrovok", price: 28300, url: ostrovokUrl("Rixos Sharm El Sheikh") },
+      { partner: "Hotels.com", price: 30500, url: hotelsUrl("Rixos Sharm El Sheikh") },
+      { partner: "Agoda", price: 27900, url: agodaUrl("Rixos Sharm El Sheikh") },
+    ],
+  },
+  {
+    id: 6,
+    name: "Atlantis The Palm",
+    city: "Дубай",
+    country: "ОАЭ",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.8,
+    reviews: 8930,
+    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 62000, url: bookingUrl("Atlantis The Palm Dubai") },
+      { partner: "Ostrovok", price: 59500, url: ostrovokUrl("Atlantis The Palm Dubai") },
+      { partner: "Hotels.com", price: 63800, url: hotelsUrl("Atlantis The Palm Dubai") },
+      { partner: "Agoda", price: 60900, url: agodaUrl("Atlantis The Palm Dubai") },
+    ],
+  },
+  {
+    id: 7,
+    name: "Rove Downtown",
+    city: "Дубай",
+    country: "ОАЭ",
+    stars: 3,
+    meal: "Без питания",
+    rating: 4.5,
+    reviews: 7215,
+    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 10400, url: bookingUrl("Rove Downtown Dubai") },
+      { partner: "Ostrovok", price: 9800, url: ostrovokUrl("Rove Downtown Dubai") },
+      { partner: "Agoda", price: 9500, url: agodaUrl("Rove Downtown Dubai") },
+    ],
+  },
+  {
+    id: 8,
+    name: "Katathani Phuket Beach Resort",
+    city: "Пхукет",
+    country: "Таиланд",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.7,
+    reviews: 4467,
+    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 17800, url: bookingUrl("Katathani Phuket Beach Resort") },
+      { partner: "Ostrovok", price: 16900, url: ostrovokUrl("Katathani Phuket Beach Resort") },
+      { partner: "Agoda", price: 15900, url: agodaUrl("Katathani Phuket Beach Resort") },
+    ],
+  },
+  {
+    id: 9,
+    name: "Ibis Phuket Patong",
+    city: "Пхукет",
+    country: "Таиланд",
+    stars: 3,
+    meal: "Без питания",
+    rating: 4.2,
+    reviews: 3310,
+    image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 4900, url: bookingUrl("Ibis Phuket Patong") },
+      { partner: "Ostrovok", price: 4600, url: ostrovokUrl("Ibis Phuket Patong") },
+      { partner: "Agoda", price: 4300, url: agodaUrl("Ibis Phuket Patong") },
+    ],
+  },
+  {
+    id: 10,
+    name: "Kempinski Bali",
+    city: "Нуса-Дуа",
+    country: "Индонезия",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.8,
+    reviews: 2154,
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 21500, url: bookingUrl("The Apurva Kempinski Bali") },
+      { partner: "Ostrovok", price: 20300, url: ostrovokUrl("The Apurva Kempinski Bali") },
+      { partner: "Hotels.com", price: 22100, url: hotelsUrl("The Apurva Kempinski Bali") },
+      { partner: "Agoda", price: 19800, url: agodaUrl("The Apurva Kempinski Bali") },
+    ],
+  },
+  {
+    id: 11,
+    name: "Adaaran Club Rannalhi",
+    city: "Южный Мале",
+    country: "Мальдивы",
+    stars: 4,
+    meal: "Всё включено",
+    rating: 4.5,
+    reviews: 1876,
+    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 47500, url: bookingUrl("Adaaran Club Rannalhi") },
+      { partner: "Ostrovok", price: 45200, url: ostrovokUrl("Adaaran Club Rannalhi") },
+      { partner: "Agoda", price: 46100, url: agodaUrl("Adaaran Club Rannalhi") },
+    ],
+  },
+  {
+    id: 12,
+    name: "Gili Lankanfushi",
+    city: "Северный Мале",
+    country: "Мальдивы",
+    stars: 5,
+    meal: "Полупансион",
+    rating: 5.0,
+    reviews: 943,
+    image: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 128000, url: bookingUrl("Gili Lankanfushi Maldives") },
+      { partner: "Hotels.com", price: 132000, url: hotelsUrl("Gili Lankanfushi Maldives") },
+      { partner: "Agoda", price: 124500, url: agodaUrl("Gili Lankanfushi Maldives") },
+    ],
+  },
+  {
+    id: 13,
+    name: "W Barcelona",
+    city: "Барселона",
+    country: "Испания",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.7,
+    reviews: 5321,
+    image: "https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 36800, url: bookingUrl("W Barcelona") },
+      { partner: "Ostrovok", price: 35400, url: ostrovokUrl("W Barcelona") },
+      { partner: "Hotels.com", price: 37900, url: hotelsUrl("W Barcelona") },
+    ],
+  },
+  {
+    id: 14,
+    name: "Park Hyatt Tokyo",
+    city: "Токио",
+    country: "Япония",
+    stars: 5,
+    meal: "Без питания",
+    rating: 4.8,
+    reviews: 2789,
+    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 58500, url: bookingUrl("Park Hyatt Tokyo") },
+      { partner: "Hotels.com", price: 60200, url: hotelsUrl("Park Hyatt Tokyo") },
+      { partner: "Agoda", price: 56900, url: agodaUrl("Park Hyatt Tokyo") },
+    ],
+  },
+  {
+    id: 15,
+    name: "Mystique Santorini",
+    city: "Санторини",
+    country: "Греция",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.9,
+    reviews: 1432,
+    image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 72500, url: bookingUrl("Mystique Santorini") },
+      { partner: "Ostrovok", price: 70800, url: ostrovokUrl("Mystique Santorini") },
+      { partner: "Hotels.com", price: 74200, url: hotelsUrl("Mystique Santorini") },
+    ],
+  },
+  {
+    id: 16,
+    name: "Le Meurice",
+    city: "Париж",
+    country: "Франция",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.9,
+    reviews: 3105,
+    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
+    offers: [
+      { partner: "Booking.com", price: 89000, url: bookingUrl("Le Meurice Paris") },
+      { partner: "Hotels.com", price: 92500, url: hotelsUrl("Le Meurice Paris") },
+      { partner: "Agoda", price: 87400, url: agodaUrl("Le Meurice Paris") },
+    ],
+  },
+  // ===== РОССИЯ: от Калининграда до Сахалина =====
+  {
+    id: 17,
+    name: "Crystal House Suite Hotel & SPA",
+    city: "Калининград",
+    country: "Россия",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.8,
+    reviews: 1650,
+    image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 12800, url: ostrovokUrl("Crystal House Kaliningrad") },
+      { partner: "Booking.com", price: 13500, url: bookingUrl("Crystal House Kaliningrad") },
+      { partner: "Agoda", price: 13200, url: agodaUrl("Crystal House Kaliningrad") },
+    ],
+  },
+  {
+    id: 18,
+    name: "Swissôtel Resort Сочи Камелия",
+    city: "Сочи",
+    country: "Россия",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.8,
+    reviews: 3240,
+    image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 21500, url: ostrovokUrl("Swissotel Resort Sochi Kamelia") },
+      { partner: "Booking.com", price: 23000, url: bookingUrl("Swissotel Resort Sochi Kamelia") },
+      { partner: "Agoda", price: 22400, url: agodaUrl("Swissotel Resort Sochi Kamelia") },
+    ],
+  },
+  {
+    id: 19,
+    name: "Метрополь",
+    city: "Москва",
+    country: "Россия",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.9,
+    reviews: 4870,
+    image: "https://images.unsplash.com/photo-1520106212299-d99c443e4568?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 24900, url: ostrovokUrl("Метрополь Москва") },
+      { partner: "Booking.com", price: 26800, url: bookingUrl("Metropol Hotel Moscow") },
+      { partner: "Agoda", price: 25600, url: agodaUrl("Metropol Hotel Moscow") },
+    ],
+  },
+  {
+    id: 20,
+    name: "Mriya Resort & SPA",
+    city: "Ялта, Крым",
+    country: "Россия",
+    stars: 5,
+    meal: "Всё включено",
+    rating: 4.9,
+    reviews: 2980,
+    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 34500, url: ostrovokUrl("Mriya Resort") },
+      { partner: "Booking.com", price: 36200, url: bookingUrl("Mriya Resort Yalta") },
+    ],
+  },
+  {
+    id: 21,
+    name: "Lotte Hotel Vladivostok",
+    city: "Владивосток",
+    country: "Россия",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.7,
+    reviews: 1420,
+    image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 14200, url: ostrovokUrl("Lotte Hotel Vladivostok") },
+      { partner: "Booking.com", price: 15100, url: bookingUrl("Lotte Hotel Vladivostok") },
+      { partner: "Agoda", price: 14600, url: agodaUrl("Lotte Hotel Vladivostok") },
+    ],
+  },
+  {
+    id: 22,
+    name: "Pacific Plaza Sakhalin",
+    city: "Южно-Сахалинск",
+    country: "Россия",
+    stars: 4,
+    meal: "Завтрак",
+    rating: 4.5,
+    reviews: 890,
+    image: "https://images.unsplash.com/photo-1548704806-074a1cd77f01?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 9800, url: ostrovokUrl("Pacific Plaza Sakhalin") },
+      { partner: "Booking.com", price: 10500, url: bookingUrl("Pacific Plaza Sakhalin") },
+    ],
+  },
+  // ===== КИТАЙ =====
+  {
+    id: 23,
+    name: "The Peninsula Beijing",
+    city: "Пекин",
+    country: "Китай",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.8,
+    reviews: 2340,
+    image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80",
+    offers: [
+      { partner: "Agoda", price: 26800, url: agodaUrl("The Peninsula Beijing") },
+      { partner: "Booking.com", price: 28500, url: bookingUrl("The Peninsula Beijing") },
+      { partner: "Ostrovok", price: 27600, url: ostrovokUrl("The Peninsula Beijing") },
+    ],
+  },
+  {
+    id: 24,
+    name: "Jinjiang Inn Shanghai",
+    city: "Шанхай",
+    country: "Китай",
+    stars: 3,
+    meal: "Без питания",
+    rating: 4.3,
+    reviews: 3150,
+    image: "https://images.unsplash.com/photo-1545893835-abaa50cbe628?w=800&q=80",
+    offers: [
+      { partner: "Agoda", price: 4200, url: agodaUrl("Jinjiang Inn Shanghai") },
+      { partner: "Booking.com", price: 4800, url: bookingUrl("Jinjiang Inn Shanghai") },
+      { partner: "Ostrovok", price: 4500, url: ostrovokUrl("Jinjiang Inn Shanghai") },
+    ],
+  },
+  {
+    id: 25,
+    name: "Atlantis Sanya (Хайнань)",
+    city: "Санья",
+    country: "Китай",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.7,
+    reviews: 4560,
+    image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800&q=80",
+    offers: [
+      { partner: "Agoda", price: 22400, url: agodaUrl("Atlantis Sanya") },
+      { partner: "Ostrovok", price: 23100, url: ostrovokUrl("Atlantis Sanya") },
+      { partner: "Booking.com", price: 24000, url: bookingUrl("Atlantis Sanya") },
+    ],
+  },
+  // ===== ТАИЛАНД (расширение) =====
+  {
+    id: 26,
+    name: "Mandarin Oriental Bangkok",
+    city: "Бангкок",
+    country: "Таиланд",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.9,
+    reviews: 3890,
+    image: "https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80",
+    offers: [
+      { partner: "Agoda", price: 32500, url: agodaUrl("Mandarin Oriental Bangkok") },
+      { partner: "Booking.com", price: 34800, url: bookingUrl("Mandarin Oriental Bangkok") },
+      { partner: "Hotels.com", price: 35600, url: hotelsUrl("Mandarin Oriental Bangkok") },
+    ],
+  },
+  {
+    id: 27,
+    name: "Hilton Pattaya",
+    city: "Паттайя",
+    country: "Таиланд",
+    stars: 5,
+    meal: "Завтрак",
+    rating: 4.6,
+    reviews: 5230,
+    image: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80",
+    offers: [
+      { partner: "Agoda", price: 8900, url: agodaUrl("Hilton Pattaya") },
+      { partner: "Ostrovok", price: 9400, url: ostrovokUrl("Hilton Pattaya") },
+      { partner: "Booking.com", price: 9800, url: bookingUrl("Hilton Pattaya") },
+    ],
+  },
+  // ===== ТУРЦИЯ (расширение) =====
+  {
+    id: 28,
+    name: "Voyage Bodrum",
+    city: "Бодрум",
+    country: "Турция",
+    stars: 5,
+    meal: "Ультра всё включено",
+    rating: 4.7,
+    reviews: 2670,
+    image: "https://images.unsplash.com/photo-1600011689032-8b628b8bfc7f?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 28700, url: ostrovokUrl("Voyage Bodrum") },
+      { partner: "Booking.com", price: 30200, url: bookingUrl("Voyage Bodrum") },
+      { partner: "Agoda", price: 29500, url: agodaUrl("Voyage Bodrum") },
+    ],
+  },
+  // ===== КАВКАЗ И ДАГЕСТАН =====
+  {
+    id: 29,
+    name: "Горный курорт Эльбрус",
+    city: "Терскол, Кабардино-Балкария",
+    country: "Россия",
+    stars: 4,
+    meal: "Полупансион",
+    rating: 4.7,
+    reviews: 1430,
+    image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 6500, url: ostrovokUrl("Горный курорт Эльбрус Терскол") },
+      { partner: "Booking.com", price: 7100, url: bookingUrl("Elbrus Mountain Resort Terskol") },
+    ],
+  },
+  {
+    id: 30,
+    name: "Отель Дербент 3*",
+    city: "Дербент, Дагестан",
+    country: "Россия",
+    stars: 3,
+    meal: "Завтрак",
+    rating: 4.5,
+    reviews: 890,
+    image: "https://images.unsplash.com/photo-1571406384350-39c3f1add0d8?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 3400, url: ostrovokUrl("Отель Дербент") },
+      { partner: "Booking.com", price: 3800, url: bookingUrl("Hotel Derbent Dagestan") },
+      { partner: "Agoda", price: 3600, url: agodaUrl("Hotel Derbent Dagestan") },
+    ],
+  },
+  {
+    id: 31,
+    name: "Alean Spa Resort Кисловодск",
+    city: "Кисловодск, Ставропольский край",
+    country: "Россия",
+    stars: 4,
+    meal: "Полный пансион + лечение",
+    rating: 4.8,
+    reviews: 2340,
+    image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 8900, url: ostrovokUrl("Alean Spa Resort Кисловодск") },
+      { partner: "Booking.com", price: 9500, url: bookingUrl("Alean Spa Kislovodsk") },
+      { partner: "Agoda", price: 9100, url: agodaUrl("Alean Spa Kislovodsk") },
+    ],
+  },
+  {
+    id: 32,
+    name: "Bridge Resort 4* (Абхазия)",
+    city: "Пицунда, Абхазия",
+    country: "Абхазия",
+    stars: 4,
+    meal: "Всё включено",
+    rating: 4.6,
+    reviews: 1890,
+    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
+    offers: [
+      { partner: "Ostrovok", price: 7800, url: ostrovokUrl("Bridge Resort Пицунда") },
+      { partner: "Booking.com", price: 8400, url: bookingUrl("Bridge Resort Pitsunda") },
+      { partner: "Agoda", price: 8100, url: agodaUrl("Bridge Resort Pitsunda") },
+    ],
+  },
+];
+
+export const hotelCountries = [
+  "Все страны",
+  ...Array.from(new Set(hotels2026.map((h) => h.country))),
+];
+
+export const mealTypes = [
+  "Любое питание",
+  "Ультра всё включено",
+  "Всё включено",
+  "Полупансион",
+  "Завтрак",
+  "Без питания",
+];
+
+// ===== Перелёты 2026 со сравнением агрегаторов =====
+
+export interface FlightOffer {
+  partner: string;
+  price: number;
+  url: string;
+}
+
+export interface FlightDeal2026 {
+  id: number;
+  from: string;
+  to: string;
+  country: string;
+  fromCode: string;
+  toCode: string;
+  departDate: string;
+  returnDate: string;
+  duration: string;
+  stops: number;
+  airlines: string;
+  offers: FlightOffer[];
+}
+
+export const flightDeals2026: FlightDeal2026[] = [
+  {
+    id: 1,
+    from: "Москва",
+    to: "Анталья",
+    country: "Турция",
+    fromCode: "MOW",
+    toCode: "AYT",
+    departDate: "20 авг 2026",
+    returnDate: "27 авг 2026",
+    duration: "4ч 05м",
+    stops: 0,
+    airlines: "Turkish Airlines, Аэрофлот, Pegasus",
+    offers: [
+      { partner: "Aviasales", price: 31900, url: "https://www.aviasales.ru/search/MOW2008AYT27081" },
+      { partner: "Skyscanner", price: 32800, url: "https://www.skyscanner.ru/transport/flights/mow/ayt/260820/260827/" },
+      { partner: "KAYAK", price: 33400, url: "https://www.kayak.ru/flights/MOW-AYT/2026-08-20/2026-08-27" },
+    ],
+  },
+  {
+    id: 2,
+    from: "Москва",
+    to: "Дубай",
+    country: "ОАЭ",
+    fromCode: "MOW",
+    toCode: "DXB",
+    departDate: "10 окт 2026",
+    returnDate: "17 окт 2026",
+    duration: "5ч 15м",
+    stops: 0,
+    airlines: "Emirates, flydubai, Аэрофлот",
+    offers: [
+      { partner: "Aviasales", price: 28900, url: "https://www.aviasales.ru/search/MOW1010DXB17101" },
+      { partner: "Skyscanner", price: 28200, url: "https://www.skyscanner.ru/transport/flights/mow/dxb/261010/261017/" },
+      { partner: "KAYAK", price: 29600, url: "https://www.kayak.ru/flights/MOW-DXB/2026-10-10/2026-10-17" },
+    ],
+  },
+  {
+    id: 3,
+    from: "Москва",
+    to: "Хургада",
+    country: "Египет",
+    fromCode: "MOW",
+    toCode: "HRG",
+    departDate: "7 ноя 2026",
+    returnDate: "14 ноя 2026",
+    duration: "5ч 00м",
+    stops: 0,
+    airlines: "EgyptAir, AlMasria, Red Sea Airlines",
+    offers: [
+      { partner: "Aviasales", price: 33500, url: "https://www.aviasales.ru/search/MOW0711HRG14111" },
+      { partner: "Skyscanner", price: 34700, url: "https://www.skyscanner.ru/transport/flights/mow/hrg/261107/261114/" },
+      { partner: "KAYAK", price: 34100, url: "https://www.kayak.ru/flights/MOW-HRG/2026-11-07/2026-11-14" },
+    ],
+  },
+  {
+    id: 4,
+    from: "Москва",
+    to: "Пхукет",
+    country: "Таиланд",
+    fromCode: "MOW",
+    toCode: "HKT",
+    departDate: "20 ноя 2026",
+    returnDate: "4 дек 2026",
+    duration: "9ч 20м",
+    stops: 0,
+    airlines: "Аэрофлот, Azur Air, Ikar",
+    offers: [
+      { partner: "Aviasales", price: 51500, url: "https://www.aviasales.ru/search/MOW2011HKT04121" },
+      { partner: "Skyscanner", price: 53200, url: "https://www.skyscanner.ru/transport/flights/mow/hkt/261120/261204/" },
+      { partner: "KAYAK", price: 52400, url: "https://www.kayak.ru/flights/MOW-HKT/2026-11-20/2026-12-04" },
+    ],
+  },
+  {
+    id: 5,
+    from: "Москва",
+    to: "Мале",
+    country: "Мальдивы",
+    fromCode: "MOW",
+    toCode: "MLE",
+    departDate: "4 сен 2026",
+    returnDate: "14 сен 2026",
+    duration: "8ч 40м",
+    stops: 0,
+    airlines: "Аэрофлот, Emirates (1 стыковка)",
+    offers: [
+      { partner: "Aviasales", price: 54900, url: "https://www.aviasales.ru/search/MOW0409MLE14091" },
+      { partner: "Skyscanner", price: 56800, url: "https://www.skyscanner.ru/transport/flights/mow/mle/260904/260914/" },
+      { partner: "KAYAK", price: 55600, url: "https://www.kayak.ru/flights/MOW-MLE/2026-09-04/2026-09-14" },
+    ],
+  },
+  {
+    id: 6,
+    from: "Москва",
+    to: "Стамбул",
+    country: "Турция",
+    fromCode: "MOW",
+    toCode: "IST",
+    departDate: "1 сен 2026",
+    returnDate: "8 сен 2026",
+    duration: "3ч 50м",
+    stops: 0,
+    airlines: "Turkish Airlines, Аэрофлот, Pegasus",
+    offers: [
+      { partner: "Aviasales", price: 19800, url: "https://www.aviasales.ru/search/MOW0109IST08091" },
+      { partner: "Skyscanner", price: 20500, url: "https://www.skyscanner.ru/transport/flights/mow/ist/260901/260908/" },
+      { partner: "KAYAK", price: 19400, url: "https://www.kayak.ru/flights/MOW-IST/2026-09-01/2026-09-08" },
+    ],
+  },
+  // ===== РОССИЯ: от Калининграда до Сахалина =====
+  {
+    id: 7,
+    from: "Москва",
+    to: "Калининград",
+    country: "Россия",
+    fromCode: "MOW",
+    toCode: "KGD",
+    departDate: "12 авг 2026",
+    returnDate: "19 авг 2026",
+    duration: "2ч 00м",
+    stops: 0,
+    airlines: "Аэрофлот, S7, Уральские авиалинии",
+    offers: [
+      { partner: "Aviasales", price: 9800, url: "https://www.aviasales.ru/search/MOW1208KGD19081" },
+      { partner: "Skyscanner", price: 10400, url: "https://www.skyscanner.ru/transport/flights/mow/kgd/260812/260819/" },
+      { partner: "KAYAK", price: 10100, url: "https://www.kayak.ru/flights/MOW-KGD/2026-08-12/2026-08-19" },
+    ],
+  },
+  {
+    id: 8,
+    from: "Москва",
+    to: "Сочи",
+    country: "Россия",
+    fromCode: "MOW",
+    toCode: "AER",
+    departDate: "15 июл 2026",
+    returnDate: "29 июл 2026",
+    duration: "2ч 25м",
+    stops: 0,
+    airlines: "Аэрофлот, Победа, S7",
+    offers: [
+      { partner: "Aviasales", price: 11500, url: "https://www.aviasales.ru/search/MOW1507AER29071" },
+      { partner: "Skyscanner", price: 12300, url: "https://www.skyscanner.ru/transport/flights/mow/aer/260715/260729/" },
+      { partner: "KAYAK", price: 11900, url: "https://www.kayak.ru/flights/MOW-AER/2026-07-15/2026-07-29" },
+    ],
+  },
+  {
+    id: 9,
+    from: "Москва",
+    to: "Владивосток",
+    country: "Россия",
+    fromCode: "MOW",
+    toCode: "VVO",
+    departDate: "5 авг 2026",
+    returnDate: "19 авг 2026",
+    duration: "8ч 30м",
+    stops: 0,
+    airlines: "Аэрофлот, Россия",
+    offers: [
+      { partner: "Aviasales", price: 27400, url: "https://www.aviasales.ru/search/MOW0508VVO19081" },
+      { partner: "Skyscanner", price: 29100, url: "https://www.skyscanner.ru/transport/flights/mow/vvo/260805/260819/" },
+      { partner: "KAYAK", price: 28300, url: "https://www.kayak.ru/flights/MOW-VVO/2026-08-05/2026-08-19" },
+    ],
+  },
+  {
+    id: 10,
+    from: "Москва",
+    to: "Южно-Сахалинск",
+    country: "Россия",
+    fromCode: "MOW",
+    toCode: "UUS",
+    departDate: "10 авг 2026",
+    returnDate: "24 авг 2026",
+    duration: "8ч 55м",
+    stops: 0,
+    airlines: "Аэрофлот, Россия",
+    offers: [
+      { partner: "Aviasales", price: 31200, url: "https://www.aviasales.ru/search/MOW1008UUS24081" },
+      { partner: "Skyscanner", price: 33500, url: "https://www.skyscanner.ru/transport/flights/mow/uus/260810/260824/" },
+      { partner: "KAYAK", price: 32400, url: "https://www.kayak.ru/flights/MOW-UUS/2026-08-10/2026-08-24" },
+    ],
+  },
+  // ===== КИТАЙ =====
+  {
+    id: 11,
+    from: "Москва",
+    to: "Пекин",
+    country: "Китай",
+    fromCode: "MOW",
+    toCode: "PEK",
+    departDate: "3 окт 2026",
+    returnDate: "13 окт 2026",
+    duration: "7ч 30м",
+    stops: 0,
+    airlines: "Air China, Аэрофлот, Hainan Airlines",
+    offers: [
+      { partner: "Aviasales", price: 32800, url: "https://www.aviasales.ru/search/MOW0310PEK13101" },
+      { partner: "Skyscanner", price: 34200, url: "https://www.skyscanner.ru/transport/flights/mow/pek/261003/261013/" },
+      { partner: "KAYAK", price: 33600, url: "https://www.kayak.ru/flights/MOW-PEK/2026-10-03/2026-10-13" },
+    ],
+  },
+  {
+    id: 12,
+    from: "Москва",
+    to: "Санья (Хайнань)",
+    country: "Китай",
+    fromCode: "MOW",
+    toCode: "SYX",
+    departDate: "20 ноя 2026",
+    returnDate: "4 дек 2026",
+    duration: "10ч 40м",
+    stops: 0,
+    airlines: "Аэрофлот, Hainan Airlines (прямой чартер)",
+    offers: [
+      { partner: "Aviasales", price: 43500, url: "https://www.aviasales.ru/search/MOW2011SYX04121" },
+      { partner: "Skyscanner", price: 45800, url: "https://www.skyscanner.ru/transport/flights/mow/syx/261120/261204/" },
+      { partner: "KAYAK", price: 44600, url: "https://www.kayak.ru/flights/MOW-SYX/2026-11-20/2026-12-04" },
+    ],
+  },
+  // ===== ТАИЛАНД (расширение) =====
+  {
+    id: 13,
+    from: "Москва",
+    to: "Бангкок",
+    country: "Таиланд",
+    fromCode: "MOW",
+    toCode: "BKK",
+    departDate: "10 дек 2026",
+    returnDate: "24 дек 2026",
+    duration: "9ч 05м",
+    stops: 0,
+    airlines: "Аэрофлот, Thai Airways",
+    offers: [
+      { partner: "Aviasales", price: 46200, url: "https://www.aviasales.ru/search/MOW1012BKK24121" },
+      { partner: "Skyscanner", price: 48500, url: "https://www.skyscanner.ru/transport/flights/mow/bkk/261210/261224/" },
+      { partner: "KAYAK", price: 47300, url: "https://www.kayak.ru/flights/MOW-BKK/2026-12-10/2026-12-24" },
+    ],
+  },
+];
+
+export const priceData = {
+  months: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+  dubai: [55000, 48000, 42000, 38000, 45000, 52000, 68000, 65000, 48000, 42000, 38000, 58000],
+  bali: [62000, 58000, 48000, 42000, 38000, 45000, 55000, 58000, 42000, 38000, 45000, 65000],
+  paris: [48000, 42000, 38000, 52000, 58000, 68000, 72000, 70000, 55000, 45000, 38000, 52000],
+  tokyo: [85000, 78000, 72000, 68000, 75000, 82000, 95000, 92000, 75000, 68000, 65000, 88000],
+};
