@@ -1,0 +1,73 @@
+name: Сборка и публикация сайта на GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Скачать код
+        uses: actions/checkout@v4
+
+      - name: Установить Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Установить зависимости
+        run: npm install
+
+      - name: Собрать сайт
+        run: npm run build
+
+      - name: Подготовить к публикации
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      # 📦 Большой файл для скачивания (для хостинга sushkova-emma.ru)
+      - name: Сохранить готовый сайт для скачивания
+        uses: actions/upload-artifact@v4
+        with:
+          name: gotovyi-sait-dlya-hostinga
+          path: dist/index.html
+
+      # 💾 Скопировать собранный файл в корень репозитория (виден как файл)
+      - name: Скопировать собранный файл в публичную папку
+        run: |
+          mkdir -p public-built
+          cp dist/index.html public-built/TravelDeal-website.html
+          cp dist/index.html public-built/index.html
+
+      - name: Закоммитить собранный файл обратно в репозиторий
+        run: |
+          git config --global user.email "bot@traveldeal.local"
+          git config --global user.name "TravelDeal Bot"
+          git add public-built/
+          git diff --staged --quiet || git commit -m "Auto-built site: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Опубликовать на GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
