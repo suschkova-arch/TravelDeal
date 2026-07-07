@@ -1,138 +1,68 @@
-# ✈️ TravelDeal — Агрегатор путешествий с реальными ценами
+# ✈️ TravelDeal — агрегатор путешествий
 
-**[🌍 Открыть сайт]([https://github.com/suschkova-arch/TravelDeal.git/])** | **[📧 Контакты](mailto:MILEDI_HR@mail.ru)**
+Сайт для поиска отелей и авиабилетов с **реальными живыми ценами** из баз Aviasales и Hotellook (Aviasales Group).
 
----
+## 🔴 Живые данные
 
-## 🎯 Возможности
+- **Отели** — реальные цены по городу и датам через публичный API Hotellook (`engine.hotellook.com/api/v2/cache.json`), в рублях
+- **Перелёты** — реальные минимальные цены через публичный API Aviasales (`min-prices.aviasales.ru/calendar_preload`)
+- **Бронирование** — переход на партнёра с минимальной ценой (Hotellook сравнивает Booking, Ostrovok, Agoda и др.)
 
-- 🏨 **Реальные цены на отели** от Booking.com, Ostrovok, Agoda, Hotels.com
-- ✈️ **Реальные цены на авиабилеты** от Aviasales, Skyscanner, KAYAK, Trip.com
-- 🔍 **Сравнение цен** — показывает самого дешёвого партнёра
-- 🔴 **LIVE API** — подключается к Amadeus API для живых цен (бесплатно!)
-- 🌍 **16 отелей** в 6 странах + **6 рейсов**
-- 🎨 **Современный дизайн** — тёмная тема, анимации, адаптивность
-- 🛡️ **Защита от ботов** — rate limiting, helmet, CORS
-- 📧 **Email-уведомления** — заявки на почту
+## 🛠️ Технологии
 
----
+- React 19 + TypeScript
+- Vite 7 (сборка в один HTML-файл через `vite-plugin-singlefile`)
+- Tailwind CSS 4
 
-## 🚀 Быстрый старт
+## 🚀 Запуск
 
-### 1. Установка
-
+### Разработка
 ```bash
-git clone https://github.com/sushkova-emma/TravelDeal.git
-cd TravelDeal
 npm install
-```
-
-### 2. Запуск (без реальных цен)
-
-```bash
 npm run dev
 ```
+Откроется на http://localhost:5173
 
-Открыть: **http://localhost:5173**
-
-### 3. Запуск с реальными ценами (Amadeus API)
-
-**Получите бесплатный API ключ:**
-1. Зайдите на https://developers.amadeus.com/
-2. Sign Up → Create App → Self-Service план
-3. Скопируйте API Key и API Secret
-
-**Добавьте в файл `.env`:**
-```env
-AMADEUS_API_KEY=ваш_api_key
-AMADEUS_API_SECRET=ваш_api_secret
-AMADEUS_HOSTNAME=test
-```
-
-**Запустите сервер:**
+### Сборка
 ```bash
-npm run server
+npm run build
+```
+Результат: `dist/index.html` — **весь сайт в одном файле** (~287 КБ).
+Его можно загрузить на любой хостинг или открыть в браузере.
+
+### Просмотр собранной версии
+```bash
+npm run preview
 ```
 
-Открыть: **http://localhost:3001**
-
----
-
-## 📊 Структура проекта
+## 📁 Структура
 
 ```
-TravelDeal/
-├── src/
-│   ├── components/        # React компоненты
-│   │   ├── Navbar.tsx     # Навигация
-│   │   ├── Hero.tsx       # Главный экран + поиск
-│   │   ├── DestinationsSection.tsx  # Направления
-│   │   ├── HotelsSection.tsx        # Отели + сравнение цен
-│   │   ├── FlightsSection.tsx       # Авиабилеты
-│   │   ├── PriceTrendSection.tsx    # График цен
-│   │   ├── StatsSection.tsx         # Статистика
-│   │   ├── ReviewsSection.tsx       # Отзывы
-│   │   ├── PartnersSection.tsx      # Партнёры
-│   │   └── Footer.tsx              # Подписка + ссылки
-│   ├── data/
-│   │   └── travelData.ts   # Данные (отели, рейсы, партнёры)
-│   ├── App.tsx             # Главный компонент
-│   ├── main.tsx            # Точка входа React
-│   └── index.css           # Стили + анимации
-├── public/
-│   └── TravelDeal-website.html  # Самодостаточный сайт (CDN)
-├── server.js               # Backend API сервер
-├── package.json            # Зависимости и скрипты
-├── vite.config.ts          # Конфигурация Vite
-├── .env.example            # Шаблон переменных окружения
-├── .gitignore              # Исключения Git
-└── README.md               # Документация
+src/
+├── App.tsx                    # Главный компонент
+├── components/
+│   ├── Navbar.tsx             # Навигация
+│   ├── Hero.tsx               # Слайдер + поиск
+│   ├── DestinationsSection.tsx# Направления
+│   ├── HotelsSection.tsx      # Отели + фильтры (страна/звёзды/питание)
+│   ├── LiveHotelSearch.tsx    # 🔴 Живой поиск отелей (реальные цены)
+│   ├── FlightsSection.tsx     # 🔴 Перелёты с LIVE-ценами Aviasales
+│   ├── PriceTrendSection.tsx  # График цен по месяцам
+│   ├── StatsSection.tsx       # Статистика с анимацией
+│   ├── ReviewsSection.tsx     # Отзывы
+│   ├── PartnersSection.tsx    # Партнёры
+│   └── Footer.tsx             # Подвал
+├── services/
+│   └── liveApi.ts             # API Aviasales / Hotellook
+└── data/
+    └── travelData.ts          # Данные подборок
 ```
 
----
+## ⚠️ Важно
 
-## 🔌 API Endpoints
+- Живые цены работают при открытии сайта по **http/https** (хостинг). При открытии файла с диска (`file://`) браузер может блокировать API-запросы.
+- Файл `.env` с паролями **не хранится в репозитории** (см. `.gitignore`).
 
-| Метод | Путь | Описание |
-|-------|------|----------|
-| `GET` | `/api/hotels?city=Paris&stars=5` | Реальные цены отелей |
-| `GET` | `/api/flights?from=Moscow&to=Dubai` | Реальные цены рейсов |
-| `GET` | `/api/search?destination=Dubai` | Быстрый поиск (отели + рейсы) |
-| `GET` | `/api/health` | Статус сервера |
+## 💰 Монетизация
 
----
-
-## 🛡️ Безопасность
-
-- ✅ **Helmet** — защита HTTP заголовков
-- ✅ **Rate Limiting** — 100 запросов / 15 минут
-- ✅ **CORS** — ограниченный доступ
-- ✅ **Compression** — gzip
-- ✅ **Кэширование** — 15 минут (экономия API лимитов)
-- ✅ `.env` в `.gitignore` — ключи не попадают в репозиторий
-
----
-
-## 📦 Скрипты
-
-| Команда | Описание |
-|---------|----------|
-| `npm run dev` | Dev-сервер Vite (фронтенд) |
-| `npm run build` | Сборка в `dist/` |
-| `npm run preview` | Превью сборки |
-| `npm run server` | Backend API сервер |
-| `npm run server:dev` | Сервер с авто-перезагрузкой |
-| `npm start` | Сборка + запуск сервера |
-
----
-
-## 📧 Контакты
-
-- **Email:** [MILEDI_HR@mail.ru](mailto:MILEDI_HR@mail.ru)
-- **Сайт:** [suschkova-arch.github.io/TravelDeal](https://github.com/suschkova-arch/TravelDeal.git/]/)
-
----
-
-## 📄 Лицензия
-
-MIT License © 2026 TravelDeal
+Для получения комиссии с бронирований зарегистрируйтесь на [travelpayouts.com](https://www.travelpayouts.com) и добавьте свой `marker` в ссылки в `src/services/liveApi.ts`.
