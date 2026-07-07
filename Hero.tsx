@@ -56,13 +56,14 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
+    // 40 секунд между показами — не мельтешит и не отвлекает
     const t = setInterval(() => {
       setShowNotif(false);
       setTimeout(() => {
         setNotif((n) => (n + 1) % notifications.length);
         setShowNotif(true);
-      }, 500);
-    }, 4000);
+      }, 800);
+    }, 40000);
     return () => clearInterval(t);
   }, []);
 

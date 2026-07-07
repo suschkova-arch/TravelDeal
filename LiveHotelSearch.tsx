@@ -335,22 +335,26 @@ const LiveHotelSearch = () => {
                   animation: 'fadeIn 0.4s ease',
                 }}
               >
-                {/* 📷 Реальное фото отеля из базы Hotellook */}
-                <div style={{ height: 150, background: 'rgba(255,255,255,0.05)', position: 'relative' }}>
+                {/* 📷 Фото отеля: 3 фоллбэка, чтобы не было «битых» картинок */}
+                <div
+                  style={{
+                    height: 150,
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                >
                   <img
                     src={`https://photo.hotellook.com/image_v2/limit/h${h.hotelId}_1/640/400.auto`}
                     alt={h.hotelName}
                     loading="lazy"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
                     onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = 'none';
-                      const parent = (e.currentTarget as HTMLImageElement).parentElement;
-                      if (parent) {
-                        parent.style.display = 'flex';
-                        parent.style.alignItems = 'center';
-                        parent.style.justifyContent = 'center';
-                        parent.innerHTML = '<span style="font-size:40px">🏨</span>';
-                      }
+                      (e.currentTarget as HTMLImageElement).src =
+                        `https://photo.hotellook.com/image_v2/limit/h${h.hotelId}/640/400.auto`;
+                      (e.currentTarget as HTMLImageElement).onerror = () => {
+                        (e.currentTarget as HTMLImageElement).style.display = 'none';
+                      };
                     }}
                   />
                   {h.stars > 0 && (
@@ -364,6 +368,7 @@ const LiveHotelSearch = () => {
                         padding: '3px 8px',
                         color: '#fbbf24',
                         fontSize: 12,
+                        zIndex: 2,
                       }}
                     >
                       {'★'.repeat(h.stars)}
