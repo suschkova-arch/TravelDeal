@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { hotels2026, hotelCountries, mealTypes } from '../data/travelData';
 import LiveHotelSearch from './LiveHotelSearch';
-import HotelPhoto from './HotelPhoto';
 
 const starOptions = ['Все', '5★', '4★', '3★'];
 
@@ -221,12 +220,77 @@ const HotelsSection = () => {
                   (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
                 }}
               >
-                <div style={{ position: 'relative', height: 190, background: 'rgba(255,255,255,0.05)', overflow: 'hidden' }}>
-                  <HotelPhoto
-                    id={hotel.id}
-                    country={hotel.country}
-                    stars={hotel.stars}
-                  />
+                <div
+                  style={{
+                    position: 'relative',
+                    height: 190,
+                    overflow: 'hidden',
+                    background: (() => {
+                      const c = hotel.country.toLowerCase();
+                      if (c.includes('россия') || c.includes('абхазия'))
+                        return 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #6dd5ed 100%)';
+                      if (c.includes('турция') || c.includes('египет') || c.includes('оаэ'))
+                        return 'linear-gradient(135deg, #f5af19 0%, #f12711 50%, #fceabb 100%)';
+                      if (
+                        c.includes('мальдив') ||
+                        c.includes('индонезия') ||
+                        c.includes('таиланд') ||
+                        c.includes('вьетнам') ||
+                        c.includes('филиппины') ||
+                        c.includes('куба')
+                      )
+                        return 'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 50%, #43cea2 100%)';
+                      if (
+                        c.includes('италия') ||
+                        c.includes('испания') ||
+                        c.includes('греция') ||
+                        c.includes('франция') ||
+                        c.includes('кипр')
+                      )
+                        return 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff8c69 100%)';
+                      if (c.includes('япония') || c.includes('китай'))
+                        return 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)';
+                      return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    })(),
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 90,
+                      opacity: 0.5,
+                      filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))',
+                    }}
+                  >
+                    {(() => {
+                      const c = hotel.country.toLowerCase();
+                      if (c.includes('россия') || c.includes('абхазия')) return '🏔️';
+                      if (c.includes('турция') || c.includes('египет') || c.includes('оаэ')) return '🏖️';
+                      if (
+                        c.includes('мальдив') ||
+                        c.includes('индонезия') ||
+                        c.includes('таиланд') ||
+                        c.includes('вьетнам') ||
+                        c.includes('филиппины') ||
+                        c.includes('куба')
+                      )
+                        return '🌴';
+                      if (
+                        c.includes('италия') ||
+                        c.includes('испания') ||
+                        c.includes('греция') ||
+                        c.includes('франция') ||
+                        c.includes('кипр')
+                      )
+                        return '🏛️';
+                      if (c.includes('япония') || c.includes('китай')) return '🏙️';
+                      return '🏨';
+                    })()}
+                  </div>
                   <div
                     style={{
                       position: 'absolute',
@@ -234,6 +298,23 @@ const HotelsSection = () => {
                       background: 'linear-gradient(to top, rgba(10,15,30,0.85) 0%, transparent 60%)',
                     }}
                   />
+                  {hotel.stars > 0 && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        background: 'rgba(10,15,30,0.85)',
+                        borderRadius: 6,
+                        padding: '3px 8px',
+                        color: '#fbbf24',
+                        fontSize: 12,
+                        zIndex: 2,
+                      }}
+                    >
+                      {'★'.repeat(hotel.stars)}
+                    </div>
+                  )}
                   {saving > 0 && (
                     <div
                       style={{
