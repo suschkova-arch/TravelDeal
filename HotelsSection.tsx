@@ -1,467 +1,190 @@
-import { useMemo, useState } from 'react';
-import { hotels2026, hotelCountries, mealTypes } from '../data/travelData';
-import LiveHotelSearch from './LiveHotelSearch';
+import { useState } from 'react';
+import { hotels } from '../data/travelData';
+import type { Hotel } from '../data/travelData';
 
-const starOptions = ['Все', '5★', '4★', '3★'];
+const COUNTRIES = ['Все', 'ОАЭ', 'Турция', 'Россия', 'Египет', 'Таиланд', 'Испания', 'Мальдивы'];
+const STARS = ['Все', '5★', '4★', '3★'];
+const MEALS = ['Все', 'AI', 'BB', 'HB', 'FB'];
 
-const HotelsSection = () => {
-  const [country, setCountry] = useState('Все страны');
+function StarRating({ n }: { n: number }) {
+  return <span style={{ color: '#fbbf24', fontSize: 12 }}>{'★'.repeat(n)}{'☆'.repeat(5 - n)}</span>;
+}
+
+function HotelCard({ hotel }: { hotel: Hotel }) {
+  return (
+    <div style={{
+      background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: 20, overflow: 'hidden',
+      transition: 'all 0.3s',
+    }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
+        (e.currentTarget as HTMLElement).style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)';
+        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(102,126,234,0.3)';
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+        (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
+      }}
+    >
+      {/* Image */}
+      <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
+        <img src={hotel.image} alt={hotel.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s' }} loading="lazy"
+          onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
+          onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+        />
+        <div style={{ position: 'absolute', top: 12, right: 12 }}>
+          <span style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', borderRadius: 8, padding: '4px 10px', color: '#fff', fontSize: 12, fontWeight: 700 }}>
+            {hotel.countryFlag} {hotel.country}
+          </span>
+        </div>
+        <div style={{ position: 'absolute', top: 12, left: 12 }}>
+          <span style={{ background: 'rgba(74,222,128,0.2)', border: '1px solid rgba(74,222,128,0.4)', borderRadius: 8, padding: '4px 10px', color: '#4ade80', fontSize: 12, fontWeight: 700 }}>
+            {hotel.meal}
+          </span>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div style={{ padding: '16px 20px' }}>
+        <div style={{ marginBottom: 10 }}>
+          <StarRating n={hotel.stars} />
+          <h3 style={{ color: '#fff', fontWeight: 700, fontSize: 16, margin: '6px 0 4px' }}>{hotel.name}</h3>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>📍 {hotel.city}</p>
+        </div>
+
+        {/* Tags */}
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
+          {hotel.tags.map(t => (
+            <span key={t} style={{ background: 'rgba(102,126,234,0.15)', border: '1px solid rgba(102,126,234,0.2)', borderRadius: 6, padding: '2px 8px', color: '#a78bfa', fontSize: 11 }}>{t}</span>
+          ))}
+        </div>
+
+        {/* Rating */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+          <div style={{ background: 'linear-gradient(135deg, #667eea, #764ba2)', borderRadius: 8, padding: '4px 10px', color: '#fff', fontWeight: 800, fontSize: 14 }}>{hotel.rating}</div>
+          <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{hotel.reviews.toLocaleString('ru')} отзывов</div>
+        </div>
+
+        {/* Partners */}
+        <div style={{ marginBottom: 14 }}>
+          {hotel.partners.map(p => (
+            <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '7px 10px', marginBottom: 6, textDecoration: 'none',
+              borderRadius: 10,
+              background: p.best ? 'rgba(102,126,234,0.1)' : 'rgba(255,255,255,0.03)',
+              border: p.best ? '1px solid rgba(102,126,234,0.25)' : '1px solid rgba(255,255,255,0.06)',
+              transition: 'all 0.2s',
+            }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(102,126,234,0.15)')}
+              onMouseLeave={e => (e.currentTarget.style.background = p.best ? 'rgba(102,126,234,0.1)' : 'rgba(255,255,255,0.03)')}
+            >
+              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>
+                {p.best && '🏆 '}{p.name}
+              </span>
+              <span style={{ color: p.best ? '#a78bfa' : 'rgba(255,255,255,0.6)', fontWeight: 700, fontSize: 14 }}>
+                {p.price.toLocaleString('ru')}₽
+              </span>
+            </a>
+          ))}
+        </div>
+
+        {/* Book button */}
+        <a href={hotel.partners[0].url} target="_blank" rel="noopener noreferrer" style={{
+          display: 'block', textAlign: 'center', padding: '12px',
+          background: 'linear-gradient(135deg, #667eea, #764ba2)',
+          borderRadius: 12, color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: 14,
+          boxShadow: '0 4px 15px rgba(102,126,234,0.3)',
+        }}>
+          Забронировать от {hotel.priceRub.toLocaleString('ru')}₽
+        </a>
+      </div>
+    </div>
+  );
+}
+
+export default function HotelsSection() {
+  const [country, setCountry] = useState('Все');
   const [stars, setStars] = useState('Все');
-  const [meal, setMeal] = useState('Любое питание');
-  const [sort, setSort] = useState<'price' | 'rating'>('price');
+  const [meal, setMeal] = useState('Все');
 
-  const filtered = useMemo(() => {
-    return hotels2026
-      .filter((h) => country === 'Все страны' || h.country === country)
-      .filter((h) => stars === 'Все' || h.stars === parseInt(stars))
-      .filter((h) => meal === 'Любое питание' || h.meal === meal)
-      .map((h) => {
-        const sorted = [...h.offers].sort((a, b) => a.price - b.price);
-        return { ...h, best: sorted[0], worst: sorted[sorted.length - 1] };
-      })
-      .sort((a, b) => (sort === 'price' ? a.best.price - b.best.price : b.rating - a.rating));
-  }, [country, stars, meal, sort]);
+  const filtered = hotels.filter(h => {
+    if (country !== 'Все' && h.country !== country) return false;
+    if (stars !== 'Все' && h.stars !== parseInt(stars)) return false;
+    if (meal !== 'Все' && h.meal !== meal) return false;
+    return true;
+  });
+
+  const FilterBtn = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
+    <button onClick={onClick} style={{
+      padding: '7px 16px', borderRadius: 100, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+      border: active ? '1px solid rgba(102,126,234,0.5)' : '1px solid rgba(255,255,255,0.1)',
+      background: active ? 'rgba(102,126,234,0.2)' : 'rgba(255,255,255,0.04)',
+      color: active ? '#a78bfa' : 'rgba(255,255,255,0.6)',
+      transition: 'all 0.2s',
+    }}>{label}</button>
+  );
 
   return (
-    <section id="hotels" style={{ padding: '80px 24px', background: 'rgba(13,18,38,1)' }}>
+    <section id="hotels" style={{ padding: '80px 24px', background: 'rgba(13,18,40,1)' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              background: 'rgba(245,158,11,0.15)',
-              border: '1px solid rgba(245,158,11,0.3)',
-              borderRadius: 100,
-              padding: '6px 16px',
-              marginBottom: 16,
-            }}
-          >
-            <span style={{ color: '#fbbf24', fontSize: 13, fontWeight: 600 }}>🏨 Поиск отелей · сезон 2026</span>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(102,126,234,0.15)', border: '1px solid rgba(102,126,234,0.3)', borderRadius: 100, padding: '6px 16px', marginBottom: 16 }}>
+            <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>🏨 Подборка отелей</span>
           </div>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-            Реальные цены на отели
+            Лучшие отели по лучшим ценам
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15, maxWidth: 640, margin: '0 auto' }}>
-            Ищите отели с живыми ценами из базы Hotellook (Aviasales Group) — или изучите нашу
-            подборку популярных отелей со сравнением систем бронирования ниже.
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, maxWidth: 500, margin: '0 auto' }}>
+            Сравниваем цены 3–4 партнёров в каждой карточке — лучшая выделена 🏆
           </p>
         </div>
 
-        {/* ЖИВОЙ ПОИСК с реальными ценами */}
-        <LiveHotelSearch />
-
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <h3 style={{ color: '#fff', fontSize: 24, fontWeight: 700, marginBottom: 6 }}>
-            Подборка популярных отелей 2026
-          </h3>
-          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>
-            Ориентировочные цены ₽/ночь · точная цена подтверждается на сайте партнёра при выборе дат
-          </p>
-        </div>
-
-        {/* Фильтры */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 12,
-            justifyContent: 'center',
-            marginBottom: 32,
-            flexWrap: 'wrap',
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: 16,
-            padding: 16,
-          }}
-        >
-          <div>
-            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-              Страна
-            </div>
-            <select
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(102,126,234,0.35)',
-                borderRadius: 10,
-                padding: '10px 14px',
-                color: '#fff',
-                fontSize: 14,
-                cursor: 'pointer',
-                outline: 'none',
-                minWidth: 170,
-              }}
-            >
-              {hotelCountries.map((c) => (
-                <option key={c} value={c} style={{ background: '#1a1f35' }}>
-                  {c}
-                </option>
-              ))}
-            </select>
+        {/* Filters */}
+        <div style={{ marginBottom: 36 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, alignSelf: 'center', marginRight: 4 }}>Страна:</span>
+            {COUNTRIES.map(c => <FilterBtn key={c} label={c} active={country === c} onClick={() => setCountry(c)} />)}
           </div>
-
-          <div>
-            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-              Звёзды
-            </div>
-            <div style={{ display: 'flex', gap: 6 }}>
-              {starOptions.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setStars(s === 'Все' ? 'Все' : s.replace('★', ''))}
-                  style={{
-                    padding: '10px 14px',
-                    borderRadius: 10,
-                    border: `1px solid ${
-                      stars === (s === 'Все' ? 'Все' : s.replace('★', '')) ? '#667eea' : 'rgba(255,255,255,0.15)'
-                    }`,
-                    background:
-                      stars === (s === 'Все' ? 'Все' : s.replace('★', ''))
-                        ? 'rgba(102,126,234,0.25)'
-                        : 'transparent',
-                    color:
-                      stars === (s === 'Все' ? 'Все' : s.replace('★', '')) ? '#a78bfa' : 'rgba(255,255,255,0.6)',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                    fontSize: 13,
-                  }}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, alignSelf: 'center', marginRight: 4 }}>Звёзды:</span>
+            {STARS.map(s => <FilterBtn key={s} label={s} active={stars === s} onClick={() => setStars(s)} />)}
           </div>
-
-          <div>
-            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-              Питание
-            </div>
-            <select
-              value={meal}
-              onChange={(e) => setMeal(e.target.value)}
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(102,126,234,0.35)',
-                borderRadius: 10,
-                padding: '10px 14px',
-                color: '#fff',
-                fontSize: 14,
-                cursor: 'pointer',
-                outline: 'none',
-                minWidth: 190,
-              }}
-            >
-              {mealTypes.map((m) => (
-                <option key={m} value={m} style={{ background: '#1a1f35' }}>
-                  {m}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-              Сортировка
-            </div>
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value as 'price' | 'rating')}
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(102,126,234,0.35)',
-                borderRadius: 10,
-                padding: '10px 14px',
-                color: '#fff',
-                fontSize: 14,
-                cursor: 'pointer',
-                outline: 'none',
-              }}
-            >
-              <option value="price" style={{ background: '#1a1f35' }}>
-                Сначала дешёвые
-              </option>
-              <option value="rating" style={{ background: '#1a1f35' }}>
-                По рейтингу
-              </option>
-            </select>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, alignSelf: 'center', marginRight: 4 }}>Питание:</span>
+            {MEALS.map(m => <FilterBtn key={m} label={m} active={meal === m} onClick={() => setMeal(m)} />)}
           </div>
         </div>
 
-        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 16 }}>
-          Найдено отелей: <b style={{ color: '#a78bfa' }}>{filtered.length}</b>
-        </div>
-
-        {/* Карточки */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: 24 }}>
-          {filtered.map((hotel) => {
-            const saving = hotel.worst.price - hotel.best.price;
-            return (
-              <div
-                key={hotel.id}
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 20,
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 20px 50px rgba(0,0,0,0.4)';
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(102,126,234,0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
-                }}
-              >
-                <div
-                  style={{
-                    position: 'relative',
-                    height: 190,
-                    overflow: 'hidden',
-                    background: (() => {
-                      const c = hotel.country.toLowerCase();
-                      if (c.includes('россия') || c.includes('абхазия'))
-                        return 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #6dd5ed 100%)';
-                      if (c.includes('турция') || c.includes('египет') || c.includes('оаэ'))
-                        return 'linear-gradient(135deg, #f5af19 0%, #f12711 50%, #fceabb 100%)';
-                      if (
-                        c.includes('мальдив') ||
-                        c.includes('индонезия') ||
-                        c.includes('таиланд') ||
-                        c.includes('вьетнам') ||
-                        c.includes('филиппины') ||
-                        c.includes('куба')
-                      )
-                        return 'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 50%, #43cea2 100%)';
-                      if (
-                        c.includes('италия') ||
-                        c.includes('испания') ||
-                        c.includes('греция') ||
-                        c.includes('франция') ||
-                        c.includes('кипр')
-                      )
-                        return 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff8c69 100%)';
-                      if (c.includes('япония') || c.includes('китай'))
-                        return 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)';
-                      return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    })(),
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: 90,
-                      opacity: 0.5,
-                      filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))',
-                    }}
-                  >
-                    {(() => {
-                      const c = hotel.country.toLowerCase();
-                      if (c.includes('россия') || c.includes('абхазия')) return '🏔️';
-                      if (c.includes('турция') || c.includes('египет') || c.includes('оаэ')) return '🏖️';
-                      if (
-                        c.includes('мальдив') ||
-                        c.includes('индонезия') ||
-                        c.includes('таиланд') ||
-                        c.includes('вьетнам') ||
-                        c.includes('филиппины') ||
-                        c.includes('куба')
-                      )
-                        return '🌴';
-                      if (
-                        c.includes('италия') ||
-                        c.includes('испания') ||
-                        c.includes('греция') ||
-                        c.includes('франция') ||
-                        c.includes('кипр')
-                      )
-                        return '🏛️';
-                      if (c.includes('япония') || c.includes('китай')) return '🏙️';
-                      return '🏨';
-                    })()}
-                  </div>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(to top, rgba(10,15,30,0.85) 0%, transparent 60%)',
-                    }}
-                  />
-                  {hotel.stars > 0 && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 8,
-                        right: 8,
-                        background: 'rgba(10,15,30,0.85)',
-                        borderRadius: 6,
-                        padding: '3px 8px',
-                        color: '#fbbf24',
-                        fontSize: 12,
-                        zIndex: 2,
-                      }}
-                    >
-                      {'★'.repeat(hotel.stars)}
-                    </div>
-                  )}
-                  {saving > 0 && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 12,
-                        left: 12,
-                        background: 'linear-gradient(135deg, #10b981, #059669)',
-                        borderRadius: 8,
-                        padding: '4px 10px',
-                        color: '#fff',
-                        fontSize: 12,
-                        fontWeight: 700,
-                      }}
-                    >
-                      Экономия до {saving.toLocaleString()}₽/ночь
-                    </div>
-                  )}
-                  <div style={{ position: 'absolute', bottom: 12, left: 12, right: 12 }}>
-                    <div style={{ color: '#fbbf24', fontSize: 15, marginBottom: 2 }}>{'★'.repeat(hotel.stars)}</div>
-                    <div style={{ color: '#fff', fontWeight: 800, fontSize: 18 }}>{hotel.name}</div>
-                    <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 12 }}>
-                      📍 {hotel.city}, {hotel.country}
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ padding: 18, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ display: 'flex', gap: 8, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-                    <span
-                      style={{
-                        background: 'rgba(102,126,234,0.2)',
-                        border: '1px solid rgba(102,126,234,0.4)',
-                        borderRadius: 100,
-                        padding: '3px 10px',
-                        color: '#a78bfa',
-                        fontSize: 11,
-                        fontWeight: 600,
-                      }}
-                    >
-                      🍽️ {hotel.meal}
-                    </span>
-                    <span style={{ color: '#fbbf24', fontSize: 13, fontWeight: 700 }}>★ {hotel.rating}</span>
-                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>{hotel.reviews} отзывов</span>
-                  </div>
-
-                  {/* Сравнение цен партнёров */}
-                  <div
-                    style={{
-                      background: 'rgba(0,0,0,0.25)',
-                      border: '1px solid rgba(255,255,255,0.07)',
-                      borderRadius: 12,
-                      padding: 12,
-                      marginBottom: 14,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: 'rgba(255,255,255,0.4)',
-                        fontSize: 10,
-                        textTransform: 'uppercase',
-                        letterSpacing: 1,
-                        marginBottom: 8,
-                      }}
-                    >
-                      Сравнение цен (₽/ночь)
-                    </div>
-                    {[...hotel.offers]
-                      .sort((a, b) => a.price - b.price)
-                      .map((offer, idx) => (
-                        <a
-                          key={offer.partner}
-                          href={offer.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: '7px 10px',
-                            borderRadius: 8,
-                            marginBottom: 4,
-                            textDecoration: 'none',
-                            background: idx === 0 ? 'rgba(16,185,129,0.15)' : 'transparent',
-                            border: idx === 0 ? '1px solid rgba(16,185,129,0.4)' : '1px solid transparent',
-                            transition: 'background 0.15s',
-                          }}
-                          onMouseEnter={(e) => {
-                            if (idx !== 0)
-                              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)';
-                          }}
-                          onMouseLeave={(e) => {
-                            if (idx !== 0) (e.currentTarget as HTMLElement).style.background = 'transparent';
-                          }}
-                        >
-                          <span style={{ color: idx === 0 ? '#34d399' : 'rgba(255,255,255,0.7)', fontSize: 13, fontWeight: idx === 0 ? 700 : 400 }}>
-                            {idx === 0 && '🏆 '}
-                            {offer.partner}
-                          </span>
-                          <span
-                            style={{
-                              color: idx === 0 ? '#34d399' : 'rgba(255,255,255,0.6)',
-                              fontWeight: idx === 0 ? 800 : 500,
-                              fontSize: idx === 0 ? 15 : 13,
-                            }}
-                          >
-                            {offer.price.toLocaleString()}₽
-                          </span>
-                        </a>
-                      ))}
-                  </div>
-
-                  {/* Бронирование по лучшей цене */}
-                  <a
-                    href={hotel.best.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'block',
-                      marginTop: 'auto',
-                      padding: '13px',
-                      background: 'linear-gradient(135deg, #10b981, #059669)',
-                      borderRadius: 12,
-                      color: '#fff',
-                      textDecoration: 'none',
-                      textAlign: 'center',
-                      fontWeight: 700,
-                      fontSize: 14,
-                      boxShadow: '0 4px 15px rgba(16,185,129,0.35)',
-                      transition: 'all 0.2s',
-                    }}
-                  >
-                    Забронировать на {hotel.best.partner} — {hotel.best.price.toLocaleString()}₽
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {filtered.length === 0 && (
-          <div style={{ textAlign: 'center', padding: 60, color: 'rgba(255,255,255,0.5)' }}>
-            😔 По выбранным фильтрам отелей не найдено. Попробуйте изменить параметры.
+        {/* Grid */}
+        {filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.4)', padding: '60px 0' }}>
+            Ничего не найдено. Попробуйте изменить фильтры.
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 24 }}>
+            {filtered.map(h => <HotelCard key={h.id} hotel={h} />)}
           </div>
         )}
+
+        {/* Hotellook CTA */}
+        <div style={{ marginTop: 48, textAlign: 'center' }}>
+          <a href="https://tp.media/r?marker=547188&trs=189015&p=4114&u=https%3A%2F%2Fhotels.aviasales.ru" target="_blank" rel="noopener noreferrer" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 32px',
+            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: 14, color: '#fff', textDecoration: 'none', fontWeight: 600, fontSize: 15,
+            transition: 'all 0.2s',
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(102,126,234,0.1)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(102,126,234,0.3)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)'; }}
+          >
+            🔍 Найти ещё отели на Hotellook →
+          </a>
+        </div>
       </div>
     </section>
   );
-};
-
-export default HotelsSection;
+}

@@ -1,185 +1,106 @@
 // ============================================================
-// Живые цены: публичные API Aviasales (Travelpayouts) и Hotellook
-// Работают без токена, отдают реальные кэшированные цены в рублях.
+// TravelDeal — Live API Service
+// Travelpayouts marker: 547188 | account: 747557
 // ============================================================
 
-// 💰 МОНЕТИЗАЦИЯ: ваш партнёрский marker из travelpayouts.com
-// С каждого бронирования через сайт идёт комиссия.
-export const TP_MARKER = '547188';
+const MARKER = '547188';
+const BASE = 'https://api.travelpayouts.com';
 
-/** Добавляет партнёрский marker к ссылке, если он указан */
-function withMarker(url: string): string {
-  if (!TP_MARKER) return url;
-  return url + (url.includes('?') ? '&' : '?') + 'marker=' + TP_MARKER;
+export interface LiveHotelPrice {
+  hotelId: number;
+  hotelName: string;
+  city: string;
+  stars: number;
+  priceFrom: number;
+  currency: string;
+  photoUrl: string;
+  url: string;
+  rating?: number;
 }
 
 export interface LiveFlightPrice {
-  value: number; // цена в ₽
+  origin: string;
+  destination: string;
+  price: number;
+  airline: string;
   departDate: string;
-  returnDate: string | null;
-  numberOfChanges: number;
-  foundAt: string;
+  returnDate?: string;
+  url: string;
 }
 
-export interface LiveHotel {
-  hotelId: number;
-  hotelName: string;
-  stars: number;
-  priceFrom: number; // ₽ за весь период
-  priceAvg: number;
-  locationName: string;
-  country: string;
-}
-
-interface CalendarPreloadItem {
-  value: number;
-  depart_date: string;
-  return_date: string | null;
-  number_of_changes: number;
-  found_at: string;
-  actual: boolean;
-}
-
-interface CalendarPreloadResponse {
-  best_prices: CalendarPreloadItem[];
-  current_depart_date_prices: CalendarPreloadItem[];
-}
-
-interface HotellookCacheItem {
-  hotelId: number;
-  hotelName: string;
-  stars: number;
-  priceFrom: number;
-  priceAvg: number;
-  location: { name: string; country: string };
-}
-
-const withTimeout = (ms: number): AbortSignal => {
-  const c = new AbortController();
-  setTimeout(() => c.abort(), ms);
-  return c.signal;
-};
-
-/**
- * Реальная минимальная цена авиаперелёта (кэш Aviasales).
- * Возвращает null, если данных нет (например, даты слишком далеко)
- * или запрос заблокирован (CORS/сеть).
- */
-export async function fetchLiveFlightPrice(
-  origin: string,
-  destination: string,
-  departDate: string, // YYYY-MM-DD
-): Promise<LiveFlightPrice | null> {
-  try {
-    const url =
-      `https://min-prices.aviasales.ru/calendar_preload` +
-      `?origin=${origin}&destination=${destination}` +
-      `&depart_date=${departDate}&one_way=false`;
-    const res = await fetch(url, { signal: withTimeout(8000) });
-    if (!res.ok) return null;
-    const data: CalendarPreloadResponse = await res.json();
-    const all = [
-      ...(data.current_depart_date_prices || []),
-      ...(data.best_prices || []),
-    ].filter((p) => p.value > 0);
-    if (all.length === 0) return null;
-    // Берём самую дешёвую актуальную цену
-    const best = all.reduce((min, p) => (p.value < min.value ? p : min), all[0]);
-    return {
-      value: best.value,
-      departDate: best.depart_date,
-      returnDate: best.return_date,
-      numberOfChanges: best.number_of_changes,
-      foundAt: best.found_at,
-    };
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Реальные цены отелей по городу и датам (кэш Hotellook).
- * currency=rub, цена за весь период проживания.
- */
-export async function fetchLiveHotels(
-  location: string,
-  checkIn: string, // YYYY-MM-DD
+// Hotellook live prices
+export async function fetchHotelPrices(
+  cityCode: string,
+  checkIn: string,
   checkOut: string,
-  limit = 12,
-): Promise<LiveHotel[]> {
+  currency = 'rub'
+): Promise<LiveHotelPrice[]> {
   try {
-    const url =
-      `https://engine.hotellook.com/api/v2/cache.json` +
-      `?location=${encodeURIComponent(location)}` +
-      `&checkIn=${checkIn}&checkOut=${checkOut}` +
-      `&currency=rub&limit=${limit}`;
-    const res = await fetch(url, { signal: withTimeout(10000) });
-    if (!res.ok) return [];
-    const data: HotellookCacheItem[] = await res.json();
-    if (!Array.isArray(data)) return [];
-    return data
-      .filter((h) => h.priceFrom > 0)
-      .map((h) => ({
-        hotelId: h.hotelId,
-        hotelName: h.hotelName,
-        stars: h.stars || 0,
-        priceFrom: Math.round(h.priceFrom),
-        priceAvg: Math.round(h.priceAvg),
-        locationName: h.location?.name || location,
-        country: h.location?.country || '',
-      }))
-      .sort((a, b) => a.priceFrom - b.priceFrom);
+    const url = `${BASE}/v2/hotellook/hotelsWithRooms?marker=${MARKER}&cityId=${cityCode}&checkIn=${checkIn}&checkOut=${checkOut}&currency=${currency}&lang=ru`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Hotellook API error');
+    const data = await res.json();
+    return data.slice(0, 6).map((h: Record<string, unknown>) => ({
+      hotelId: h.hotelId,
+      hotelName: h.hotelName,
+      city: (h.location as Record<string, unknown>)?.['name'] as string ?? cityCode,
+      stars: h.stars ?? 0,
+      priceFrom: h.priceFrom ?? 0,
+      currency: h.currency ?? currency,
+      photoUrl: h.photoUrl ?? '',
+      url: `https://hotellook.com/r?marker=${MARKER}&id=${h.hotelId}`,
+      rating: h.rating,
+    }));
   } catch {
     return [];
   }
 }
 
-/** Ссылка на бронирование конкретного отеля с датами (Hotellook → системы бронирования) */
-export function hotelBookingUrl(hotelId: number, checkIn: string, checkOut: string, adults = 2): string {
-  return withMarker(
-    `https://search.hotellook.com/hotels?hotelId=${hotelId}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&currency=rub&language=ru`,
-  );
-}
-
-/** Ссылка на живой поиск Booking.com с датами */
-export function bookingSearchUrl(query: string, checkIn: string, checkOut: string): string {
-  return (
-    `https://www.booking.com/searchresults.ru.html?ss=${encodeURIComponent(query)}` +
-    `&checkin=${checkIn}&checkout=${checkOut}&group_adults=2&no_rooms=1`
-  );
-}
-
-/** Ссылка на живой поиск Aviasales с датами (формат DDMM) */
-export function aviasalesSearchUrl(
+// Aviasales live prices
+export async function fetchFlightPrices(
   origin: string,
   destination: string,
-  departDate: string, // YYYY-MM-DD
-  returnDate: string,
+  currency = 'rub'
+): Promise<LiveFlightPrice[]> {
+  try {
+    const url = `${BASE}/v1/prices/cheap?marker=${MARKER}&origin=${origin}&destination=${destination}&currency=${currency}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Aviasales API error');
+    const data = await res.json();
+    const dest = data.data?.[destination] ?? {};
+    return Object.values(dest).slice(0, 5).map((f: unknown) => {
+      const flight = f as Record<string, unknown>;
+      return {
+        origin,
+        destination,
+        price: flight.price as number,
+        airline: flight.airline as string,
+        departDate: flight.depart_date as string,
+        returnDate: flight.return_date as string | undefined,
+        url: `https://www.aviasales.ru/search/${origin}${(flight.depart_date as string)?.replace(/-/g, '')}${destination}1?marker=${MARKER}`,
+      };
+    });
+  } catch {
+    return [];
+  }
+}
+
+// Build Aviasales affiliate search URL
+export function buildAviasalesUrl(
+  origin: string,
+  destination: string,
+  date?: string
 ): string {
-  const dm = (d: string) => d.slice(8, 10) + d.slice(5, 7);
-  return withMarker(
-    `https://www.aviasales.ru/search/${origin}${dm(departDate)}${destination}${dm(returnDate)}1`,
-  );
+  const dateStr = date ? date.replace(/-/g, '') : new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  return `https://tp.media/r?marker=${MARKER}&trs=189015&p=4114&u=https%3A%2F%2Fwww.aviasales.ru%2Fsearch%2F${origin}${dateStr}${destination}1`;
 }
 
-// ============================================================
-// Ж/Д БИЛЕТЫ (Россия и Европа)
-// Aviasales имеет API для ж/д — aviasales.ru/poezda
-// ============================================================
-
-export interface RailwayRide {
-  trainNumber: string;
-  trainName: string;
-  departure: string;
-  arrival: string;
-  duration: string;
-  price: number;
-  seatsLeft: number;
+// Build Hotellook affiliate URL
+export function buildHotellookUrl(cityOrHotelId: string | number): string {
+  if (typeof cityOrHotelId === 'number') {
+    return `https://tp.media/r?marker=${MARKER}&trs=189015&p=4114&u=https%3A%2F%2Fhotels.aviasales.ru%2F${cityOrHotelId}`;
+  }
+  return `https://tp.media/r?marker=${MARKER}&trs=189015&p=4114&u=https%3A%2F%2Fhotels.aviasales.ru`;
 }
 
-/** Ссылка на живой поиск ж/д билетов Туту.ру с датами */
-export function tutuRailwayUrl(from: string, to: string, date: string): string {
-  return withMarker(
-    `https://www.tutu.ru/poezda/?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${date}`,
-  );
-}
+export const TRAVELPAYOUTS_MARKER = MARKER;

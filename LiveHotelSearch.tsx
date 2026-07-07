@@ -1,521 +1,210 @@
 import { useState } from 'react';
-import {
-  fetchLiveHotels,
-  hotelBookingUrl,
-  bookingSearchUrl,
-  type LiveHotel,
-} from '../services/liveApi';
 
-const cities = [
-  // Россия — от Калининграда до Сахалина
-  { label: '🇷🇺 Москва', query: 'Moscow' },
-  { label: '🇷🇺 Санкт-Петербург', query: 'Saint Petersburg' },
-  { label: '🇷🇺 Калининград', query: 'Kaliningrad' },
-  { label: '🇷🇺 Сочи', query: 'Sochi' },
-  { label: '🇷🇺 Казань', query: 'Kazan' },
-  { label: '🇷🇺 Екатеринбург', query: 'Yekaterinburg' },
-  { label: '🇷🇺 Новосибирск', query: 'Novosibirsk' },
-  { label: '🇷🇺 Иркутск (Байкал)', query: 'Irkutsk' },
-  { label: '🇷🇺 Владивосток', query: 'Vladivostok' },
-  { label: '🇷🇺 Южно-Сахалинск', query: 'Yuzhno-Sakhalinsk' },
-  { label: '🇷🇺 Петропавловск-Камчатский', query: 'Petropavlovsk-Kamchatsky' },
-  { label: '🇷🇺 Курильск (Курилы)', query: 'Kurilsk' },
-  { label: '🇷🇺 Горно-Алтайск', query: 'Gorno-Altaysk' },
-  { label: '🇷🇺 Манжерок (Алтай)', query: 'Manzherok' },
-  { label: '🇷🇺 Чемал (Алтай)', query: 'Chemal' },
-  { label: '🇷🇺 Ялта (Крым)', query: 'Yalta' },
-  { label: '🇷🇺 Севастополь (Крым)', query: 'Sevastopol' },
-  { label: '🇷🇺 Анапа (Кубань)', query: 'Anapa' },
-  { label: '🇷🇺 Геленджик (Кубань)', query: 'Gelendzhik' },
-  // Кавказ и Дагестан
-  { label: '🇷🇺 Махачкала (Дагестан)', query: 'Makhachkala' },
-  { label: '🇷🇺 Дербент (Дагестан)', query: 'Derbent' },
-  { label: '🇷🇺 Каспийск (Дагестан)', query: 'Kaspiysk' },
-  { label: '🇷🇺 Избербаш (Дагестан)', query: 'Izberbash' },
-  { label: '🇷🇺 Сулак (Дагестан)', query: 'Sulak' },
-  { label: '🇷🇺 Грозный (Чечня)', query: 'Grozny' },
-  { label: '🇷🇺 Аргун (Чечня)', query: 'Argun' },
-  { label: '🇷🇺 Кисловодск (КМВ)', query: 'Kislovodsk' },
-  { label: '🇷🇺 Пятигорск (КМВ)', query: 'Pyatigorsk' },
-  { label: '🇷🇺 Ессентуки (КМВ)', query: 'Yessentuki' },
-  { label: '🇷🇺 Железноводск (КМВ)', query: 'Zheleznovodsk' },
-  { label: '🇷🇺 Минеральные Воды', query: 'Mineralnye Vody' },
-  { label: '🇷🇺 Владикавказ (Осетия)', query: 'Vladikavkaz' },
-  { label: '🇷🇺 Нальчик (КБР)', query: 'Nalchik' },
-  { label: '🇷🇺 Тырныауз (КБР)', query: 'Tyrnyauz' },
-  { label: '🇷🇺 Магас (Ингушетия)', query: 'Magas' },
-  { label: '🇷🇺 Домбай (Карачаево-Черкесия)', query: 'Dombay' },
-  { label: '🇷🇺 Архыз (Карачаево-Черкесия)', query: 'Arkhyz' },
-  { label: '🇷🇺 Черкесск (КЧР)', query: 'Cherkessk' },
-  { label: '🇷🇺 Эльбрус (Кабардино-Балкария)', query: 'Elbrus' },
-  { label: '🇷🇺 Теберда (Карачаево-Черкесия)', query: 'Teberda' },
-  // Юг России
-  { label: '🇷🇺 Краснодар', query: 'Krasnodar' },
-  { label: '🇷🇺 Ростов-на-Дону', query: 'Rostov-on-Don' },
-  { label: '🇷🇺 Волгоград', query: 'Volgograd' },
-  { label: '🇷🇺 Астрахань', query: 'Astrakhan' },
-  { label: '🇷🇺 Ставрополь', query: 'Stavropol' },
-  { label: '🇷🇺 Армавир', query: 'Armavir' },
-  { label: '🇷🇺 Таганрог', query: 'Taganrog' },
-  { label: '🇷🇺 Сочи (Адлер)', query: 'Adler' },
-  // Поволжье
-  { label: '🇷🇺 Самара', query: 'Samara' },
-  { label: '🇷🇺 Саратов', query: 'Saratov' },
-  { label: '🇷🇺 Уфа', query: 'Ufa' },
-  { label: '🇷🇺 Пермь', query: 'Perm' },
-  { label: '🇷🇺 Ярославль', query: 'Yaroslavl' },
-  { label: '🇷🇺 Нижний Новгород', query: 'Nizhny Novgorod' },
-  { label: '🇷🇺 Мурманск', query: 'Murmansk' },
+const CITIES = [
+  // Россия
+  { name: 'Москва', code: 'MOW', flag: '🇷🇺' },
+  { name: 'Санкт-Петербург', code: 'LED', flag: '🇷🇺' },
+  { name: 'Сочи', code: 'AER', flag: '🇷🇺' },
+  { name: 'Калининград', code: 'KGD', flag: '🇷🇺' },
+  { name: 'Казань', code: 'KZN', flag: '🇷🇺' },
+  { name: 'Екатеринбург', code: 'SVX', flag: '🇷🇺' },
+  { name: 'Новосибирск', code: 'OVB', flag: '🇷🇺' },
+  { name: 'Иркутск', code: 'IKT', flag: '🇷🇺' },
+  { name: 'Владивосток', code: 'VVO', flag: '🇷🇺' },
+  { name: 'Краснодар', code: 'KRR', flag: '🇷🇺' },
+  // Кавказ
+  { name: 'Махачкала', code: 'MCX', flag: '🇷🇺' },
+  { name: 'Грозный', code: 'GRV', flag: '🇷🇺' },
+  { name: 'Кисловодск', code: 'MRV', flag: '🇷🇺' },
+  // Курорты
+  { name: 'Анталья', code: 'AYT', flag: '🇹🇷' },
+  { name: 'Стамбул', code: 'IST', flag: '🇹🇷' },
+  { name: 'Бодрум', code: 'BJV', flag: '🇹🇷' },
+  { name: 'Хургада', code: 'HRG', flag: '🇪🇬' },
+  { name: 'Шарм-эль-Шейх', code: 'SSH', flag: '🇪🇬' },
+  { name: 'Дубай', code: 'DXB', flag: '🇦🇪' },
+  { name: 'Абу-Даби', code: 'AUH', flag: '🇦🇪' },
+  { name: 'Пхукет', code: 'HKT', flag: '🇹🇭' },
+  { name: 'Бангкок', code: 'BKK', flag: '🇹🇭' },
+  { name: 'Паттайя', code: 'UTP', flag: '🇹🇭' },
+  { name: 'Бали', code: 'DPS', flag: '🇮🇩' },
+  { name: 'Мале', code: 'MLE', flag: '🇲🇻' },
+  { name: 'Варадеро', code: 'VRA', flag: '🇨🇺' },
+  { name: 'Гавана', code: 'HAV', flag: '🇨🇺' },
+  // Европа
+  { name: 'Рим', code: 'FCO', flag: '🇮🇹' },
+  { name: 'Венеция', code: 'VCE', flag: '🇮🇹' },
+  { name: 'Барселона', code: 'BCN', flag: '🇪🇸' },
+  { name: 'Мадрид', code: 'MAD', flag: '🇪🇸' },
+  { name: 'Тенерифе', code: 'TFS', flag: '🇪🇸' },
+  { name: 'Айя-Напа', code: 'LCA', flag: '🇨🇾' },
+  // Азия
+  { name: 'Пекин', code: 'PEK', flag: '🇨🇳' },
+  { name: 'Токио', code: 'NRT', flag: '🇯🇵' },
+  { name: 'Себу', code: 'CEB', flag: '🇵🇭' },
   // Абхазия
-  { label: '🇦🇬 Сухум (Абхазия)', query: 'Sukhumi' },
-  { label: '🇦🇬 Гагра (Абхазия)', query: 'Gagra' },
-  { label: '🇦🇬 Пицунда (Абхазия)', query: 'Pitsunda' },
-  { label: '🇦🇬 Гудаута (Абхазия)', query: 'Gudauta' },
-  { label: '🇦🇬 Новый Афон (Абхазия)', query: 'Novy Afon' },
-  // Турция
-  { label: '🇹🇷 Анталья', query: 'Antalya' },
-  { label: '🇹🇷 Стамбул', query: 'Istanbul' },
-  { label: '🇹🇷 Бодрум', query: 'Bodrum' },
-  { label: '🇹🇷 Аланья', query: 'Alanya' },
-  // Италия
-  { label: '🇮🇹 Рим', query: 'Rome' },
-  { label: '🇮🇹 Венеция', query: 'Venice' },
-  { label: '🇮🇹 Милан', query: 'Milan' },
-  { label: '🇮🇹 Флоренция', query: 'Florence' },
-  // Испания
-  { label: '🇪🇸 Барселона', query: 'Barcelona' },
-  { label: '🇪🇸 Мадрид', query: 'Madrid' },
-  { label: '🇪🇸 Тенерифе', query: 'Tenerife' },
-  // Китай
-  { label: '🇨🇳 Пекин', query: 'Beijing' },
-  { label: '🇨🇳 Шанхай', query: 'Shanghai' },
-  { label: '🇨🇳 Санья (Хайнань)', query: 'Sanya' },
-  { label: '🇨🇳 Гуанчжоу', query: 'Guangzhou' },
-  // Таиланд
-  { label: '🇹🇭 Бангкок', query: 'Bangkok' },
-  { label: '🇹🇭 Пхукет', query: 'Phuket' },
-  { label: '🇹🇭 Паттайя', query: 'Pattaya' },
-  { label: '🇹🇭 Самуи', query: 'Koh Samui' },
-  // Другие страны
-  { label: '🇨🇾 Айя-Напа (Кипр)', query: 'Ayia Napa' },
-  { label: '🇨🇾 Пафос (Кипр)', query: 'Paphos' },
-  { label: '🇨🇺 Варадеро (Куба)', query: 'Varadero' },
-  { label: '🇨🇺 Гавана (Куба)', query: 'Havana' },
-  { label: '🇵🇭 Себу (Филиппины)', query: 'Cebu' },
-  { label: '🇵🇭 Боракай (Филиппины)', query: 'Boracay' },
-  { label: '🇦🇪 Дубай', query: 'Dubai' },
-  { label: '🇪🇬 Хургада', query: 'Hurghada' },
-  { label: '🇪🇬 Шарм-эль-Шейх', query: 'Sharm El Sheikh' },
-  { label: '🇮🇩 Бали', query: 'Bali' },
-  { label: '🇲🇻 Мале', query: 'Male' },
-  { label: '🇫🇷 Париж', query: 'Paris' },
-  { label: '🇯🇵 Токио', query: 'Tokyo' },
+  { name: 'Сухум', code: 'SUI', flag: '🏳️' },
+  { name: 'Гагра', code: 'GGR', flag: '🏳️' },
 ];
 
-const inputStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.08)',
-  border: '1px solid rgba(102,126,234,0.35)',
-  borderRadius: 10,
-  padding: '12px 14px',
-  color: '#fff',
-  fontSize: 14,
-  outline: 'none',
-};
+function getCheckinDate(daysFromNow = 14) {
+  const d = new Date();
+  d.setDate(d.getDate() + daysFromNow);
+  return d.toISOString().slice(0, 10);
+}
 
-const LiveHotelSearch = () => {
-  const [city, setCity] = useState(cities[0]);
-  const [checkIn, setCheckIn] = useState('2026-07-25');
-  const [checkOut, setCheckOut] = useState('2026-08-01');
-  const [minStars, setMinStars] = useState(0);
-  const [hotels, setHotels] = useState<LiveHotel[]>([]);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'empty' | 'error'>('idle');
+function getCheckoutDate(daysFromNow = 21) {
+  const d = new Date();
+  d.setDate(d.getDate() + daysFromNow);
+  return d.toISOString().slice(0, 10);
+}
 
-  const nights = Math.max(
-    1,
-    Math.round((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86400000),
-  );
+export default function LiveHotelSearch() {
+  const [city, setCity] = useState(CITIES[18]); // Дубай
+  const [checkin, setCheckin] = useState(getCheckinDate());
+  const [checkout, setCheckout] = useState(getCheckoutDate());
+  const [nights, setNights] = useState(7);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [search, setSearch] = useState('');
 
-  const [usedDates, setUsedDates] = useState<{ in: string; out: string } | null>(null);
+  const filtered = CITIES.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
 
-  const search = async () => {
-    setStatus('loading');
-    setHotels([]);
-    setUsedDates(null);
-
-    // Попытка 1: выбранные даты
-    const result = await fetchLiveHotels(city.query, checkIn, checkOut, 30);
-    if (result.length > 0) {
-      setHotels(result);
-      setUsedDates({ in: checkIn, out: checkOut });
-      setStatus('done');
-      return;
-    }
-
-    // Попытка 2: через 30 дней от сегодня (кэш дальних дат бывает пуст)
-    const mk = (daysAhead: number) => {
-      const d1 = new Date(Date.now() + daysAhead * 86400000);
-      const d2 = new Date(d1.getTime() + nights * 86400000);
-      return { in: d1.toISOString().slice(0, 10), out: d2.toISOString().slice(0, 10) };
-    };
-    const f1 = mk(30);
-    const retry1 = await fetchLiveHotels(city.query, f1.in, f1.out, 30);
-    if (retry1.length > 0) {
-      setHotels(retry1);
-      setUsedDates(f1);
-      setStatus('done');
-      return;
-    }
-
-    // Попытка 3: через 14 дней, 7 ночей (самый "тёплый" кэш)
-    const f2 = mk(14);
-    const retry2 = await fetchLiveHotels(city.query, f2.in, f2.out, 30);
-    if (retry2.length > 0) {
-      setHotels(retry2);
-      setUsedDates(f2);
-      setStatus('done');
-      return;
-    }
-
-    setStatus('empty');
+  const handleSearch = () => {
+    const url = `https://tp.media/r?marker=547188&trs=189015&p=4114&u=https%3A%2F%2Fhotels.aviasales.ru%2F${city.code}%3FcheckIn%3D${checkin}%26checkOut%3D${checkout}%26adults%3D2`;
+    window.open(url, '_blank');
   };
 
-  const visible = hotels.filter((h) => h.stars >= minStars);
+  const updateNights = (n: number) => {
+    setNights(n);
+    const co = new Date(checkin);
+    co.setDate(co.getDate() + n);
+    setCheckout(co.toISOString().slice(0, 10));
+  };
 
   return (
-    <div
-      style={{
-        background: 'linear-gradient(135deg, rgba(16,185,129,0.08), rgba(102,126,234,0.08))',
-        border: '1px solid rgba(16,185,129,0.3)',
-        borderRadius: 24,
-        padding: 28,
-        marginBottom: 48,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-        <div
-          style={{
-            width: 10,
-            height: 10,
-            borderRadius: '50%',
-            background: '#ef4444',
-            animation: 'pulse 1.5s infinite',
-          }}
-        />
-        <h3 style={{ color: '#fff', fontSize: 22, fontWeight: 800 }}>
-          Живой поиск отелей — реальные цены
-        </h3>
-      </div>
-      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, marginBottom: 20 }}>
-        Цены загружаются напрямую из базы Hotellook (Aviasales Group) в рублях за выбранные даты.
-        Кнопка бронирования открывает сравнение систем бронирования по этому отелю.
-      </p>
+    <section id="hotel-search" style={{ padding: '80px 24px', background: 'linear-gradient(180deg, rgba(13,18,40,1) 0%, rgba(10,15,30,1) 100%)' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 100, padding: '6px 16px', marginBottom: 16 }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+            <span style={{ color: '#f87171', fontSize: 13, fontWeight: 600 }}>🔴 Живой поиск отелей — 63+ города</span>
+          </div>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
+            Найдите отель прямо сейчас
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>
+            Реальные цены из базы Hotellook (Aviasales Group) — вся Россия, Турция, Египет, ОАЭ и ещё 60 направлений
+          </p>
+        </div>
 
-      {/* Форма поиска */}
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 12 }}>
-        <div style={{ flex: '2 1 220px' }}>
-          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-            Город
-          </div>
-          <select
-            value={city.query}
-            onChange={(e) => setCity(cities.find((c) => c.query === e.target.value) || cities[0])}
-            style={{ ...inputStyle, width: '100%', cursor: 'pointer' }}
-          >
-            {cities.map((c) => (
-              <option key={c.query} value={c.query} style={{ background: '#1a1f35' }}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div style={{ flex: '1 1 150px' }}>
-          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-            Заезд
-          </div>
-          <input
-            type="date"
-            value={checkIn}
-            onChange={(e) => setCheckIn(e.target.value)}
-            style={{ ...inputStyle, width: '100%', colorScheme: 'dark' }}
-          />
-        </div>
-        <div style={{ flex: '1 1 150px' }}>
-          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-            Выезд
-          </div>
-          <input
-            type="date"
-            value={checkOut}
-            onChange={(e) => setCheckOut(e.target.value)}
-            style={{ ...inputStyle, width: '100%', colorScheme: 'dark' }}
-          />
-        </div>
-        <div style={{ flex: '1 1 130px' }}>
-          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
-            Звёзды от
-          </div>
-          <select
-            value={minStars}
-            onChange={(e) => setMinStars(Number(e.target.value))}
-            style={{ ...inputStyle, width: '100%', cursor: 'pointer' }}
-          >
-            <option value={0} style={{ background: '#1a1f35' }}>Любые</option>
-            <option value={3} style={{ background: '#1a1f35' }}>3★+</option>
-            <option value={4} style={{ background: '#1a1f35' }}>4★+</option>
-            <option value={5} style={{ background: '#1a1f35' }}>5★</option>
-          </select>
-        </div>
-        <div style={{ flex: '0 0 auto', alignSelf: 'flex-end' }}>
-          <button
-            onClick={search}
-            disabled={status === 'loading'}
-            style={{
-              padding: '12px 28px',
-              background: status === 'loading'
-                ? 'rgba(16,185,129,0.4)'
-                : 'linear-gradient(135deg, #10b981, #059669)',
-              border: 'none',
-              borderRadius: 10,
-              color: '#fff',
-              fontWeight: 700,
-              fontSize: 15,
-              cursor: status === 'loading' ? 'wait' : 'pointer',
-              boxShadow: '0 4px 15px rgba(16,185,129,0.35)',
-            }}
-          >
-            {status === 'loading' ? '⏳ Ищем...' : '🔍 Найти реальные цены'}
-          </button>
-        </div>
-      </div>
+        {/* Search Card */}
+        <div style={{
+          background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: 24, padding: '32px',
+        }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
+            {/* City select */}
+            <div style={{ position: 'relative', gridColumn: '1 / -1' }}>
+              <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 6 }}>📍 Город / курорт</label>
+              <button onClick={() => setDropdownOpen(!dropdownOpen)} style={{
+                width: '100%', padding: '14px 18px', borderRadius: 12, textAlign: 'left',
+                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)',
+                color: '#fff', fontSize: 15, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
+              }}>
+                <span>{city.flag}</span> <span>{city.name}</span>
+                <span style={{ marginLeft: 'auto', opacity: 0.5 }}>▼</span>
+              </button>
 
-      {/* Результаты */}
-      {status === 'loading' && (
-        <div style={{ textAlign: 'center', padding: 40, color: 'rgba(255,255,255,0.6)' }}>
-          <div style={{ fontSize: 32, marginBottom: 8, animation: 'pulse 1s infinite' }}>🏨</div>
-          Загружаем реальные цены из базы Hotellook…
-        </div>
-      )}
-
-      {status === 'empty' && (
-        <div
-          style={{
-            textAlign: 'center',
-            padding: 30,
-            color: 'rgba(255,255,255,0.6)',
-            background: 'rgba(239,68,68,0.08)',
-            border: '1px solid rgba(239,68,68,0.25)',
-            borderRadius: 12,
-            fontSize: 14,
-          }}
-        >
-          Кэш цен на эти даты пока пуст. Откройте живой поиск напрямую:{' '}
-          <a
-            href={bookingSearchUrl(city.label, checkIn, checkOut)}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: '#34d399', fontWeight: 700 }}
-          >
-            Booking.com →
-          </a>{' '}
-          или{' '}
-          <a
-            href={`https://search.hotellook.com/?destination=${encodeURIComponent(city.query)}&checkIn=${checkIn}&checkOut=${checkOut}&adults=2&language=ru&currency=rub`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: '#34d399', fontWeight: 700 }}
-          >
-            Hotellook →
-          </a>
-        </div>
-      )}
-
-      {status === 'done' && (
-        <>
-          <div style={{ color: '#34d399', fontSize: 13, fontWeight: 600, margin: '8px 0 14px' }}>
-            ● LIVE · Найдено {visible.length} отелей · цены за {nights}{' '}
-            {nights === 1 ? 'ночь' : nights < 5 ? 'ночи' : 'ночей'}, 2 гостя
-          </div>
-          {usedDates && usedDates.in !== checkIn && (
-            <div
-              style={{
-                background: 'rgba(245,158,11,0.12)',
-                border: '1px solid rgba(245,158,11,0.35)',
-                borderRadius: 10,
-                padding: '10px 14px',
-                marginBottom: 14,
-                color: '#fbbf24',
-                fontSize: 13,
-              }}
-            >
-              ⚠️ На выбранные даты кэш цен пуст — показаны цены на ближайшие даты ({usedDates.in} —{' '}
-              {usedDates.out}). Кнопка бронирования откроет поиск на ВАШИ даты с точной ценой.
+              {dropdownOpen && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 100, marginTop: 4,
+                  background: '#1a1f35', border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: 12, overflow: 'hidden',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+                }}>
+                  <div style={{ padding: '8px' }}>
+                    <input
+                      type="text"
+                      placeholder="Поиск города..."
+                      value={search}
+                      onChange={e => setSearch(e.target.value)}
+                      style={{
+                        width: '100%', padding: '10px 12px', borderRadius: 8,
+                        background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
+                        color: '#fff', fontSize: 14, outline: 'none',
+                      }}
+                    />
+                  </div>
+                  <div style={{ maxHeight: 240, overflowY: 'auto' }}>
+                    {filtered.map(c => (
+                      <button key={c.code} onClick={() => { setCity(c); setDropdownOpen(false); setSearch(''); }} style={{
+                        width: '100%', padding: '10px 16px', textAlign: 'left', cursor: 'pointer',
+                        background: c.code === city.code ? 'rgba(102,126,234,0.2)' : 'transparent',
+                        border: 'none', color: '#fff', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
+                        transition: 'background 0.15s',
+                      }}
+                        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+                        onMouseLeave={e => (e.currentTarget.style.background = c.code === city.code ? 'rgba(102,126,234,0.2)' : 'transparent')}
+                      >
+                        <span>{c.flag}</span> {c.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
-            {visible.map((h) => (
-              <div
-                key={h.hotelId}
-                style={{
-                  background: 'rgba(0,0,0,0.3)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 14,
-                  overflow: 'hidden',
-                  animation: 'fadeIn 0.4s ease',
-                }}
-              >
-                {/* 📷 Фото отеля: emoji-обложка (работает везде) */}
-                <div
-                  style={{
-                    height: 150,
-                    position: 'relative',
-                    overflow: 'hidden',
-                    background: (() => {
-                      const loc = h.locationName.toLowerCase();
-                      if (loc.includes('россия') || loc.includes('moscow') || loc.includes('saint') || loc.includes('sochi') || loc.includes('kazan') || loc.includes('irkutsk') || loc.includes('vladivostok') || loc.includes('kaliningrad') || loc.includes('yuzhno') || loc.includes('petropavlovsk'))
-                        return 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #6dd5ed 100%)';
-                      if (loc.includes('turkey') || loc.includes('antalya') || loc.includes('istanbul') || loc.includes('bodrum') || loc.includes('alanya'))
-                        return 'linear-gradient(135deg, #f5af19 0%, #f12711 50%, #fceabb 100%)';
-                      if (loc.includes('uae') || loc.includes('dubai') || loc.includes('sharjah') || loc.includes('abu'))
-                        return 'linear-gradient(135deg, #ffd89b 0%, #19547b 100%)';
-                      if (loc.includes('egypt') || loc.includes('hurghada') || loc.includes('sharm'))
-                        return 'linear-gradient(135deg, #fdc830 0%, #f37335 100%)';
-                      if (loc.includes('thailand') || loc.includes('phuket') || loc.includes('bangkok') || loc.includes('pattaya') || loc.includes('samui'))
-                        return 'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 50%, #43cea2 100%)';
-                      if (loc.includes('indonesia') || loc.includes('bali'))
-                        return 'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)';
-                      if (loc.includes('maldives') || loc.includes('male'))
-                        return 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)';
-                      if (loc.includes('italy') || loc.includes('rome') || loc.includes('venice') || loc.includes('milan') || loc.includes('florence'))
-                        return 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)';
-                      if (loc.includes('spain') || loc.includes('barcelona') || loc.includes('madrid') || loc.includes('tenerife'))
-                        return 'linear-gradient(135deg, #f7b733 0%, #fc4a1a 100%)';
-                      if (loc.includes('france') || loc.includes('paris'))
-                        return 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)';
-                      if (loc.includes('japan') || loc.includes('tokyo'))
-                        return 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)';
-                      if (loc.includes('china') || loc.includes('beijing') || loc.includes('shanghai') || loc.includes('sanya') || loc.includes('guangzhou'))
-                        return 'linear-gradient(135deg, #e53935 0%, #ffb300 100%)';
-                      if (loc.includes('cyprus') || loc.includes('paphos') || loc.includes('ayia'))
-                        return 'linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%)';
-                      if (loc.includes('cuba') || loc.includes('havana') || loc.includes('varadero'))
-                        return 'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)';
-                      if (loc.includes('philippines') || loc.includes('cebu') || loc.includes('boracay'))
-                        return 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)';
-                      if (loc.includes('abkhazia') || loc.includes('sukhumi') || loc.includes('gagra') || loc.includes('pitsunda'))
-                        return 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #6dd5ed 100%)';
-                      return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    })(),
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: 80,
-                      opacity: 0.55,
-                      filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))',
-                    }}
-                  >
-                    {(() => {
-                      const loc = h.locationName.toLowerCase();
-                      if (loc.includes('россия') || loc.includes('moscow') || loc.includes('saint') || loc.includes('sochi') || loc.includes('kazan') || loc.includes('irkutsk') || loc.includes('vladivostok') || loc.includes('kaliningrad') || loc.includes('yuzhno') || loc.includes('petropavlovsk')) return '🏔️';
-                      if (loc.includes('turkey') || loc.includes('antalya') || loc.includes('istanbul') || loc.includes('bodrum') || loc.includes('alanya')) return '🏖️';
-                      if (loc.includes('uae') || loc.includes('dubai')) return '🏜️';
-                      if (loc.includes('egypt')) return '🐪';
-                      if (loc.includes('thailand') || loc.includes('phuket') || loc.includes('bangkok') || loc.includes('pattaya') || loc.includes('samui')) return '🌴';
-                      if (loc.includes('indonesia') || loc.includes('bali')) return '🌺';
-                      if (loc.includes('maldives')) return '🏖️';
-                      if (loc.includes('italy') || loc.includes('rome') || loc.includes('venice') || loc.includes('milan')) return '🏛️';
-                      if (loc.includes('spain') || loc.includes('barcelona') || loc.includes('madrid') || loc.includes('tenerife')) return '⛪';
-                      if (loc.includes('france') || loc.includes('paris')) return '🗼';
-                      if (loc.includes('japan') || loc.includes('tokyo')) return '🏯';
-                      if (loc.includes('china') || loc.includes('beijing') || loc.includes('shanghai') || loc.includes('sanya') || loc.includes('guangzhou')) return '🏮';
-                      if (loc.includes('cyprus')) return '🌅';
-                      if (loc.includes('cuba')) return '🌴';
-                      if (loc.includes('philippines')) return '🏝️';
-                      if (loc.includes('abkhazia')) return '🌊';
-                      return '🏨';
-                    })()}
-                  </div>
-                  {h.stars > 0 && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 8,
-                        right: 8,
-                        background: 'rgba(10,15,30,0.85)',
-                        borderRadius: 6,
-                        padding: '3px 8px',
-                        color: '#fbbf24',
-                        fontSize: 12,
-                        zIndex: 2,
-                      }}
-                    >
-                      {'★'.repeat(h.stars)}
-                    </div>
-                  )}
-                </div>
 
-                <div style={{ padding: 14 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
-                    <div style={{ color: '#fff', fontWeight: 700, fontSize: 15 }}>{h.hotelName}</div>
-                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <div style={{ color: '#34d399', fontWeight: 800, fontSize: 18 }}>
-                        {h.priceFrom.toLocaleString()}₽
-                      </div>
-                      <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>
-                        ≈{Math.round(h.priceFrom / nights).toLocaleString()}₽/ночь
-                      </div>
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <a
-                      href={hotelBookingUrl(h.hotelId, checkIn, checkOut)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        flex: 1,
-                        padding: '9px',
-                        background: 'linear-gradient(135deg, #10b981, #059669)',
-                        borderRadius: 8,
-                        color: '#fff',
-                        textDecoration: 'none',
-                        textAlign: 'center',
-                        fontWeight: 700,
-                        fontSize: 12,
-                      }}
-                    >
-                      Сравнить и забронировать
-                    </a>
-                    <a
-                      href={bookingSearchUrl(h.hotelName, checkIn, checkOut)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        padding: '9px 12px',
-                        background: 'rgba(0,53,128,0.4)',
-                        border: '1px solid rgba(102,126,234,0.4)',
-                        borderRadius: 8,
-                        color: '#93c5fd',
-                        textDecoration: 'none',
-                        fontWeight: 600,
-                        fontSize: 12,
-                      }}
-                    >
-                      Booking
-                    </a>
-                  </div>
-                </div>
-              </div>
+            {/* Checkin */}
+            <div>
+              <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 6 }}>📅 Заезд</label>
+              <input type="date" value={checkin} onChange={e => setCheckin(e.target.value)} style={{
+                width: '100%', padding: '14px 18px', borderRadius: 12,
+                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)',
+                color: '#fff', fontSize: 15, outline: 'none', colorScheme: 'dark',
+              }} />
+            </div>
+
+            {/* Checkout */}
+            <div>
+              <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 6 }}>📅 Выезд</label>
+              <input type="date" value={checkout} onChange={e => setCheckout(e.target.value)} style={{
+                width: '100%', padding: '14px 18px', borderRadius: 12,
+                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)',
+                color: '#fff', fontSize: 15, outline: 'none', colorScheme: 'dark',
+              }} />
+            </div>
+          </div>
+
+          {/* Nights quick select */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Ночей:</span>
+            {[3, 5, 7, 10, 14, 21].map(n => (
+              <button key={n} onClick={() => updateNights(n)} style={{
+                padding: '6px 14px', borderRadius: 8, cursor: 'pointer', fontSize: 13, fontWeight: 600,
+                background: nights === n ? 'rgba(102,126,234,0.2)' : 'rgba(255,255,255,0.04)',
+                border: nights === n ? '1px solid rgba(102,126,234,0.4)' : '1px solid rgba(255,255,255,0.1)',
+                color: nights === n ? '#a78bfa' : 'rgba(255,255,255,0.6)',
+              }}>{n}</button>
             ))}
           </div>
-        </>
-      )}
-    </div>
-  );
-};
 
-export default LiveHotelSearch;
+          <button onClick={handleSearch} style={{
+            width: '100%', padding: '16px', borderRadius: 14,
+            background: 'linear-gradient(135deg, #667eea, #764ba2)',
+            border: 'none', color: '#fff', fontWeight: 800, fontSize: 16, cursor: 'pointer',
+            boxShadow: '0 8px 25px rgba(102,126,234,0.4)', transition: 'transform 0.2s',
+          }}
+            onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
+            onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
+          >
+            🔍 Найти отели в {city.name} — от {nights} ночей
+          </button>
+
+          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, textAlign: 'center', marginTop: 12 }}>
+            Цены обновляются в реальном времени из базы Hotellook · Более 30 систем бронирования
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
