@@ -4,12 +4,19 @@ import { fetchLiveFlightPrice, aviasalesSearchUrl, type LiveFlightPrice } from '
 
 // Даты маршрутов в формате YYYY-MM-DD для API
 const routeDates: Record<number, { depart: string; ret: string }> = {
-  1: { depart: '2026-06-10', ret: '2026-06-17' },
-  2: { depart: '2026-03-14', ret: '2026-03-21' },
-  3: { depart: '2026-02-07', ret: '2026-02-14' },
-  4: { depart: '2026-01-20', ret: '2026-02-03' },
-  5: { depart: '2026-07-04', ret: '2026-07-14' },
-  6: { depart: '2026-05-01', ret: '2026-05-08' },
+  1: { depart: '2026-08-20', ret: '2026-08-27' },
+  2: { depart: '2026-10-10', ret: '2026-10-17' },
+  3: { depart: '2026-11-07', ret: '2026-11-14' },
+  4: { depart: '2026-11-20', ret: '2026-12-04' },
+  5: { depart: '2026-09-04', ret: '2026-09-14' },
+  6: { depart: '2026-09-01', ret: '2026-09-08' },
+  7: { depart: '2026-08-12', ret: '2026-08-19' },
+  8: { depart: '2026-07-15', ret: '2026-07-29' },
+  9: { depart: '2026-08-05', ret: '2026-08-19' },
+  10: { depart: '2026-08-10', ret: '2026-08-24' },
+  11: { depart: '2026-10-03', ret: '2026-10-13' },
+  12: { depart: '2026-11-20', ret: '2026-12-04' },
+  13: { depart: '2026-12-10', ret: '2026-12-24' },
 };
 
 const FlightsSection = () => {

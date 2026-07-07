@@ -7,19 +7,41 @@ import {
 } from '../services/liveApi';
 
 const cities = [
-  { label: 'Анталья, Турция', query: 'Antalya' },
-  { label: 'Стамбул, Турция', query: 'Istanbul' },
-  { label: 'Дубай, ОАЭ', query: 'Dubai' },
-  { label: 'Хургада, Египет', query: 'Hurghada' },
-  { label: 'Шарм-эль-Шейх, Египет', query: 'Sharm El Sheikh' },
-  { label: 'Пхукет, Таиланд', query: 'Phuket' },
-  { label: 'Бали, Индонезия', query: 'Bali' },
-  { label: 'Мале, Мальдивы', query: 'Male' },
-  { label: 'Барселона, Испания', query: 'Barcelona' },
-  { label: 'Париж, Франция', query: 'Paris' },
-  { label: 'Токио, Япония', query: 'Tokyo' },
-  { label: 'Москва, Россия', query: 'Moscow' },
-  { label: 'Санкт-Петербург, Россия', query: 'Saint Petersburg' },
+  // Россия — от Калининграда до Сахалина
+  { label: '🇷🇺 Москва', query: 'Moscow' },
+  { label: '🇷🇺 Санкт-Петербург', query: 'Saint Petersburg' },
+  { label: '🇷🇺 Калининград', query: 'Kaliningrad' },
+  { label: '🇷🇺 Сочи', query: 'Sochi' },
+  { label: '🇷🇺 Казань', query: 'Kazan' },
+  { label: '🇷🇺 Екатеринбург', query: 'Yekaterinburg' },
+  { label: '🇷🇺 Новосибирск', query: 'Novosibirsk' },
+  { label: '🇷🇺 Иркутск (Байкал)', query: 'Irkutsk' },
+  { label: '🇷🇺 Владивосток', query: 'Vladivostok' },
+  { label: '🇷🇺 Южно-Сахалинск', query: 'Yuzhno-Sakhalinsk' },
+  // Турция
+  { label: '🇹🇷 Анталья', query: 'Antalya' },
+  { label: '🇹🇷 Стамбул', query: 'Istanbul' },
+  { label: '🇹🇷 Бодрум', query: 'Bodrum' },
+  { label: '🇹🇷 Аланья', query: 'Alanya' },
+  // Китай
+  { label: '🇨🇳 Пекин', query: 'Beijing' },
+  { label: '🇨🇳 Шанхай', query: 'Shanghai' },
+  { label: '🇨🇳 Санья (Хайнань)', query: 'Sanya' },
+  { label: '🇨🇳 Гуанчжоу', query: 'Guangzhou' },
+  // Таиланд
+  { label: '🇹🇭 Бангкок', query: 'Bangkok' },
+  { label: '🇹🇭 Пхукет', query: 'Phuket' },
+  { label: '🇹🇭 Паттайя', query: 'Pattaya' },
+  { label: '🇹🇭 Самуи', query: 'Koh Samui' },
+  // Другие направления
+  { label: '🇦🇪 Дубай', query: 'Dubai' },
+  { label: '🇪🇬 Хургада', query: 'Hurghada' },
+  { label: '🇪🇬 Шарм-эль-Шейх', query: 'Sharm El Sheikh' },
+  { label: '🇮🇩 Бали', query: 'Bali' },
+  { label: '🇲🇻 Мале', query: 'Male' },
+  { label: '🇪🇸 Барселона', query: 'Barcelona' },
+  { label: '🇫🇷 Париж', query: 'Paris' },
+  { label: '🇯🇵 Токио', query: 'Tokyo' },
 ];
 
 const inputStyle: React.CSSProperties = {
@@ -34,8 +56,8 @@ const inputStyle: React.CSSProperties = {
 
 const LiveHotelSearch = () => {
   const [city, setCity] = useState(cities[0]);
-  const [checkIn, setCheckIn] = useState('2026-06-10');
-  const [checkOut, setCheckOut] = useState('2026-06-17');
+  const [checkIn, setCheckIn] = useState('2026-07-25');
+  const [checkOut, setCheckOut] = useState('2026-08-01');
   const [minStars, setMinStars] = useState(0);
   const [hotels, setHotels] = useState<LiveHotel[]>([]);
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'empty' | 'error'>('idle');
@@ -45,29 +67,48 @@ const LiveHotelSearch = () => {
     Math.round((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86400000),
   );
 
+  const [usedDates, setUsedDates] = useState<{ in: string; out: string } | null>(null);
+
   const search = async () => {
     setStatus('loading');
     setHotels([]);
-    const result = await fetchLiveHotels(city.query, checkIn, checkOut, 15);
+    setUsedDates(null);
+
+    // Попытка 1: выбранные даты
+    const result = await fetchLiveHotels(city.query, checkIn, checkOut, 30);
     if (result.length > 0) {
       setHotels(result);
+      setUsedDates({ in: checkIn, out: checkOut });
       setStatus('done');
-    } else {
-      // Пробуем ближние даты (кэш дальних дат бывает пуст)
-      const fallbackIn = new Date();
-      fallbackIn.setDate(fallbackIn.getDate() + 30);
-      const fallbackOut = new Date(fallbackIn);
-      fallbackOut.setDate(fallbackOut.getDate() + nights);
-      const fi = fallbackIn.toISOString().slice(0, 10);
-      const fo = fallbackOut.toISOString().slice(0, 10);
-      const retry = await fetchLiveHotels(city.query, fi, fo, 15);
-      if (retry.length > 0) {
-        setHotels(retry);
-        setStatus('done');
-      } else {
-        setStatus('empty');
-      }
+      return;
     }
+
+    // Попытка 2: через 30 дней от сегодня (кэш дальних дат бывает пуст)
+    const mk = (daysAhead: number) => {
+      const d1 = new Date(Date.now() + daysAhead * 86400000);
+      const d2 = new Date(d1.getTime() + nights * 86400000);
+      return { in: d1.toISOString().slice(0, 10), out: d2.toISOString().slice(0, 10) };
+    };
+    const f1 = mk(30);
+    const retry1 = await fetchLiveHotels(city.query, f1.in, f1.out, 30);
+    if (retry1.length > 0) {
+      setHotels(retry1);
+      setUsedDates(f1);
+      setStatus('done');
+      return;
+    }
+
+    // Попытка 3: через 14 дней, 7 ночей (самый "тёплый" кэш)
+    const f2 = mk(14);
+    const retry2 = await fetchLiveHotels(city.query, f2.in, f2.out, 30);
+    if (retry2.length > 0) {
+      setHotels(retry2);
+      setUsedDates(f2);
+      setStatus('done');
+      return;
+    }
+
+    setStatus('empty');
   };
 
   const visible = hotels.filter((h) => h.stars >= minStars);
@@ -226,6 +267,22 @@ const LiveHotelSearch = () => {
             ● LIVE · Найдено {visible.length} отелей · цены за {nights}{' '}
             {nights === 1 ? 'ночь' : nights < 5 ? 'ночи' : 'ночей'}, 2 гостя
           </div>
+          {usedDates && usedDates.in !== checkIn && (
+            <div
+              style={{
+                background: 'rgba(245,158,11,0.12)',
+                border: '1px solid rgba(245,158,11,0.35)',
+                borderRadius: 10,
+                padding: '10px 14px',
+                marginBottom: 14,
+                color: '#fbbf24',
+                fontSize: 13,
+              }}
+            >
+              ⚠️ На выбранные даты кэш цен пуст — показаны цены на ближайшие даты ({usedDates.in} —{' '}
+              {usedDates.out}). Кнопка бронирования откроет поиск на ВАШИ даты с точной ценой.
+            </div>
+          )}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
             {visible.map((h) => (
               <div
@@ -234,62 +291,95 @@ const LiveHotelSearch = () => {
                   background: 'rgba(0,0,0,0.3)',
                   border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: 14,
-                  padding: 16,
+                  overflow: 'hidden',
                   animation: 'fadeIn 0.4s ease',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 6 }}>
-                  <div>
-                    <div style={{ color: '#fff', fontWeight: 700, fontSize: 15 }}>{h.hotelName}</div>
-                    <div style={{ color: '#fbbf24', fontSize: 13 }}>
-                      {h.stars > 0 ? '★'.repeat(h.stars) : 'без категории'}
+                {/* 📷 Реальное фото отеля из базы Hotellook */}
+                <div style={{ height: 150, background: 'rgba(255,255,255,0.05)', position: 'relative' }}>
+                  <img
+                    src={`https://photo.hotellook.com/image_v2/limit/h${h.hotelId}_1/640/400.auto`}
+                    alt={h.hotelName}
+                    loading="lazy"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = 'none';
+                      const parent = (e.currentTarget as HTMLImageElement).parentElement;
+                      if (parent) {
+                        parent.style.display = 'flex';
+                        parent.style.alignItems = 'center';
+                        parent.style.justifyContent = 'center';
+                        parent.innerHTML = '<span style="font-size:40px">🏨</span>';
+                      }
+                    }}
+                  />
+                  {h.stars > 0 && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 8,
+                        left: 8,
+                        background: 'rgba(10,15,30,0.85)',
+                        borderRadius: 6,
+                        padding: '3px 8px',
+                        color: '#fbbf24',
+                        fontSize: 12,
+                      }}
+                    >
+                      {'★'.repeat(h.stars)}
                     </div>
-                  </div>
-                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <div style={{ color: '#34d399', fontWeight: 800, fontSize: 18 }}>
-                      {h.priceFrom.toLocaleString()}₽
-                    </div>
-                    <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>
-                      ≈{Math.round(h.priceFrom / nights).toLocaleString()}₽/ночь
-                    </div>
-                  </div>
+                  )}
                 </div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <a
-                    href={hotelBookingUrl(h.hotelId, checkIn, checkOut)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      flex: 1,
-                      padding: '9px',
-                      background: 'linear-gradient(135deg, #10b981, #059669)',
-                      borderRadius: 8,
-                      color: '#fff',
-                      textDecoration: 'none',
-                      textAlign: 'center',
-                      fontWeight: 700,
-                      fontSize: 12,
-                    }}
-                  >
-                    Сравнить и забронировать
-                  </a>
-                  <a
-                    href={bookingSearchUrl(h.hotelName, checkIn, checkOut)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      padding: '9px 12px',
-                      background: 'rgba(0,53,128,0.4)',
-                      border: '1px solid rgba(102,126,234,0.4)',
-                      borderRadius: 8,
-                      color: '#93c5fd',
-                      textDecoration: 'none',
-                      fontWeight: 600,
-                      fontSize: 12,
-                    }}
-                  >
-                    Booking
-                  </a>
+
+                <div style={{ padding: 14 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+                    <div style={{ color: '#fff', fontWeight: 700, fontSize: 15 }}>{h.hotelName}</div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{ color: '#34d399', fontWeight: 800, fontSize: 18 }}>
+                        {h.priceFrom.toLocaleString()}₽
+                      </div>
+                      <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>
+                        ≈{Math.round(h.priceFrom / nights).toLocaleString()}₽/ночь
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <a
+                      href={hotelBookingUrl(h.hotelId, checkIn, checkOut)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        flex: 1,
+                        padding: '9px',
+                        background: 'linear-gradient(135deg, #10b981, #059669)',
+                        borderRadius: 8,
+                        color: '#fff',
+                        textDecoration: 'none',
+                        textAlign: 'center',
+                        fontWeight: 700,
+                        fontSize: 12,
+                      }}
+                    >
+                      Сравнить и забронировать
+                    </a>
+                    <a
+                      href={bookingSearchUrl(h.hotelName, checkIn, checkOut)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: '9px 12px',
+                        background: 'rgba(0,53,128,0.4)',
+                        border: '1px solid rgba(102,126,234,0.4)',
+                        borderRadius: 8,
+                        color: '#93c5fd',
+                        textDecoration: 'none',
+                        fontWeight: 600,
+                        fontSize: 12,
+                      }}
+                    >
+                      Booking
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}

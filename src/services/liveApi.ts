@@ -3,6 +3,16 @@
 // Работают без токена, отдают реальные кэшированные цены в рублях.
 // ============================================================
 
+// 💰 МОНЕТИЗАЦИЯ: ваш партнёрский marker из travelpayouts.com
+// С каждого бронирования через сайт идёт комиссия.
+export const TP_MARKER = '547188';
+
+/** Добавляет партнёрский marker к ссылке, если он указан */
+function withMarker(url: string): string {
+  if (!TP_MARKER) return url;
+  return url + (url.includes('?') ? '&' : '?') + 'marker=' + TP_MARKER;
+}
+
 export interface LiveFlightPrice {
   value: number; // цена в ₽
   departDate: string;
@@ -126,7 +136,9 @@ export async function fetchLiveHotels(
 
 /** Ссылка на бронирование конкретного отеля с датами (Hotellook → системы бронирования) */
 export function hotelBookingUrl(hotelId: number, checkIn: string, checkOut: string, adults = 2): string {
-  return `https://search.hotellook.com/hotels?hotelId=${hotelId}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&currency=rub&language=ru`;
+  return withMarker(
+    `https://search.hotellook.com/hotels?hotelId=${hotelId}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&currency=rub&language=ru`,
+  );
 }
 
 /** Ссылка на живой поиск Booking.com с датами */
@@ -145,5 +157,7 @@ export function aviasalesSearchUrl(
   returnDate: string,
 ): string {
   const dm = (d: string) => d.slice(8, 10) + d.slice(5, 7);
-  return `https://www.aviasales.ru/search/${origin}${dm(departDate)}${destination}${dm(returnDate)}1`;
+  return withMarker(
+    `https://www.aviasales.ru/search/${origin}${dm(departDate)}${destination}${dm(returnDate)}1`,
+  );
 }
