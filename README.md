@@ -1,5 +1,9 @@
-# ✈️ TravelDeal — агрегатор путешествий
 
+# ✈️ TravelDeal — Агрегатор путешествий с реальными ценами
+
+**[🌍 Открыть сайт]([https://github.com/suschkova-arch/TravelDeal.git/])** | **[📧 Контакты](mailto:MILEDI_HR@mail.ru)**
+
+--
 Сайт для поиска отелей и авиабилетов с **реальными живыми ценами** из баз Aviasales и Hotellook (Aviasales Group).
 
 ## 🔴 Живые данные
@@ -59,9 +63,16 @@ src/
 ```
 
 ## ⚠️ Важно
+---
 
-- Живые цены работают при открытии сайта по **http/https** (хостинг). При открытии файла с диска (`file://`) браузер может блокировать API-запросы.
-- Файл `.env` с паролями **не хранится в репозитории** (см. `.gitignore`).
+## 📧 Контакты
+
+- **Email:** [MILEDI_HR@mail.ru](mailto:MILEDI_HR@mail.ru)
+- **Сайт:** [suschkova-arch.github.io/TravelDeal](https://github.com/suschkova-arch/TravelDeal.git/]/)
+
+---
+
+## 📄 Лицензия
 
 ## 💰 Монетизация
 
