@@ -94,7 +94,7 @@ const ReviewsSection = () => {
                 )}
               </div>
               <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 6 }}>
-                📍 {r.destination} · {r.date}
+                📍 {r.destination} · {r.date} · сумма экономии указана за всю поездку
               </div>
               <div style={{ color: '#fbbf24', fontSize: 18 }}>{'★'.repeat(r.rating)}</div>
             </div>

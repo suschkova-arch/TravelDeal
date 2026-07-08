@@ -83,10 +83,10 @@ const suggestions = [
 ];
 
 const notifications = [
-  { text: 'Екатерина собрала поездку в Анталью на 9 ночей и сэкономила 96 400₽', time: '36 мин назад', icon: '🏨' },
-  { text: 'Семья из Казани выбрала ж/д + отель в Калининграде выгоднее на 43 800₽', time: '41 мин назад', icon: '🚆' },
-  { text: 'На Дагестан сейчас просматривают подборки 18 человек', time: '39 мин назад', icon: '👀' },
-  { text: 'Камчатка и Кавказ добавлены в живой поиск на сезон 2026', time: '44 мин назад', icon: '✈️' },
+  { text: 'Екатерина забронировала Анталью на 9 ночей и сэкономила 32 800₽ 🏖️', time: '47 мин назад', icon: '🏨' },
+  { text: 'Семья из Казани выбрала ж/д + отель в Калининграде выгоднее на 21 400₽ 🚆', time: '49 мин назад', icon: '🚆' },
+  { text: 'На Дагестан сейчас смотрят 18 человек 👀', time: '45 мин назад', icon: '👀' },
+  { text: 'На Пхукет купили перелёт с выгодой 28 600₽ ✈️', time: '50 мин назад', icon: '✈️' },
 ];
 
 const AVIASALES_AFFILIATE = 'https://aviasales.tpk.lu/u9lFIAmF';
@@ -166,7 +166,17 @@ const Hero = () => {
           inset: 0,
           zIndex: 1,
           background:
-            'linear-gradient(to bottom, rgba(10,15,30,0.55) 0%, rgba(10,15,30,0.35) 40%, rgba(10,15,30,0.88) 100%)',
+            'linear-gradient(to bottom, rgba(6,12,28,0.55) 0%, rgba(10,15,30,0.38) 36%, rgba(10,15,30,0.9) 100%)',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          background:
+            'radial-gradient(circle at 52% 16%, rgba(125,211,252,0.28), transparent 24%), radial-gradient(circle at 82% 76%, rgba(45,212,191,0.16), transparent 22%), radial-gradient(circle at 16% 74%, rgba(191,219,254,0.14), transparent 22%), linear-gradient(to top, rgba(4,14,26,0.62) 0%, transparent 42%)',
+          mixBlendMode: 'screen',
         }}
       />
 
@@ -250,7 +260,7 @@ const Hero = () => {
             }}
           />
           <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>
-            Сезон поиска: июль 2026 → 2027 · отели, авиа и ж/д
+            Сезон поиска: июль 2026 → 2027 · цены в hero указаны за 2 взрослых
           </span>
         </div>
 

@@ -1,0 +1,16 @@
+Загрузите на хостинг только эти файлы из папки public/images:
+
+1. hotel-dubai-luxury.png
+2. hotel-tropical-resort.png
+3. hotel-europe-city-luxury.png
+4. hotel-russia-city.png
+5. hotel-dagestan-caspian.png
+6. hotel-caucasus-sanatorium.png
+7. hotel-altai-mountain.png
+
+Необязательно, но можно тоже загрузить:
+- hotel-placeholder.svg
+- destination-placeholder.svg
+
+Путь на хостинге:
+/public_html/TravelDeal/images/

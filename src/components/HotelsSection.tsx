@@ -357,8 +357,8 @@ const HotelsSection = () => {
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
                     <div>
-                      <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, textDecoration: 'line-through' }}>
-                        {hotel.oldPrice.toLocaleString()}₽/ночь
+                        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, textDecoration: 'line-through' }}>
+                        {hotel.oldPrice.toLocaleString()}₽/ночь · за 2 гостей
                       </div>
                       <div
                         style={{
@@ -370,7 +370,7 @@ const HotelsSection = () => {
                         }}
                       >
                         {cheapest.price.toLocaleString()}₽
-                        <span style={{ fontSize: 13, WebkitTextFillColor: 'rgba(255,255,255,0.4)' }}>/ночь</span>
+                        <span style={{ fontSize: 13, WebkitTextFillColor: 'rgba(255,255,255,0.4)' }}>/ночь за 2 гостей</span>
                       </div>
                     </div>
                     <div style={{ textAlign: 'right', color: 'rgba(255,255,255,0.52)', fontSize: 12 }}>
