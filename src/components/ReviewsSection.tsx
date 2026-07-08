@@ -28,7 +28,7 @@ const ReviewsSection = () => {
             <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>💬 Отзывы путешественников</span>
           </div>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-            Реальные истории экономии
+            Реальные истории экономии 2025–2026
           </h2>
         </div>
 
@@ -94,7 +94,7 @@ const ReviewsSection = () => {
                 )}
               </div>
               <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 6 }}>
-                📍 {r.destination} · {r.date}
+                📍 {r.destination} · {r.date} · сумма экономии указана за всю поездку, не на 1 человека
               </div>
               <div style={{ color: '#fbbf24', fontSize: 18 }}>{'★'.repeat(r.rating)}</div>
             </div>
@@ -106,26 +106,10 @@ const ReviewsSection = () => {
                 borderRadius: 16,
                 padding: '16px 24px',
                 textAlign: 'center',
-                flexShrink: 0,
               }}
             >
               <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, marginBottom: 4 }}>СЭКОНОМИЛ(А)</div>
               <div style={{ color: '#34d399', fontSize: 26, fontWeight: 800 }}>{r.saved.toLocaleString()}₽</div>
-              <div
-                style={{
-                  borderTop: '1px solid rgba(16,185,129,0.25)',
-                  marginTop: 10,
-                  paddingTop: 8,
-                  color: 'rgba(255,255,255,0.5)',
-                  fontSize: 11,
-                }}
-              >
-                Поездка: {r.tripDays} {r.tripDays === 1 ? 'день' : r.tripDays < 5 ? 'дня' : 'дней'}
-                <br />
-                <span style={{ color: '#a78bfa', fontWeight: 600 }}>
-                  Итого: {r.totalCost.toLocaleString()}₽
-                </span>
-              </div>
             </div>
           </div>
 
@@ -208,7 +192,7 @@ const ReviewsSection = () => {
           </button>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, alignItems: 'stretch' }}>
           {reviews.map((rev, i) => (
             <div
               key={rev.id}
