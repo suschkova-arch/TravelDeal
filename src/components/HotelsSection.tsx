@@ -5,26 +5,46 @@ import { getPartnerLink } from '../utils/partnerLinks';
 const HOTEL_PLACEHOLDER = `data:image/svg+xml;utf8,${encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
     <defs>
-      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#0f172a"/>
-        <stop offset="100%" stop-color="#1e293b"/>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0b0f19"/>
+        <stop offset="100%" stop-color="#111827"/>
       </linearGradient>
-      <linearGradient id="p" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#667eea"/>
-        <stop offset="100%" stop-color="#764ba2"/>
+      <linearGradient id="hotelGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#8b5cf6"/>
+        <stop offset="100%" stop-color="#6366f1"/>
       </linearGradient>
     </defs>
-    <rect width="1200" height="800" fill="url(#g)"/>
-    <rect x="240" y="150" width="720" height="500" rx="36" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)"/>
-    <rect x="370" y="270" width="460" height="210" rx="28" fill="url(#p)" opacity="0.25"/>
-    <rect x="430" y="230" width="340" height="64" rx="20" fill="rgba(255,255,255,0.1)"/>
-    <path d="M470 455V350c0-22 18-40 40-40h180c22 0 40 18 40 40v105" fill="none" stroke="#e5e7eb" stroke-width="18" stroke-linecap="round"/>
-    <rect x="445" y="455" width="310" height="58" rx="20" fill="#e5e7eb"/>
-    <rect x="505" y="355" width="56" height="56" rx="12" fill="#0f172a" opacity="0.28"/>
-    <rect x="573" y="355" width="56" height="56" rx="12" fill="#0f172a" opacity="0.28"/>
-    <rect x="641" y="355" width="56" height="56" rx="12" fill="#0f172a" opacity="0.28"/>
-    <text x="600" y="610" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="46" font-weight="700">TravelDeal Hotel</text>
-    <text x="600" y="660" text-anchor="middle" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="24">Фото временно недоступно</text>
+    <rect width="1200" height="800" fill="url(#sky)"/>
+    <circle cx="600" cy="180" r="10" fill="#fff" opacity="0.4"/>
+    <circle cx="200" cy="220" r="2" fill="#fff" opacity="0.3"/>
+    <circle cx="1000" cy="300" r="3" fill="#fff" opacity="0.5"/>
+    <circle cx="600" cy="250" r="120" fill="#a78bfa" opacity="0.08"/>
+    
+    <!-- Премиальный фасад отеля -->
+    <path d="M380 650 V280 h440 v370 Z" fill="url(#hotelGrad)" opacity="0.15"/>
+    <rect x="420" y="240" width="360" height="410" rx="16" fill="none" stroke="#8b5cf6" stroke-width="6" opacity="0.4"/>
+    
+    <!-- Колонны и парадный вход -->
+    <rect x="470" y="380" width="30" height="270" fill="#a78bfa" opacity="0.6"/>
+    <rect x="700" y="380" width="30" height="270" fill="#a78bfa" opacity="0.6"/>
+    <path d="M440 380 h320 l-30-50 H470 Z" fill="#8b5cf6" opacity="0.8"/>
+    
+    <!-- Светящиеся окна курортного отеля -->
+    <rect x="470" y="280" width="40" height="40" rx="6" fill="#fbbf24" opacity="0.85"/>
+    <rect x="540" y="280" width="40" height="40" rx="6" fill="#fbbf24" opacity="0.9"/>
+    <rect x="610" y="280" width="40" height="40" rx="6" fill="#38bdf8" opacity="0.7"/>
+    <rect x="680" y="280" width="40" height="40" rx="6" fill="#fbbf24" opacity="0.85"/>
+    
+    <rect x="540" y="440" width="120" height="210" rx="20" fill="none" stroke="#a78bfa" stroke-width="4" opacity="0.7"/>
+    <path d="M600 400 l15 15 m-15-15 l-15 15" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+    
+    <!-- Звезды отеля -->
+    <g transform="translate(480, 160) scale(1.5)">
+      <text x="0" y="0" fill="#fbbf24" font-size="24">★★★★★</text>
+    </g>
+
+    <text x="600" y="690" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="44" font-weight="800">TravelDeal Premium Resort</text>
+    <text x="600" y="735" text-anchor="middle" fill="#a78bfa" font-family="Arial, sans-serif" font-size="22" font-weight="600">Фотография обновляется • Идёт подбор лучшего предложения</text>
   </svg>
 `)}`;
 

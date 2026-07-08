@@ -13,11 +13,53 @@ html {
 }
 
 body {
-  background: #0a0f1e;
+  background: #050814;
   color: #fff;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* Красивый художественный ночной пляжный фон с луной и мягкой рябью воды */
+.hero-night-beach {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 28%, #fef08a 0%, rgba(254,240,138,0.18) 8%, transparent 32%),
+    radial-gradient(circle at 50% 28%, rgba(139,92,246,0.18) 0%, transparent 48%),
+    linear-gradient(to bottom, #030712 0%, #050918 36%, #0b1329 65%, #081a3e 88%, #092a54 100%);
+  overflow: hidden;
+}
+
+/* Лунная дорожка и рябь воды на фоне */
+.hero-night-beach::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38%;
+  background: 
+    repeating-linear-gradient(0deg, rgba(254,240,138,0.06) 0px, transparent 4px, rgba(254,240,138,0.06) 8px),
+    radial-gradient(ellipse at 50% 0%, rgba(254,240,138,0.22) 0%, transparent 68%),
+    linear-gradient(to top, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.2) 100%);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
+/* Звёздное ночное небо */
+.hero-night-beach::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 12% 18%, #fff 1px, transparent 1px),
+    radial-gradient(circle at 76% 24%, #fff 1.5px, transparent 1.5px),
+    radial-gradient(circle at 45% 12%, #fff 1px, transparent 1px),
+    radial-gradient(circle at 89% 34%, #fff 1px, transparent 1px),
+    radial-gradient(circle at 23% 42%, #fff 1.5px, transparent 1.5px);
+  background-size: 320px 320px;
+  opacity: 0.38;
 }
 
 ::-webkit-scrollbar {

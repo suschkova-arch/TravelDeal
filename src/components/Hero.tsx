@@ -131,42 +131,8 @@ const Hero = () => {
 
   return (
     <section style={{ position: 'relative', height: '100vh', minHeight: 660, overflow: 'hidden' }}>
-      {slides.map((s, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${s.bg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: i === slide ? 1 : 0,
-            transition: 'opacity 1.2s ease',
-            zIndex: 0,
-            filter: 'saturate(1.08) contrast(1.02)',
-          }}
-        />
-      ))}
-
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-          background:
-            'linear-gradient(to bottom, rgba(4,16,28,0.42) 0%, rgba(7,20,32,0.32) 26%, rgba(10,15,30,0.78) 62%, rgba(10,15,30,0.94) 100%)',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-          background:
-            'radial-gradient(circle at 52% 14%, rgba(125,211,252,0.28), transparent 22%), radial-gradient(circle at 84% 74%, rgba(45,212,191,0.14), transparent 20%), radial-gradient(circle at 18% 70%, rgba(191,219,254,0.14), transparent 22%), linear-gradient(to top, rgba(6,18,30,0.58) 0%, transparent 36%)',
-          mixBlendMode: 'screen',
-        }}
-      />
+      {/* Красивое ночное море, звездное небо и полная луна с рябью воды */}
+      <div className="hero-night-beach" style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
 
       <div
         style={{
