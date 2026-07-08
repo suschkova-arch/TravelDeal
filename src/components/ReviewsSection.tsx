@@ -28,7 +28,7 @@ const ReviewsSection = () => {
             <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>💬 Отзывы путешественников</span>
           </div>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-            Реальные истории экономии
+            Реальные истории экономии 2025–2026
           </h2>
         </div>
 

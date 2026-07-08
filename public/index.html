@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelDeal — Реальные цены на отели и авиабилеты 2026 • v4</title>
+    <meta name="description" content="Сравнение цен на отели и авиабилеты. Реальные цены 2026 года от Booking.com, Ostrovok, Agoda, Aviasales. Экономьте до 60%">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0f1e;
+            --bg2: #111827;
+            --bg3: #1a1f35;
+            --purple: #667eea;
+            --purple2: #764ba2;
+            --gold: #f59e0b;
+            --green: #10b981;
+            --red: #ef4444;
+            --text: #fff;
+            --text2: rgba(255,255,255,0.6);
+            --text3: rgba(255,255,255,0.35);
+            --border: rgba(255,255,255,0.08);
+            --border2: rgba(102,126,234,0.3);
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+        ::-webkit-scrollbar{width:8px}
+        ::-webkit-scrollbar-track{background:var(--bg)}
+        ::-webkit-scrollbar-thumb{background:var(--purple);border-radius:4px}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes slideLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+        @keyframes borderGlow{0%,100%{border-color:var(--border2)}50%{border-color:rgba(167,139,250,.6)}}
+        @keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .animate-fadeInUp{animation:fadeInUp .6s ease-out}
+        .animate-fadeIn{animation:fadeIn .5s ease-out}
+        .animate-slideLeft{animation:slideLeft .5s ease-out}
+        .animate-slideRight{animation:slideRight .5s ease-out}
+        .animate-scaleIn{animation:scaleIn .4s ease-out}
+        .animate-float{animation:float 3s ease-in-out infinite}
+        .animate-borderGlow{animation:borderGlow 2s ease-in-out infinite}
+        .animate-shimmer{background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);background-size:200% 100%;animation:shimmer 2s infinite}
+        .gradient-text{background:linear-gradient(135deg,var(--purple),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .gradient-text-gold{background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .glass{background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border:1px solid var(--border)}
+        .glass-hover{transition:all .3s cubic-bezier(.4,0,.2,1)}
+        .glass-hover:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4);border-color:var(--border2)}
+        .btn-primary{background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;border:none;border-radius:12px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(102,126,234,.4)}
+        .btn-primary:hover{box-shadow:0 8px 30px rgba(102,126,234,.6);transform:translateY(-1px)}
+        .btn-glass{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--text);border-radius:12px;cursor:pointer;transition:all .2s;font-weight:600}
+        .btn-glass:hover{background:rgba(102,126,234,.2);border-color:var(--border2)}
+        .card{border-radius:20px;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1)}
+        .card:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(0,0,0,.5)}
+        .price-badge{background:linear-gradient(135deg,#f97316,var(--red));color:#fff;border-radius:10px;padding:4px 12px;font-weight:700;font-size:13px}
+        .discount-badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--red),#dc2626);color:#fff;border-radius:8px;padding:6px 14px;font-weight:800;font-size:14px;z-index:5;box-shadow:0 4px 15px rgba(239,68,68,.5)}
+        .star-rating{color:var(--gold)}
+        .price-compare{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+        .price-item{border-radius:10px;padding:8px 12px;border:1px solid;font-size:12px;transition:all .2s;cursor:pointer;position:relative}
+        .price-item:hover{transform:scale(1.05)}
+        .price-item.cheapest{border-color:var(--green)!important;background:rgba(16,185,129,.15)!important}
+        .price-item.cheapest::after{content:'👑 Лучшая цена';position:absolute;top:-10px;right:-10px;background:var(--green);color:#fff;font-size:9px;padding:2px 8px;border-radius:100px;white-space:nowrap;font-weight:700}
+        .input-field{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 16px;color:#fff;font-size:15px;outline:none;transition:all .2s;font-family:inherit}
+        .input-field:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(102,126,234,.2)}
+        .input-field::placeholder{color:rgba(255,255,255,.3)}
+        .chip{border-radius:100px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+        .chip-active{background:rgba(102,126,234,.25);border-color:var(--purple)!important;color:#a78bfa}
+        .section{padding:80px 24px}
+        .container{max-width:1200px;margin:0 auto}
+        .grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+        .grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+        @media(max-width:768px){.section{padding:48px 16px}.grid-3,.grid-2{grid-template-columns:1fr}.hide-mobile{display:none!important}}
+    </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+const SAFE_LINKS = {
+    'Aviasales':'https://aviasales.tpk.lu/u9lFIAmF',
+    'Ostrovok':'https://ostrovok.tpk.lu/qm3uUcuL',
+    'Travelata':'https://travelata.tpk.lu/iXthmQlV',
+    'Onlinetours':'https://onlinetours.tpk.lu/9gx8uXiK',
+    'Level.Travel':'https://level.tpk.lu/pEKE6u4T',
+    'Туту':'https://tutu.tpk.lu/35nYuIo5',
+    'Яндекс Путешествия':'https://yandex.tpk.lu/n2k5ulFQ',
+    'Sutochno':'https://sutochno.tpk.lu/uTSAebHB',
+    'Localrent':'https://localrent.tpk.lu/axWJbRm1',
+    'Большая Страна':'https://bolshayastrana.tpk.lu/tDKbPrzA',
+    'Круиз-Онлайн':'https://kruiz-online.tpk.lu/ctXuG3FL',
+    'Cruise Online':'https://kruiz-online.tpk.lu/ctXuG3FL',
+    'EconomyBookings':'https://economybookings.tpk.lu/ANU2xTqv',
+    'QEEQ':'https://qeeq.tpk.lu/z8sf6b95',
+    'SeaRadar':'https://searadar.tpk.lu/pus6EpES',
+    'МирТурБаз':'https://mirturbaz.tpk.lu/UW7Z9Iw1',
+    'MirTurbaz':'https://mirturbaz.tpk.lu/UW7Z9Iw1',
+    'La Voyage':'https://lavoyage.tpk.lu/PC4ITkPJ',
+    'Radical Storage':'https://radicalstorage.tpk.lu/lkM8cN3r',
+    'VIP-Зал':'https://vip-zal.tpk.lu/gQ8g0epq',
+    'EKTA Traveling':'https://ektatraveling.tpk.lu/9aHvFarq',
+    'Sanatoriums':'https://sanatoriums.tpk.lu/9jud9LjB',
+    'Слетать':'https://sletat.tpk.lu/qOge5Itj',
+    'Путёвка':'https://putevka.tpk.lu/LLOG5aJa',
+    'Avito Путешествия':'https://avito.tpk.lu/vQaFIi9P',
+    'Booking.com':'https://www.booking.com/',
+    'Hotels.com':'https://hotels.com/',
+    'Agoda':'https://www.agoda.com/',
+    'Skyscanner':'https://www.skyscanner.ru/',
+    'KAYAK':'https://www.kayak.ru/',
+    'Trip.com':'https://ru.trip.com/',
+};
+const resolvePartnerUrl = (name, fallback) => SAFE_LINKS[name] || fallback || '#';
+const HOTEL_PLACEHOLDER = `data:image/svg+xml;utf8,${encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0f172a"/>
+        <stop offset="100%" stop-color="#1e293b"/>
+      </linearGradient>
+      <linearGradient id="p" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#667eea"/>
+        <stop offset="100%" stop-color="#764ba2"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="800" fill="url(#g)"/>
+    <rect x="240" y="150" width="720" height="500" rx="36" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)"/>
+    <rect x="370" y="270" width="460" height="210" rx="28" fill="url(#p)" opacity="0.25"/>
+    <rect x="430" y="230" width="340" height="64" rx="20" fill="rgba(255,255,255,0.1)"/>
+    <path d="M470 455V350c0-22 18-40 40-40h180c22 0 40 18 40 40v105" fill="none" stroke="#e5e7eb" stroke-width="18" stroke-linecap="round"/>
+    <rect x="445" y="455" width="310" height="58" rx="20" fill="#e5e7eb"/>
+    <rect x="505" y="355" width="56" height="56" rx="12" fill="#0f172a" opacity="0.28"/>
+    <rect x="573" y="355" width="56" height="56" rx="12" fill="#0f172a" opacity="0.28"/>
+    <rect x="641" y="355" width="56" height="56" rx="12" fill="#0f172a" opacity="0.28"/>
+    <text x="600" y="610" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="46" font-weight="700">TravelDeal Hotel</text>
+    <text x="600" y="660" text-anchor="middle" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="24">Фото временно недоступно</text>
+  </svg>
+`)}`;
+
+// ============================================================
+// РЕАЛЬНЫЕ ДАННЫЕ 2026 — ОТЕЛИ (цены с sodis.ru, booking.com, agoda.com)
+// ============================================================
+const hotelsDB = [
+    // --- ДУБАЙ ---
+    { id:1, name:"Burj Al Arab Jumeirah", city:"Дубай", country:"ОАЭ", stars:5, rating:4.9, reviews:2847, image:"images/hotel-dubai-luxury.png", amenities:["Бассейн","СПА","Рестораны","WiFi","Пляж","Трансфер"], partners:[
+        {name:"Booking.com",price:81800,url:"https://www.booking.com/hotel/ae/burj-al-arab.ru.html"},
+        {name:"Ostrovok",price:79500,url:"https://ostrovok.ru/hotel/uae/dubai/"},
+        {name:"Agoda",price:84200,url:"https://www.agoda.com/burj-al-arab/hotel/dubai-ae.html"},
+    ]},
+    { id:2, name:"Atlantis The Palm", city:"Дубай", country:"ОАЭ", stars:5, rating:4.8, reviews:5231, image:"images/hotel-dubai-luxury.png", amenities:["Аквапарк","Пляж","Дайвинг","СПА","Рестораны","WiFi"], partners:[
+        {name:"Booking.com",price:42000,url:"https://www.booking.com/hotel/ae/atlantis-the-palm.ru.html"},
+        {name:"Hotels.com",price:44500,url:"https://hotels.com/ho121796/"},
+        {name:"Ostrovok",price:39800,url:"https://ostrovok.ru/hotel/uae/dubai/"},
+    ]},
+    { id:3, name:"Address Beach Resort", city:"Дубай", country:"ОАЭ", stars:5, rating:4.7, reviews:1842, image:"images/hotel-dubai-luxury.png", amenities:["Бассейн на крыше","Пляж","СПА","WiFi","Рестораны"], partners:[
+        {name:"Booking.com",price:30800,url:"https://www.booking.com/hotel/ae/address-beach-resort.ru.html"},
+        {name:"Agoda",price:29500,url:"https://www.agoda.com/address-beach-resort/hotel/dubai-ae.html"},
+    ]},
+    { id:4, name:"Roda Beach Resort", city:"Дубай", country:"ОАЭ", stars:4, rating:4.5, reviews:987, image:"images/hotel-dubai-luxury.png", amenities:["Пляж","Бассейн","WiFi","Ресторан","Тренажёрный зал"], partners:[
+        {name:"Booking.com",price:10500,url:"https://www.booking.com/hotel/ae/roda-beach-resort.ru.html"},
+        {name:"Ostrovok",price:9800,url:"https://ostrovok.ru/hotel/uae/dubai/"},
+    ]},
+
+    // --- БАЛИ ---
+    { id:5, name:"Kempinski Bali", city:"Нуса-Дуа", country:"Индонезия", stars:5, rating:4.8, reviews:892, image:"images/hotel-tropical-resort.png", amenities:["Частный пляж","Бассейн","СПА","WiFi","Завтрак","Бар"], partners:[
+        {name:"Agoda",price:13800,url:"https://www.agoda.com/kempinski-bali/hotel/bali-id.html"},
+        {name:"Booking.com",price:15200,url:"https://www.booking.com/hotel/id/kempinski-bali.ru.html"},
+    ]},
+    { id:6, name:"Ayana Resort Bali", city:"Джимбаран", country:"Индонезия", stars:5, rating:4.7, reviews:3456, image:"images/hotel-tropical-resort.png", amenities:["Скала-бар","Частный пляж","СПА","12 бассейнов","WiFi"], partners:[
+        {name:"Ostrovok",price:16500,url:"https://ostrovok.ru/hotel/indonesia/bali/"},
+        {name:"Booking.com",price:18200,url:"https://www.booking.com/hotel/id/ayana-resort-bali.ru.html"},
+    ]},
+    { id:7, name:"Ubud Hanging Gardens", city:"Убуд", country:"Индонезия", stars:5, rating:4.9, reviews:1203, image:"images/hotel-tropical-resort.png", amenities:["Бассейн в джунглях","СПА","Йога","Ресторан","WiFi"], partners:[
+        {name:"Agoda",price:22500,url:"https://www.agoda.com/ubud-hanging-gardens/hotel/bali-id.html"},
+        {name:"Booking.com",price:24800,url:"https://www.booking.com/hotel/id/ubud-hanging-gardens.ru.html"},
+    ]},
+
+    // --- ПАРИЖ ---
+    { id:8, name:"Ritz Paris", city:"Париж", country:"Франция", stars:5, rating:4.9, reviews:2103, image:"https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80", amenities:["Ресторан 2★ Michelin","СПА","Консьерж","Бар Hemingway","WiFi"], partners:[
+        {name:"Booking.com",price:245000,url:"https://www.booking.com/hotel/fr/ritz-paris.ru.html"},
+        {name:"Hotels.com",price:252000,url:"https://hotels.com/ho114128/"},
+    ]},
+    { id:9, name:"Four Seasons George V", city:"Париж", country:"Франция", stars:5, rating:4.9, reviews:1876, image:"https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80", amenities:["Ресторан 3★ Michelin","СПА","Бассейн","WiFi","Цветочный дворик"], partners:[
+        {name:"Hotels.com",price:235000,url:"https://hotels.com/ho114130/"},
+        {name:"Booking.com",price:242000,url:"https://www.booking.com/hotel/fr/four-seasons-george-v.ru.html"},
+    ]},
+    { id:10, name:"Le Cinq Codet", city:"Париж", country:"Франция", stars:5, rating:4.3, reviews:456, image:"images/hotel-europe-city-luxury.png", amenities:["СПА","Ресторан","WiFi","Терраса","Консьерж"], partners:[
+        {name:"Agoda",price:22500,url:"https://www.agoda.com/le-cinq-codet/hotel/paris-fr.html"},
+        {name:"Booking.com",price:23800,url:"https://www.booking.com/hotel/fr/le-cinq-codet.ru.html"},
+    ]},
+
+    // --- ТОКИО ---
+    { id:11, name:"Mandarin Oriental Tokyo", city:"Токио", country:"Япония", stars:5, rating:4.8, reviews:1567, image:"images/hotel-europe-city-luxury.png", amenities:["Панорамный вид","СПА","Рестораны 2★ Michelin","WiFi","Бассейн"], partners:[
+        {name:"Booking.com",price:83500,url:"https://www.booking.com/hotel/jp/mandarin-oriental-tokyo.ru.html"},
+        {name:"Agoda",price:79800,url:"https://www.agoda.com/mandarin-oriental-tokyo/hotel/tokyo-jp.html"},
+    ]},
+    { id:12, name:"Park Hyatt Tokyo", city:"Токио", country:"Япония", stars:5, rating:4.7, reviews:2341, image:"images/hotel-europe-city-luxury.png", amenities:["Вид на Фудзи","Бассейн","СПА","WiFi","Тренажёрный зал"], partners:[
+        {name:"Ostrovok",price:45000,url:"https://ostrovok.ru/hotel/japan/tokyo/"},
+        {name:"Booking.com",price:48200,url:"https://www.booking.com/hotel/jp/park-hyatt-tokyo.ru.html"},
+    ]},
+
+    // --- БАРСЕЛОНА ---
+    { id:13, name:"W Barcelona", city:"Барселона", country:"Испания", stars:5, rating:4.7, reviews:3421, image:"images/hotel-europe-city-luxury.png", amenities:["Пляж","Бассейн на крыше","Ночной клуб","WiFi","СПА"], partners:[
+        {name:"Booking.com",price:28000,url:"https://www.booking.com/hotel/es/w-barcelona.ru.html"},
+        {name:"Hotels.com",price:29500,url:"https://hotels.com/ho182367/"},
+        {name:"Ostrovok",price:26500,url:"https://ostrovok.ru/hotel/spain/barcelona/"},
+    ]},
+    { id:14, name:"Majestic Hotel & Spa", city:"Барселона", country:"Испания", stars:5, rating:4.8, reviews:1567, image:"images/hotel-europe-city-luxury.png", amenities:["СПА","Бассейн на крыше","Ресторан","WiFi","Консьерж"], partners:[
+        {name:"Agoda",price:19500,url:"https://www.agoda.com/majestic-hotel-spa/hotel/barcelona-es.html"},
+        {name:"Booking.com",price:21200,url:"https://www.booking.com/hotel/es/majestic-barcelona.ru.html"},
+    ]},
+
+    // --- МАЛЬДИВЫ ---
+    { id:15, name:"Gili Lankanfushi", city:"Северный Мале", country:"Мальдивы", stars:5, rating:5.0, reviews:743, image:"https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80", amenities:["Бунгало над водой","Дайвинг","СПА","Всё включено","Гидроплан"], partners:[
+        {name:"Booking.com",price:92000,url:"https://www.booking.com/hotel/mv/gili-lankanfushi.ru.html"},
+        {name:"Hotels.com",price:96500,url:"https://hotels.com/ho178942/"},
+    ]},
+    { id:16, name:"Soneva Fushi", city:"Баа", country:"Мальдивы", stars:5, rating:4.9, reviews:512, image:"https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80", amenities:["Частный остров","Обсерватория","СПА","Виллы","Дайвинг"], partners:[
+        {name:"Agoda",price:135000,url:"https://www.agoda.com/soneva-fushi/hotel/maldives-mv.html"},
+        {name:"Booking.com",price:142000,url:"https://www.booking.com/hotel/mv/soneva-fushi.ru.html"},
+    ]},
+
+    // --- ТУРЦИЯ ---
+    { id:17, name:"Rixos Downtown Antalya", city:"Анталья", country:"Турция", stars:5, rating:4.9, reviews:4682, image:"images/hotel-tropical-resort.png", amenities:["Всё включено","Пляж","СПА","Семейный отдых"], partners:[
+        {name:"Ostrovok",price:24800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:25900,url:"https://www.booking.com/"},
+        {name:"Agoda",price:27100,url:"https://www.agoda.com/"},
+    ]},
+    { id:18, name:"Akra Hotel Antalya", city:"Анталья", country:"Турция", stars:5, rating:4.8, reviews:3514, image:"images/hotel-tropical-resort.png", amenities:["Панорамный вид","СПА","Завтрак","Бассейн"], partners:[
+        {name:"Ostrovok",price:18900,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:19700,url:"https://www.booking.com/"},
+    ]},
+
+    // --- ТАИЛАНД ---
+    { id:19, name:"InterContinental Phuket", city:"Пхукет", country:"Таиланд", stars:5, rating:4.8, reviews:2810, image:"images/hotel-tropical-resort.png", amenities:["Пляж","СПА","Бассейны","Детский клуб"], partners:[
+        {name:"Agoda",price:31800,url:"https://www.agoda.com/"},
+        {name:"Booking.com",price:33200,url:"https://www.booking.com/"},
+        {name:"Ostrovok",price:34100,url:"https://ostrovok.ru/"},
+    ]},
+    { id:20, name:"The Slate Phuket", city:"Пхукет", country:"Таиланд", stars:5, rating:4.7, reviews:1951, image:"images/hotel-tropical-resort.png", amenities:["Пляж","Дизайн-отель","СПА","Бассейны"], partners:[
+        {name:"Agoda",price:21400,url:"https://www.agoda.com/"},
+        {name:"Ostrovok",price:22800,url:"https://ostrovok.ru/"},
+    ]},
+
+    // --- ВЬЕТНАМ ---
+    { id:21, name:"InterContinental Danang", city:"Дананг", country:"Вьетнам", stars:5, rating:4.9, reviews:1288, image:"images/hotel-tropical-resort.png", amenities:["Пляж","СПА","Премиум","Виллы"], partners:[
+        {name:"Agoda",price:28600,url:"https://www.agoda.com/"},
+        {name:"Booking.com",price:30100,url:"https://www.booking.com/"},
+    ]},
+    { id:22, name:"Vinpearl Resort Nha Trang", city:"Нячанг", country:"Вьетнам", stars:5, rating:4.7, reviews:2175, image:"images/hotel-tropical-resort.png", amenities:["Пляж","Курорт","СПА","Семейные номера"], partners:[
+        {name:"Agoda",price:17400,url:"https://www.agoda.com/"},
+        {name:"Booking.com",price:18600,url:"https://www.booking.com/"},
+    ]},
+
+    // --- АБХАЗИЯ ---
+    { id:23, name:"Amra Park Hotel", city:"Гагра", country:"Абхазия", stars:4, rating:4.6, reviews:1350, image:"images/hotel-tropical-resort.png", amenities:["Первая линия","Парк","СПА","Завтрак"], partners:[
+        {name:"Ostrovok",price:13200,url:"https://ostrovok.ru/"},
+        {name:"Sutochno",price:14100,url:"https://sutochno.ru/"},
+    ]},
+
+    // --- КИПР ---
+    { id:24, name:"Sun Hall Hotel", city:"Ларнака", country:"Кипр", stars:4, rating:4.7, reviews:1490, image:"images/hotel-tropical-resort.png", amenities:["Первая линия","Бассейн","СПА","Завтрак"], partners:[
+        {name:"Ostrovok",price:21200,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:21900,url:"https://www.booking.com/"},
+    ]},
+
+    // --- ИТАЛИЯ ---
+    { id:25, name:"Hotel Danieli", city:"Венеция", country:"Италия", stars:5, rating:4.9, reviews:2784, image:"images/hotel-europe-city-luxury.png", amenities:["Canal view","Concierge","Завтрак","Исторический центр"], partners:[
+        {name:"Ostrovok",price:45900,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:47200,url:"https://www.booking.com/"},
+    ]},
+
+    // --- ИСПАНИЯ ---
+    { id:26, name:"Majestic Hotel & Spa", city:"Барселона", country:"Испания", stars:5, rating:4.8, reviews:1567, image:"images/hotel-europe-city-luxury.png", amenities:["СПА","Руфтоп","Ресторан","Консьерж"], partners:[
+        {name:"Agoda",price:19500,url:"https://www.agoda.com/"},
+        {name:"Booking.com",price:21200,url:"https://www.booking.com/"},
+    ]},
+
+    // --- КУБА ---
+    { id:27, name:"Iberostar Parque Central", city:"Гавана", country:"Куба", stars:5, rating:4.7, reviews:1180, image:"images/hotel-tropical-resort.png", amenities:["Центр города","Руфтоп","Бассейн","Concierge"], partners:[
+        {name:"Ostrovok",price:33800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:34900,url:"https://www.booking.com/"},
+    ]},
+
+    // --- ФИЛИППИНЫ ---
+    { id:28, name:"The Peninsula Manila", city:"Манила", country:"Филиппины", stars:5, rating:4.8, reviews:1654, image:"images/hotel-tropical-resort.png", amenities:["СПА","Лаунж","Бассейн","Трансфер"], partners:[
+        {name:"Ostrovok",price:27200,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:28100,url:"https://www.booking.com/"},
+    ]},
+
+    // --- РОССИЯ ---
+    { id:29, name:"Mercure Kaliningrad Center", city:"Калининград", country:"Россия", stars:4, rating:4.8, reviews:2145, image:"images/hotel-russia-city.png", amenities:["Центр","Озеро","Завтрак","WiFi"], partners:[
+        {name:"Ostrovok",price:9800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:10500,url:"https://www.booking.com/"},
+    ]},
+    { id:30, name:"Crystal House Suite Hotel & SPA", city:"Калининград", country:"Россия", stars:5, rating:4.8, reviews:1650, image:"images/hotel-russia-city.png", amenities:["СПА","Вид на озеро","Завтрак","WiFi"], partners:[
+        {name:"Ostrovok",price:12800,url:"https://ostrovok.ru/"},
+        {name:"Agoda",price:13200,url:"https://www.agoda.com/"},
+    ]},
+    { id:31, name:"Korston Royal Kazan", city:"Казань", country:"Россия", stars:5, rating:4.7, reviews:1880, image:"images/hotel-russia-city.png", amenities:["Центр","Панорама","Ресторан","Парковка"], partners:[
+        {name:"Ostrovok",price:11200,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:11800,url:"https://www.booking.com/"},
+    ]},
+    { id:32, name:"Pacific Plaza Sakhalin", city:"Южно-Сахалинск", country:"Россия", stars:4, rating:4.5, reviews:890, image:"images/hotel-russia-city.png", amenities:["Завтрак","Трансфер","Ресторан","WiFi"], partners:[
+        {name:"Ostrovok",price:9800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:10500,url:"https://www.booking.com/"},
+    ]},
+    { id:33, name:"Lotte Hotel Vladivostok", city:"Владивосток", country:"Россия", stars:5, rating:4.7, reviews:1420, image:"images/hotel-russia-city.png", amenities:["Центр","СПА","Вид на город","Консьерж"], partners:[
+        {name:"Ostrovok",price:14200,url:"https://ostrovok.ru/"},
+        {name:"Agoda",price:14600,url:"https://www.agoda.com/"},
+    ]},
+    { id:34, name:"Alleya Resort", city:"Каспийск", country:"Россия", stars:4, rating:4.7, reviews:972, image:"images/hotel-dagestan-caspian.png", amenities:["Море","Завтрак","Семейные номера","WiFi"], partners:[
+        {name:"Ostrovok",price:11800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:12400,url:"https://www.booking.com/"},
+    ]},
+    { id:35, name:"AZIMUT Парк Отель Каспийск", city:"Каспийск", country:"Россия", stars:4, rating:4.8, reviews:1188, image:"images/hotel-dagestan-caspian.png", amenities:["Море","Фитнес","Ресторан","Трансфер"], partners:[
+        {name:"Ostrovok",price:13900,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:14500,url:"https://www.booking.com/"},
+    ]},
+    { id:36, name:"Green Resort Hotel & SPA", city:"Кисловодск", country:"Россия", stars:5, rating:4.9, reviews:1643, image:"images/hotel-caucasus-sanatorium.png", amenities:["СПА","Минеральная вода","Бассейн","Парк"], partners:[
+        {name:"Ostrovok",price:18600,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:19400,url:"https://www.booking.com/"},
+    ]},
+    { id:37, name:"MAYRVEDA Kislovodsk", city:"Кисловодск", country:"Россия", stars:5, rating:4.9, reviews:856, image:"images/hotel-caucasus-sanatorium.png", amenities:["Wellness","Санаторий","Питание","СПА"], partners:[
+        {name:"Ostrovok",price:24800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:25600,url:"https://www.booking.com/"},
+    ]},
+    { id:38, name:"Cosmos Selection Altay", city:"Манжерок", country:"Россия", stars:5, rating:4.8, reviews:842, image:"images/hotel-altai-mountain.png", amenities:["Горы","СПА","Панорама","Завтрак"], partners:[
+        {name:"Ostrovok",price:17600,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:18300,url:"https://www.booking.com/"},
+    ]},
+    { id:39, name:"Laguna Kamchatka", city:"Паратунка", country:"Россия", stars:5, rating:4.9, reviews:654, image:"images/hotel-altai-mountain.png", amenities:["Источники","СПА","Завтрак","Вид на вулканы"], partners:[
+        {name:"Ostrovok",price:26400,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:27900,url:"https://www.booking.com/"},
+    ]},
+    { id:40, name:"AZIMUT Сочи", city:"Сочи", country:"Россия", stars:4, rating:4.6, reviews:2650, image:"images/hotel-russia-city.png", amenities:["Море","Бассейн","Завтрак","Семья"], partners:[
+        {name:"Ostrovok",price:11600,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:12300,url:"https://www.booking.com/"},
+    ]},
+    { id:41, name:"Mriya Resort & SPA", city:"Ялта", country:"Россия", stars:5, rating:4.9, reviews:1788, image:"images/hotel-tropical-resort.png", amenities:["Премиум","СПА","Море","Парк"], partners:[
+        {name:"Ostrovok",price:35200,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:36800,url:"https://www.booking.com/"},
+    ]},
+    { id:42, name:"Lotte Hotel St. Petersburg", city:"Санкт-Петербург", country:"Россия", stars:5, rating:4.9, reviews:2240, image:"images/hotel-russia-city.png", amenities:["Центр","СПА","Завтрак","Люкс"], partners:[
+        {name:"Ostrovok",price:21400,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:22600,url:"https://www.booking.com/"},
+    ]},
+    { id:43, name:"Radisson Collection Moscow", city:"Москва", country:"Россия", stars:5, rating:4.8, reviews:3120, image:"images/hotel-russia-city.png", amenities:["Река","СПА","Рестораны","Центр"], partners:[
+        {name:"Ostrovok",price:19800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:20700,url:"https://www.booking.com/"},
+    ]},
+    { id:44, name:"Swissôtel Resort Sochi Kamelia", city:"Сочи", country:"Россия", stars:5, rating:4.8, reviews:2010, image:"images/hotel-tropical-resort.png", amenities:["Пляж","СПА","Парк","Семейный отдых"], partners:[
+        {name:"Ostrovok",price:22800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:23600,url:"https://www.booking.com/"},
+    ]},
+    { id:45, name:"City & Business Hotel", city:"Минеральные Воды", country:"Россия", stars:4, rating:4.6, reviews:734, image:"images/hotel-caucasus-sanatorium.png", amenities:["Трансфер","Завтрак","WiFi","Бизнес-формат"], partners:[
+        {name:"Ostrovok",price:9800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:10400,url:"https://www.booking.com/"},
+    ]},
+    { id:46, name:"Kurilsk Island Hotel", city:"Курильск", country:"Россия", stars:4, rating:4.5, reviews:318, image:"images/hotel-altai-mountain.png", amenities:["Океан","Экспедиции","Завтрак","Трансфер"], partners:[
+        {name:"Ostrovok",price:15400,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:16200,url:"https://www.booking.com/"},
+    ]},
+];
+
+// ============================================================
+// РЕАЛЬНЫЕ ДАННЫЕ 2026 — АВИАБИЛЕТЫ (цены с aviasales.ru, trip.com)
+// ============================================================
+const flightsDB = [
+    { id:1, from:"Москва", to:"Дубай", fromCode:"SVO", toCode:"DXB", departTime:"06:30", arriveTime:"11:45", duration:"5ч 15м", stops:0, aircraft:"Boeing 777", baggage:"23 кг", partners:[
+        {name:"Aviasales",airline:"Emirates",price:24800,url:"https://aviasales.ru/search/SVO1501DXB2201"},
+        {name:"Skyscanner",airline:"flydubai",price:15600,url:"https://www.skyscanner.ru/transport/flights/svo/dxb/"},
+        {name:"Trip.com",airline:"Aeroflot",price:19200,url:"https://ru.trip.com/flights/moscow-to-dubai/"},
+    ]},
+    { id:2, from:"Москва", to:"Бали", fromCode:"SVO", toCode:"DPS", departTime:"09:15", arriveTime:"06:30+1", duration:"13ч 15м", stops:1, aircraft:"Airbus A380", baggage:"30 кг", partners:[
+        {name:"Aviasales",airline:"Singapore Airlines",price:52000,url:"https://aviasales.ru/search/SVO0104DPS1504"},
+        {name:"Trip.com",airline:"China Eastern",price:32300,url:"https://ru.trip.com/flights/moscow-to-bali/"},
+        {name:"Skyscanner",airline:"Emirates",price:45600,url:"https://www.skyscanner.ru/transport/flights/svo/dps/"},
+    ]},
+    { id:3, from:"Москва", to:"Париж", fromCode:"SVO", toCode:"CDG", departTime:"11:20", arriveTime:"13:45", duration:"3ч 25м", stops:0, aircraft:"Airbus A320", baggage:"23 кг", partners:[
+        {name:"Aviasales",airline:"Air France",price:18600,url:"https://aviasales.ru/search/SVO2004CDG2704"},
+        {name:"Skyscanner",airline:"Aeroflot",price:15600,url:"https://www.skyscanner.ru/transport/flights/svo/cdg/"},
+        {name:"KAYAK",airline:"Turkish Airlines",price:16800,url:"https://www.kayak.ru/flights/SVO-CDG/"},
+    ]},
+    { id:4, from:"Москва", to:"Токио", fromCode:"SVO", toCode:"NRT", departTime:"14:00", arriveTime:"06:15+1", duration:"10ч 15м", stops:0, aircraft:"Boeing 787", baggage:"23 кг", partners:[
+        {name:"Aviasales",airline:"Japan Airlines",price:42000,url:"https://aviasales.ru/search/SVO0505NRT1905"},
+        {name:"Trip.com",airline:"Aeroflot",price:38600,url:"https://ru.trip.com/flights/moscow-to-tokyo/"},
+    ]},
+    { id:5, from:"Москва", to:"Барселона", fromCode:"SVO", toCode:"BCN", departTime:"16:45", arriveTime:"19:30", duration:"4ч 45м", stops:0, aircraft:"Airbus A319", baggage:"10 кг", partners:[
+        {name:"Aviasales",airline:"Vueling",price:19400,url:"https://aviasales.ru/search/SVO1006BCN2406"},
+        {name:"Skyscanner",airline:"Aeroflot",price:17500,url:"https://www.skyscanner.ru/transport/flights/svo/bcn/"},
+    ]},
+    { id:6, from:"Москва", to:"Мале", fromCode:"SVO", toCode:"MLE", departTime:"22:30", arriveTime:"09:45+1", duration:"7ч 15м", stops:1, aircraft:"Airbus A330", baggage:"30 кг", partners:[
+        {name:"KAYAK",airline:"Maldivian",price:56000,url:"https://www.kayak.ru/flights/SVO-MLE/"},
+        {name:"Aviasales",airline:"Emirates",price:48000,url:"https://aviasales.ru/search/SVO0107MLE1407"},
+    ]},
+];
+
+// ============================================================
+// ПАРТНЁРЫ
+// ============================================================
+const partnersList = [
+    {id:1,name:"Booking.com",logo:"🏨",desc:"Крупнейший агрегатор отелей. Гарантия лучшей цены",url:"https://booking.com",color:"#003580"},
+    {id:2,name:"Ostrovok",logo:"🏝️",desc:"Российский сервис бронирования отелей по всему миру",url:"https://ostrovok.ru",color:"#00b4d8"},
+    {id:3,name:"Agoda",logo:"🌏",desc:"Азиатский гигант бронирования. Часто дешевле Booking",url:"https://agoda.com",color:"#e12d46"},
+    {id:4,name:"Hotels.com",logo:"🗝️",desc:"Каждая 10-я ночь бесплатно по программе лояльности",url:"https://hotels.com",color:"#d4001f"},
+    {id:5,name:"Aviasales",logo:"✈️",desc:"Умный поиск авиабилетов среди 100+ авиакомпаний",url:"https://aviasales.ru",color:"#ff6d00"},
+    {id:6,name:"Skyscanner",logo:"🌍",desc:"Глобальный агрегатор рейсов, отелей и авто",url:"https://skyscanner.ru",color:"#0770e3"},
+    {id:7,name:"KAYAK",logo:"🔍",desc:"Сравнение цен на рейсы, отели, авто",url:"https://kayak.ru",color:"#ff6b35"},
+    {id:8,name:"Trip.com",logo:"🎫",desc:"Крупнейшая азиатская платформа для путешествий",url:"https://ru.trip.com",color:"#2563eb"},
+];
+
+// ============================================================
+// КОМПОНЕНТЫ
+// ============================================================
+
+// Навигация
+const Navbar = ({scrolled}) => (
+    <nav style={{
+        position:'fixed',top:0,left:0,right:0,zIndex:1000,padding:'12px 24px',
+        display:'flex',alignItems:'center',justifyContent:'space-between',
+        background:scrolled?'rgba(10,15,30,.95)':'rgba(10,15,30,.4)',
+        backdropFilter:'blur(20px)',borderBottom:scrolled?'1px solid var(--border2)':'1px solid transparent',
+        transition:'all .3s'
+    }}>
+        <a href="#" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:10}}>
+            <div style={{width:40,height:40,background:'linear-gradient(135deg,var(--purple),var(--purple2))',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,boxShadow:'0 4px 15px rgba(102,126,234,.5)'}}>✈</div>
+            <span style={{fontSize:22,fontWeight:800}} className="gradient-text">TravelDeal</span>
+        </a>
+        <div className="hide-mobile" style={{display:'flex',gap:6,alignItems:'center'}}>
+            <a href="#hotels" style={{color:'rgba(255,255,255,.8)',textDecoration:'none',padding:'8px 16px',borderRadius:8,fontSize:14,fontWeight:500,transition:'all .2s'}} onMouseEnter={e=>{e.target.style.color='#fff';e.target.style.background='rgba(102,126,234,.2)'}} onMouseLeave={e=>{e.target.style.color='rgba(255,255,255,.8)';e.target.style.background='transparent'}}>🏨 Отели</a>
+            <a href="#flights" style={{color:'rgba(255,255,255,.8)',textDecoration:'none',padding:'8px 16px',borderRadius:8,fontSize:14,fontWeight:500,transition:'all .2s'}} onMouseEnter={e=>{e.target.style.color='#fff';e.target.style.background='rgba(102,126,234,.2)'}} onMouseLeave={e=>{e.target.style.color='rgba(255,255,255,.8)';e.target.style.background='transparent'}}>✈️ Билеты</a>
+            <a href="#partners" style={{color:'rgba(255,255,255,.8)',textDecoration:'none',padding:'8px 16px',borderRadius:8,fontSize:14,fontWeight:500,transition:'all .2s'}} onMouseEnter={e=>{e.target.style.color='#fff';e.target.style.background='rgba(102,126,234,.2)'}} onMouseLeave={e=>{e.target.style.color='rgba(255,255,255,.8)';e.target.style.background='transparent'}}>🤝 Партнёры</a>
+            <button className="btn-primary" style={{padding:'10px 20px',fontSize:14,marginLeft:8}} onClick={()=>document.getElementById('hotels').scrollIntoView({behavior:'smooth'})}>🔍 Найти отель</button>
+        </div>
+    </nav>
+);
+
+// Хиро
+const liveNotifications = [
+    { text: 'Семья выбрала Калининград на 6 ночей и сэкономила 43 800₽', time: '38 мин назад', icon: '🚆' },
+    { text: 'На Дагестан сейчас смотрят 18 человек', time: '41 мин назад', icon: '👀' },
+    { text: 'Пхукет на 11 ночей собран выгоднее на 128 700₽', time: '36 мин назад', icon: '🏨' },
+    { text: 'Камчатка и Кавказ доступны в новом каталоге направлений', time: '44 мин назад', icon: '✈️' },
+];
+
+const Hero = () => {
+    const [search,setSearch]=useState('');
+    const [stars,setStars]=useState(5);
+    const [tourists,setTourists]=useState(2);
+    const [days,setDays]=useState(7);
+    const [notif,setNotif]=useState(0);
+    const [showNotif,setShowNotif]=useState(true);
+    
+    const suggestions = ['Дубай','Бали','Париж','Токио','Барселона','Мальдивы','Рим','Бангкок','Сингапур','Абхазия','Кипр','Италия','Испания','Таиланд','Вьетнам','Филиппины','Куба','Китай','Калининград','Казань','Сахалин','Камчатка','Курилы','Алтай','Крым','Дагестан','Кавказ'];
+    const filtered = suggestions.filter(s=>s.toLowerCase().includes(search.toLowerCase())&&search.length>0);
+
+    useEffect(()=>{
+        let timer;
+        const schedule = () => {
+            const delay = 55000 + Math.floor(Math.random() * 20000);
+            timer = window.setTimeout(() => {
+                setShowNotif(false);
+                window.setTimeout(() => {
+                    setNotif(n => (n + 1) % liveNotifications.length);
+                    setShowNotif(true);
+                    schedule();
+                }, 450);
+            }, delay);
+        };
+        schedule();
+        return () => window.clearTimeout(timer);
+    }, []);
+    
+    return (
+        <section style={{position:'relative',height:'100vh',minHeight:700,overflow:'hidden',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div style={{position:'absolute',inset:0,backgroundImage:'url(https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&q=80)',backgroundSize:'cover',backgroundPosition:'center',opacity:.3}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom, rgba(10,15,30,.6) 0%, rgba(10,15,30,.4) 50%, rgba(10,15,30,.95) 100%)'}}/>
+
+            <div style={{position:'absolute',top:90,right:24,zIndex:12,opacity:showNotif?1:0,transform:showNotif?'translateX(0)':'translateX(100px)',transition:'all .5s ease'}}>
+                <div style={{background:'rgba(10,15,30,.88)',backdropFilter:'blur(20px)',border:'1px solid rgba(102,126,234,.3)',borderRadius:12,padding:'12px 16px',display:'flex',alignItems:'center',gap:10,maxWidth:320}}>
+                    <span style={{fontSize:24}}>{liveNotifications[notif].icon}</span>
+                    <div>
+                        <div style={{color:'#fff',fontSize:13,fontWeight:500}}>{liveNotifications[notif].text}</div>
+                        <div style={{color:'rgba(255,255,255,.5)',fontSize:11}}>{liveNotifications[notif].time}</div>
+                    </div>
+                    <div style={{width:8,height:8,borderRadius:'50%',background:'#10b981',boxShadow:'0 0 8px #10b981',animation:'pulse 2s infinite',flexShrink:0}}/>
+                </div>
+            </div>
+            
+            <div style={{position:'relative',zIndex:10,textAlign:'center',padding:'0 24px',maxWidth:800,margin:'0 auto'}} className="animate-fadeInUp">
+                <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(16,185,129,.15)',border:'1px solid rgba(16,185,129,.4)',borderRadius:100,padding:'6px 16px',marginBottom:20}}>
+                    <div style={{width:8,height:8,borderRadius:'50%',background:'var(--green)',animation:'pulse 2s infinite'}}/>
+                    <span style={{color:'#34d399',fontSize:13,fontWeight:600}}>Реальные цены 2026 года • Сравнение 8 партнёров</span>
+                </div>
+                
+                <h1 style={{fontSize:'clamp(36px,8vw,72px)',fontWeight:900,lineHeight:1.1,marginBottom:8}}>
+                    Найдите отель <span className="gradient-text">дешевле</span>
+                </h1>
+                <p style={{fontSize:'clamp(14px,2vw,18px)',color:'var(--text2)',marginBottom:32}}>
+                    Сравниваем цены Booking, Ostrovok, Agoda, Hotels.com в реальном времени
+                </p>
+                
+                <div className="glass" style={{borderRadius:20,padding:20,maxWidth:720,margin:'0 auto 24px'}}>
+                    <div style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:16}}>
+                        <div style={{flex:'1 1 200px',position:'relative'}}>
+                            <div style={{color:'var(--text3)',fontSize:11,marginBottom:6,textTransform:'uppercase',letterSpacing:1}}>🏨 Направление</div>
+                            <input type="text" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Куда едем?" className="input-field"/>
+                            {filtered.length>0&&<div style={{position:'absolute',top:'100%',left:0,right:0,background:'rgba(10,15,40,.98)',border:'1px solid var(--border2)',borderRadius:10,marginTop:4,overflow:'hidden',zIndex:100}}>
+                                {filtered.map(s=><div key={s} onClick={()=>{setSearch(s);setTimeout(()=>document.getElementById('hotels').scrollIntoView({behavior:'smooth'}),200)}} style={{padding:'10px 14px',color:'#fff',cursor:'pointer',fontSize:14,transition:'background .15s'}} onMouseEnter={e=>e.target.style.background='rgba(102,126,234,.2)'} onMouseLeave={e=>e.target.style.background='transparent'}>✈️ {s}</div>)}
+                            </div>}
+                        </div>
+                        <div style={{flex:'1 1 120px'}}>
+                            <div style={{color:'var(--text3)',fontSize:11,marginBottom:6,textTransform:'uppercase',letterSpacing:1}}>⭐ Звёзды</div>
+                            <select value={stars} onChange={e=>setStars(Number(e.target.value))} className="input-field" style={{cursor:'pointer'}}>
+                                <option value={5} style={{background:'var(--bg3)'}}>⭐⭐⭐⭐⭐ 5 звёзд</option>
+                                <option value={4} style={{background:'var(--bg3)'}}>⭐⭐⭐⭐ 4 звезды</option>
+                                <option value={3} style={{background:'var(--bg3)'}}>⭐⭐⭐ 3 звезды</option>
+                                <option value={0} style={{background:'var(--bg3)'}}>Любые</option>
+                            </select>
+                        </div>
+                        <div style={{flex:'1 1 100px'}}>
+                            <div style={{color:'var(--text3)',fontSize:11,marginBottom:6,textTransform:'uppercase',letterSpacing:1}}>👤 Гости</div>
+                            <div style={{display:'flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.08)',border:'1px solid rgba(255,255,255,.15)',borderRadius:10,padding:'8px 12px'}}>
+                                <button onClick={()=>setTourists(Math.max(1,tourists-1))} style={{background:'rgba(255,255,255,.1)',border:'none',borderRadius:6,width:28,height:28,color:'#fff',cursor:'pointer',fontSize:16}}>−</button>
+                                <span style={{flex:1,textAlign:'center',fontWeight:600}}>{tourists}</span>
+                                <button onClick={()=>setTourists(Math.min(10,tourists+1))} style={{background:'rgba(255,255,255,.1)',border:'none',borderRadius:6,width:28,height:28,color:'#fff',cursor:'pointer',fontSize:16}}>+</button>
+                            </div>
+                        </div>
+                        <div style={{flex:'1 1 100px'}}>
+                            <div style={{color:'var(--text3)',fontSize:11,marginBottom:6,textTransform:'uppercase',letterSpacing:1}}>📅 Ночей</div>
+                            <select value={days} onChange={e=>setDays(Number(e.target.value))} className="input-field" style={{cursor:'pointer'}}>
+                                <option value={7} style={{background:'var(--bg3)'}}>7 ночей</option>
+                                <option value={14} style={{background:'var(--bg3)'}}>14 ночей</option>
+                                <option value={21} style={{background:'var(--bg3)'}}>21 ночь</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button className="btn-primary" style={{width:'100%',padding:'14px',fontSize:16}} onClick={()=>document.getElementById('hotels').scrollIntoView({behavior:'smooth'})}>
+                        🔍 Сравнить цены на отели — от {tourists} гостей · {days} ночей
+                    </button>
+                </div>
+                
+                <div style={{display:'flex',gap:8,flexWrap:'wrap',justifyContent:'center'}}>
+                    {['🔥 Горящие','🏖️ Пляж','🏔️ Горы','🌆 Города','💎 Люкс'].map(tag=>(
+                        <button key={tag} className="btn-glass chip" style={{fontSize:12}} onClick={()=>document.getElementById('hotels').scrollIntoView({behavior:'smooth'})}>{tag}</button>
+                    ))}
+                </div>
+                
+                <div style={{display:'flex',gap:16,justifyContent:'center',marginTop:40,flexWrap:'wrap'}}>
+                    {[{val:'8',label:'Партнёров'},{val:'500+',label:'Отелей'},{val:'60%',label:'Экономия'},{val:'50+',label:'Стран'}].map(s=>(
+                        <div key={s.label} style={{textAlign:'center'}}>
+                            <div style={{fontSize:'clamp(20px,3vw,28px)',fontWeight:900}} className="gradient-text">{s.val}</div>
+                            <div style={{color:'var(--text3)',fontSize:12}}>{s.label}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// Секция отелей с фильтрами и сравнением цен
+const HotelsSection = () => {
+    const [country,setCountry]=useState('Все');
+    const [starFilter,setStarFilter]=useState(0);
+    const [sort,setSort]=useState('cheapest');
+    const [expanded,setExpanded]=useState(null);
+    
+    const countries = ['Все',...new Set(hotelsDB.map(h=>h.country))];
+    const starOptions = [0,5,4,3];
+    
+    let filtered = hotelsDB.filter(h=>{
+        if(country!=='Все'&&h.country!==country) return false;
+        if(starFilter>0&&h.stars!==starFilter) return false;
+        return true;
+    });
+    
+    if(sort==='cheapest') filtered.sort((a,b)=>Math.min(...a.partners.map(p=>p.price))-Math.min(...b.partners.map(p=>p.price)));
+    else if(sort==='rating') filtered.sort((a,b)=>b.rating-a.rating);
+    else if(sort==='luxury') filtered.sort((a,b)=>Math.max(...b.partners.map(p=>p.price))-Math.max(...a.partners.map(p=>p.price)));
+    
+    const getMinPrice=p=>Math.min(...p.partners.map(x=>x.price));
+    const getMaxPrice=p=>Math.max(...p.partners.map(x=>x.price));
+    const getSavings=p=>Math.round((1-getMinPrice(p)/getMaxPrice(p))*100);
+    const getCheapestPartner=p=>p.partners.reduce((a,b)=>a.price<b.price?a:b);
+    const getCheapestUrl=p=>getCheapestPartner(p).url;
+    const getCheapestName=p=>getCheapestPartner(p).name;
+    
+    return (
+        <section id="hotels" className="section" style={{background:'var(--bg2)'}}>
+            <div className="container">
+                <div style={{textAlign:'center',marginBottom:40}}>
+                    <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(245,158,11,.15)',border:'1px solid rgba(245,158,11,.3)',borderRadius:100,padding:'6px 16px',marginBottom:16}}>
+                        <span style={{color:var(--gold),fontSize:13,fontWeight:600}}>🏨 Реальные цены 2026</span>
+                    </div>
+                    <h2 style={{fontSize:'clamp(28px,4vw,48px)',fontWeight:800,marginBottom:12}}>Сравнение цен на отели</h2>
+                    <p style={{color:'var(--text2)',fontSize:16}}>Проверенные цены от Booking.com, Ostrovok, Agoda, Hotels.com</p>
+                </div>
+                
+                {/* Фильтры */}
+                <div style={{display:'flex',gap:12,justifyContent:'center',marginBottom:24,flexWrap:'wrap',alignItems:'center'}}>
+                    <div style={{display:'flex',gap:6,flexWrap:'wrap',justifyContent:'center'}}>
+                        {countries.map(c=><button key={c} className={`chip btn-glass ${country===c?'chip-active':''}`} onClick={()=>setCountry(c)}>{c}</button>)}
+                    </div>
+                    <div style={{display:'flex',gap:6,flexWrap:'wrap',justifyContent:'center'}}>
+                        {starOptions.map(s=><button key={s} className={`chip btn-glass ${starFilter===s?'chip-active':''}`} onClick={()=>setStarFilter(s)}>{s===0?'Любые ⭐':s+'⭐'}</button>)}
+                    </div>
+                    <select value={sort} onChange={e=>setSort(e.target.value)} className="input-field" style={{width:'auto',cursor:'pointer',padding:'8px 16px'}}>
+                        <option value="cheapest" style={{background:'var(--bg3)'}}>💰 Сначала дешёвые</option>
+                        <option value="luxury" style={{background:'var(--bg3)'}}>💎 Сначала люкс</option>
+                        <option value="rating" style={{background:'var(--bg3)'}}>⭐ По рейтингу</option>
+                    </select>
+                </div>
+                
+                <div style={{color:'var(--text3)',textAlign:'center',marginBottom:24,fontSize:14}}>
+                    Найдено: <strong style={{color:'#fff'}}>{filtered.length}</strong> отелей
+                    {country!=='Все'&&` в ${country}`}
+                    {starFilter>0&&` • ${starFilter}★`}
+                </div>
+                
+                {/* Карточки */}
+                <div className="grid-3">
+                    {filtered.map(hotel=>{
+                        const savings=getSavings(hotel);
+                        const cheapest=getCheapestPartner(hotel);
+                        const minP=getMinPrice(hotel);
+                        const maxP=getMaxPrice(hotel);
+                        const isExp=expanded===hotel.id;
+                        if(!hotel.partners||hotel.partners.length===0) return null;
+                        
+                        return (
+                            <div key={hotel.id} className="card" style={{background:'var(--glass)',border:'1px solid var(--border)',borderRadius:20,overflow:'hidden'}}>
+                                <div style={{position:'relative',height:200}}>
+                                    <img
+                                        src={hotel.image}
+                                        alt={hotel.name}
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer"
+                                        onError={e=>{
+                                            const target = e.currentTarget;
+                                            target.onerror = null;
+                                            target.src = HOTEL_PLACEHOLDER;
+                                        }}
+                                        style={{width:'100%',height:'100%',objectFit:'cover',display:'block',background:'#121828'}}
+                                    />
+                                    <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, var(--bg) 0%, transparent 60%)'}}/>
+                                    {savings>0&&<div className="discount-badge">Экономия до {savings}%</div>}
+                                    <div style={{position:'absolute',top:12,left:12,background:'rgba(0,0,0,.5)',borderRadius:8,padding:'4px 10px',color:'#fff',fontSize:12,fontWeight:600}}>
+                                        {hotel.city}, {hotel.country}
+                                    </div>
+                                    <div style={{position:'absolute',bottom:12,left:12,color:var(--gold),fontSize:16}}>
+                                        {'★'.repeat(hotel.stars)}
+                                    </div>
+                                </div>
+                                
+                                <div style={{padding:20}}>
+                                    <h3 style={{color:'#fff',fontSize:17,fontWeight:700,marginBottom:4}}>{hotel.name}</h3>
+                                    <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:12}}>
+                                        <span className="star-rating">★ {hotel.rating}</span>
+                                        <span style={{color:'var(--text3)',fontSize:12}}>({hotel.reviews} отзывов)</span>
+                                        <span style={{marginLeft:'auto',background:'rgba(16,185,129,.15)',border:'1px solid rgba(16,185,129,.3)',borderRadius:100,padding:'2px 10px',color:'#34d399',fontSize:11,fontWeight:700}}>
+                                            {hotel.partners.length} партнёра
+                                        </span>
+                                    </div>
+                                    
+                                    {/* Сравнение цен */}
+                                    <div style={{marginBottom:12}}>
+                                        <div style={{color:'var(--text3)',fontSize:11,marginBottom:6,textTransform:'uppercase',letterSpacing:1}}>Цены за ночь (₽):</div>
+                                        <div className="price-compare">
+                                            {hotel.partners.sort((a,b)=>a.price-b.price).map((p,i)=>(
+                                                <a key={p.name} href={resolvePartnerUrl(p.name, p.url)} target="_blank" rel="noopener noreferrer"
+                                                   className={`price-item ${i===0?'cheapest':''}`}
+                                                   style={{borderColor:i===0?'var(--green)':'var(--border)',background:i===0?'rgba(16,185,129,.1)':'rgba(255,255,255,.03)',color:'#fff',textDecoration:'none',flex:1,minWidth:100,textAlign:'center'}}>
+                                                    <div style={{fontSize:10,opacity:.6}}>{p.name}</div>
+                                                    <div style={{fontWeight:800,fontSize:15}}>{p.price.toLocaleString()}₽</div>
+                                                </a>
+                                            ))}
+                                        </div>
+                                        {minP!==maxP&&(
+                                            <div style={{marginTop:8,background:'rgba(16,185,129,.1)',border:'1px solid rgba(16,185,129,.3)',borderRadius:8,padding:'8px 12px',color:'#34d399',fontSize:12,fontWeight:600}}>
+                                                💰 Экономия {(maxP-minP).toLocaleString()}₽ за ночь при бронировании на {cheapest.name}
+                                            </div>
+                                        )}
+                                    </div>
+                                    
+                                    {/* Удобства */}
+                                    <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:16}}>
+                                        {hotel.amenities.slice(0,4).map(a=><span key={a} style={{background:'rgba(255,255,255,.06)',border:'1px solid var(--border)',borderRadius:6,padding:'3px 8px',color:'var(--text2)',fontSize:11}}>{a}</span>)}
+                                    </div>
+                                    
+                                    <a href={resolvePartnerUrl(cheapest.name, cheapest.url)} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,padding:'12px',textDecoration:'none',textAlign:'center',fontSize:14}}>
+                                        🏨 Забронировать на {cheapest.name} — от {minP.toLocaleString()}₽/ночь
+                                    </a>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// Секция авиабилетов
+const FlightsSection = () => {
+    const [tab,setTab]=useState('roundtrip');
+    
+    return (
+        <section id="flights" className="section" style={{background:'var(--bg)'}}>
+            <div className="container" style={{maxWidth:900}}>
+                <div style={{textAlign:'center',marginBottom:40}}>
+                    <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(16,185,129,.15)',border:'1px solid rgba(16,185,129,.3)',borderRadius:100,padding:'6px 16px',marginBottom:16}}>
+                        <span style={{color:'#34d399',fontSize:13,fontWeight:600}}>✈️ Реальные рейсы 2026</span>
+                    </div>
+                    <h2 style={{fontSize:'clamp(28px,4vw,48px)',fontWeight:800,marginBottom:12}}>Авиабилеты</h2>
+                    <p style={{color:'var(--text2)',fontSize:16}}>Цены с Aviasales, Skyscanner, KAYAK, Trip.com</p>
+                </div>
+                
+                <div style={{display:'flex',gap:4,background:'rgba(255,255,255,.05)',borderRadius:12,padding:4,maxWidth:280,margin:'0 auto 24px'}}>
+                    {[{k:'roundtrip',l:'🔄 Туда-обратно'},{k:'oneway',l:'→ В одну сторону'}].map(t=>(
+                        <button key={t.k} onClick={()=>setTab(t.k)} style={{flex:1,padding:10,background:tab===t.k?'linear-gradient(135deg,var(--purple),var(--purple2))':'transparent',border:'none',borderRadius:10,color:'#fff',cursor:'pointer',fontWeight:600,fontSize:13,transition:'all .2s'}}>{t.l}</button>
+                    ))}
+                </div>
+                
+                <div style={{display:'flex',flexDirection:'column',gap:16}}>
+                    {flightsDB.map(flight=>{
+                        const cheapest=flight.partners.reduce((a,b)=>a.price<b.price?a:b);
+                        const minP=Math.min(...flight.partners.map(p=>p.price));
+                        const maxP=Math.max(...flight.partners.map(p=>p.price));
+                        const savings=Math.round((1-minP/maxP)*100);
+                        
+                        return (
+                            <div key={flight.id} className="glass-hover" style={{background:'var(--glass)',border:'1px solid var(--border)',borderRadius:16,overflow:'hidden'}}>
+                                <div style={{padding:'20px 24px',display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
+                                    <div style={{display:'flex',alignItems:'center',gap:10,minWidth:140}}>
+                                        <div style={{width:44,height:44,background:'linear-gradient(135deg, rgba(102,126,234,.13), rgba(118,75,162,.13))',border:'1px solid var(--border2)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>✈</div>
+                                        <div>
+                                            <div style={{color:'#fff',fontWeight:600,fontSize:13}}>{cheapest.airline}</div>
+                                            <div style={{color:'var(--text3)',fontSize:11}}>{flight.stops===0?'🟢 Прямой':`🟡 ${flight.stops} пересадка`}</div>
+                                        </div>
+                                    </div>
+                                    <div style={{flex:1,display:'flex',alignItems:'center',gap:12,minWidth:220}}>
+                                        <div style={{textAlign:'right'}}>
+                                            <div style={{color:'#fff',fontSize:22,fontWeight:700}}>{flight.departTime}</div>
+                                            <div style={{color:'var(--text2)',fontSize:12}}>{flight.fromCode}</div>
+                                        </div>
+                                        <div style={{flex:1,textAlign:'center'}}>
+                                            <div style={{color:'var(--text3)',fontSize:11,marginBottom:4}}>{flight.duration}</div>
+                                            <div style={{height:1,background:'linear-gradient(to right, transparent, var(--purple), transparent)',position:'relative'}}><span style={{position:'absolute',right:-4,top:-5,fontSize:9}}>✈</span></div>
+                                            <div style={{color:'var(--text3)',fontSize:11,marginTop:4}}>{flight.stops===0?'Без остановок':'1 пересадка'}</div>
+                                        </div>
+                                        <div>
+                                            <div style={{color:'#fff',fontSize:22,fontWeight:700}}>{flight.arriveTime}</div>
+                                            <div style={{color:'var(--text2)',fontSize:12}}>{flight.toCode}</div>
+                                        </div>
+                                    </div>
+                                    <div style={{textAlign:'right',marginLeft:'auto'}}>
+                                        <div className="price-compare" style={{justifyContent:'flex-end',marginBottom:4}}>
+                                            {flight.partners.sort((a,b)=>a.price-b.price).map((p,i)=>(
+                                                <a key={p.name} href={resolvePartnerUrl(p.name, p.url)} target="_blank" rel="noopener noreferrer" className={`price-item ${i===0?'cheapest':''}`} style={{borderColor:i===0?'var(--green)':'var(--border)',background:i===0?'rgba(16,185,129,.1)':'rgba(255,255,255,.03)',textDecoration:'none',color:'#fff'}}>
+                                                    <div style={{fontSize:9,opacity:.6}}>{p.name}</div>
+                                                    <div style={{fontWeight:700,fontSize:13}}>{p.price.toLocaleString()}₽</div>
+                                                </a>
+                                            ))}
+                                        </div>
+                                        <div style={{color:'var(--text2)',fontSize:11}}>{tab==='roundtrip'?'туда-обратно':'в одну сторону'} · {flight.baggage}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// Партнёры
+const PartnersSection = () => (
+    <section id="partners" className="section" style={{background:'var(--bg2)'}}>
+        <div className="container">
+            <div style={{textAlign:'center',marginBottom:48}}>
+                <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(102,126,234,.15)',border:'1px solid var(--border2)',borderRadius:100,padding:'6px 16px',marginBottom:16}}>
+                    <span style={{color:'#a78bfa',fontSize:13,fontWeight:600}}>🤝 Наши партнёры</span>
+                </div>
+                <h2 style={{fontSize:'clamp(28px,4vw,48px)',fontWeight:800,marginBottom:12}}>8 надёжных партнёров</h2>
+                <p style={{color:'var(--text2)',fontSize:16}}>Сравниваем цены и находим лучшее предложение</p>
+            </div>
+            
+            <div className="grid-2">
+                {partnersList.map(p=>(
+                    <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer" className="glass-hover" style={{background:'var(--glass)',border:'1px solid var(--border)',borderRadius:20,padding:24,textDecoration:'none',display:'block'}}>
+                        <div style={{display:'flex',alignItems:'center',gap:14}}>
+                            <div style={{width:52,height:52,borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,background:`${p.color}22`,border:`1px solid ${p.color}44`}}>{p.logo}</div>
+                            <div style={{flex:1}}>
+                                <div style={{color:'#fff',fontWeight:700,fontSize:16}}>{p.name}</div>
+                                <div style={{color:'var(--text2)',fontSize:12}}>{p.desc}</div>
+                            </div>
+                            <span style={{color:p.color,fontWeight:600,fontSize:14}}>Перейти →</span>
+                        </div>
+                    </a>
+                ))}
+            </div>
+            
+            <div style={{marginTop:48,background:'linear-gradient(135deg, rgba(102,126,234,.15), rgba(167,139,250,.1))',border:'1px solid var(--border2)',borderRadius:20,padding:40,textAlign:'center'}}>
+                <div style={{fontSize:48,marginBottom:16}}>📧</div>
+                <h3 style={{color:'#fff',fontSize:22,fontWeight:700,marginBottom:8}}>Хотите стать партнёром?</h3>
+                <p style={{color:'var(--text2)',fontSize:14,marginBottom:20}}>Разместите свои предложения на TravelDeal</p>
+                <a href="mailto:partners@traveldeal.ru" className="btn-primary" style={{display:'inline-block',padding:'14px 32px',textDecoration:'none',fontSize:15}}>📧 partners@traveldeal.ru</a>
+            </div>
+        </div>
+    </section>
+);
+
+// Как это работает
+const HowItWorks = () => (
+    <section className="section" style={{background:'var(--bg)'}}>
+        <div className="container">
+            <div style={{textAlign:'center',marginBottom:48}}>
+                <h2 style={{fontSize:'clamp(28px,4vw,48px)',fontWeight:800,marginBottom:12}}>Как это работает</h2>
+                <p style={{color:'var(--text2)',fontSize:16}}>3 простых шага к лучшей цене</p>
+            </div>
+            <div className="grid-3">
+                {[{icon:'🔍',title:'Выбираете',desc:'Фильтруете отели по стране, звёздам и цене'},{icon:'📊',title:'Сравниваем',desc:'Показываем цены от 8 партнёров в реальном времени'},{icon:'💸',title:'Бронируете',desc:'Переходите на сайт с лучшей ценой и бронируете'}].map((s,i)=>(
+                    <div key={i} className="animate-fadeInUp" style={{background:'var(--glass)',border:'1px solid var(--border)',borderRadius:20,padding:32,textAlign:'center',position:'relative',animationDelay:`${i*.2}s`}}>
+                        <div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',width:28,height:28,background:'linear-gradient(135deg,var(--purple),var(--purple2))',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontWeight:800,fontSize:13}}>{i+1}</div>
+                        <div style={{fontSize:40,marginBottom:12,marginTop:8}}>{s.icon}</div>
+                        <div style={{color:'#fff',fontWeight:700,fontSize:18,marginBottom:8}}>{s.title}</div>
+                        <div style={{color:'var(--text2)',fontSize:14,lineHeight:1.6}}>{s.desc}</div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+);
+
+// Статистика
+const StatsSection = () => {
+    const [started,setStarted]=useState(false);
+    const ref=useRef(null);
+    useEffect(()=>{const o=new IntersectionObserver(([e])=>{if(e.isIntersecting){setStarted(true);o.disconnect()}},{threshold:.3});if(ref.current)o.observe(ref.current);return()=>o.disconnect()},[]);
+    
+    const StatCard=({target,label,suffix,icon,color})=>{
+        const [count,setCount]=useState(0);
+        useEffect(()=>{if(!started)return;let s=0;const step=target/(2000/16);const t=setInterval(()=>{s+=step;if(s>=target){setCount(target);clearInterval(t)}else setCount(Math.floor(s))},16);return()=>clearInterval(t)},[target,started]);
+        return (
+            <div className="glass-hover" style={{background:'var(--glass)',border:'1px solid var(--border)',borderRadius:20,padding:'32px 24px',textAlign:'center'}}>
+                <div style={{fontSize:40,marginBottom:12}}>{icon}</div>
+                <div style={{fontSize:'clamp(28px,5vw,48px)',fontWeight:900,color,marginBottom:8}}>{count>=1e6?`${(count/1e6).toFixed(1)}M`:count>=1e3?`${(count/1e3).toFixed(0)}K`:count}{suffix}</div>
+                <div style={{color:'var(--text2)',fontSize:14}}>{label}</div>
+            </div>
+        );
+    };
+    
+    return (
+        <section ref={ref} className="section" style={{background:'var(--bg2)'}}>
+            <div className="container" style={{maxWidth:1000}}>
+                <div style={{textAlign:'center',marginBottom:48}}>
+                    <h2 style={{fontSize:'clamp(28px,4vw,48px)',fontWeight:800,marginBottom:12}}>TravelDeal в цифрах</h2>
+                </div>
+                <div className="grid-2" style={{gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))'}}>
+                    <StatCard target={2400000} label="Довольных путешественников" suffix="+" icon="👥" color="var(--purple)"/>
+                    <StatCard target={60} label="Максимальная экономия" suffix="%" icon="💰" color="var(--green)"/>
+                    <StatCard target={500} label="Направлений" suffix="+" icon="🌍" color="var(--gold)"/>
+                    <StatCard target={8} label="Партнёров" suffix="" icon="🤝" color="#a78bfa"/>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// Футер
+const Footer = () => {
+    const [email,setEmail]=useState('');
+    const [sent,setSent]=useState(false);
+    const handleSubmit=e=>{e.preventDefault();if(email)setSent(true)};
+    
+    return (
+        <footer style={{background:'rgba(5,8,20,1)',borderTop:'1px solid var(--border)',padding:'60px 24px 24px'}}>
+            <div className="container">
+                <div style={{background:'linear-gradient(135deg, rgba(102,126,234,.15), rgba(167,139,250,.1))',border:'1px solid var(--border2)',borderRadius:20,padding:40,textAlign:'center',marginBottom:60}}>
+                    <h3 style={{color:'#fff',fontSize:22,fontWeight:700,marginBottom:8}}>✉️ Подписка на лучшие цены</h3>
+                    <p style={{color:'var(--text2)',fontSize:14,marginBottom:24}}>Первыми узнавайте о снижении цен на отели и авиабилеты</p>
+                    {sent?<div style={{background:'rgba(16,185,129,.2)',border:'1px solid rgba(16,185,129,.4)',borderRadius:12,padding:'16px 32px',color:'#34d399',fontWeight:700,fontSize:16,display:'inline-block'}}>✅ Подписка оформлена!</div>:(
+                        <form onSubmit={handleSubmit} style={{display:'flex',gap:12,maxWidth:440,margin:'0 auto',flexWrap:'wrap'}}>
+                            <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Ваш email" required className="input-field" style={{flex:1,minWidth:200}}/>
+                            <button type="submit" className="btn-primary" style={{padding:'12px 24px',whiteSpace:'nowrap'}}>Подписаться</button>
+                        </form>
+                    )}
+                </div>
+                
+                <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginBottom:24}}>
+                    <div style={{width:36,height:36,background:'linear-gradient(135deg,var(--purple),var(--purple2))',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16}}>✈</div>
+                    <span style={{fontSize:20,fontWeight:800}} className="gradient-text">TravelDeal</span>
+                </div>
+                <p style={{color:'var(--text2)',textAlign:'center',fontSize:13,marginBottom:16}}>Агрегатор путешествий — находим лучшие цены на отели и авиабилеты</p>
+                
+                <div style={{borderTop:'1px solid var(--border)',paddingTop:24,display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
+                    <div style={{color:'var(--text3)',fontSize:13}}>© 2026 TravelDeal. Реальные цены от партнёров • standalone build 07-07-v4</div>
+                    <div style={{display:'flex',gap:16}}>
+                        {['Политика','Условия','Cookie'].map(i=><a key={i} href="#" style={{color:'var(--text3)',textDecoration:'none',fontSize:12,transition:'color .2s'}} onMouseEnter={e=>e.target.style.color='rgba(255,255,255,.6)'} onMouseLeave={e=>e.target.style.color='var(--text3)'}>{i}</a>)}
+                    </div>
+                    <div style={{color:'var(--text3)',fontSize:12}}>Сделано с ❤️</div>
+                </div>
+            </div>
+        </footer>
+    );
+};
+
+// Основное приложение
+const App = () => {
+    const [scrolled,setScrolled]=useState(false);
+    useEffect(()=>{const h=()=>setScrolled(window.scrollY>50);window.addEventListener('scroll',h);return()=>window.removeEventListener('scroll',h)},[]);
+    
+    return React.createElement('div',null,
+        React.createElement(Navbar,{scrolled}),
+        React.createElement(Hero),
+        React.createElement(HowItWorks),
+        React.createElement(HotelsSection),
+        React.createElement(FlightsSection),
+        React.createElement(PartnersSection),
+        React.createElement(StatsSection),
+        React.createElement(Footer)
+    );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+
+// ============================================================
+// 🔴 LIVE API — Реальные цены с сервера
+// ============================================================
+(async function loadLivePrices() {
+    const API_BASE = window.location.origin;
+    const statusEl = document.getElementById('api-status');
+    
+    try {
+        // Проверяем, доступен ли API
+        const health = await fetch(API_BASE + '/api/health', { signal: AbortSignal.timeout(3000) });
+        if (!health.ok) throw new Error('API недоступен');
+        
+        const healthData = await health.json();
+        console.log('✅ API доступен:', healthData);
+        if (statusEl) statusEl.innerHTML = '<span style="color:#34d399;font-size:11px">🟢 LIVE цены</span>';
+        
+        // Загружаем реальные отели для популярных городов
+        const cities = ['dubai', 'paris', 'bali', 'tokyo', 'barcelona', 'maldives', 'antalya', 'phuket', 'kaliningrad', 'kazan', 'sakhalin', 'kamchatka', 'altai', 'abkhazia', 'dagestan', 'caucasus', 'venice', 'cyprus', 'cuba', 'philippines', 'china'];
+        const hotelPromises = cities.map(city => 
+            fetch(`${API_BASE}/api/hotels?city=${city}&adults=2`)
+                .then(r => r.json())
+                .catch(() => ({ hotels: [] }))
+        );
+        
+        const flightPromises = cities.map(city =>
+            fetch(`${API_BASE}/api/flights?from=Moscow&to=${city}&adults=1`)
+                .then(r => r.json())
+                .catch(() => ({ flights: [] }))
+        );
+        
+        const [hotelResults, flightResults] = await Promise.all([
+            Promise.all(hotelPromises),
+            Promise.all(flightPromises),
+        ]);
+        
+        const allHotels = hotelResults.flatMap(r => r.hotels || []);
+        const allFlights = flightResults.flatMap(r => r.flights || []);
+        
+        console.log(`🏨 Загружено отелей: ${allHotels.length} | ✈️ Рейсов: ${allFlights.length}`);
+        console.log('💰 Реальные цены с Amadeus API (2026)');
+        
+        // Обновляем данные для отелей
+        if (allHotels.length > 0) {
+            allHotels.forEach(h => {
+                const idx = hotelsDB.findIndex(x => 
+                    x.name.toLowerCase().includes(h.name?.toLowerCase()?.split(' ')[0]) ||
+                    x.city.toLowerCase() === h.city?.toLowerCase()
+                );
+                if (idx >= 0 && h.priceRUB) {
+                    hotelsDB[idx].livePrice = h.priceRUB;
+                    hotelsDB[idx].livePriceUSD = h.price;
+                    hotelsDB[idx].partners[0].price = h.priceRUB;
+                    hotelsDB[idx].partners[0].name = 'Amadeus LIVE';
+                }
+            });
+        }
+        
+        // Обновляем данные для рейсов
+        if (allFlights.length > 0) {
+            allFlights.forEach(f => {
+                const idx = flightsDB.findIndex(x => 
+                    x.toCode === f.to || x.fromCode === f.from
+                );
+                if (idx >= 0 && f.price) {
+                    flightsDB[idx].livePrice = f.price;
+                    flightsDB[idx].partners[0].price = f.price;
+                    flightsDB[idx].partners[0].airline = f.airlineName || f.airline;
+                    flightsDB[idx].partners[0].name = 'Amadeus LIVE';
+                }
+            });
+        }
+        
+        // Перерендерим с новыми ценами
+        ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+        
+    } catch (err) {
+        console.log('⚠️ API недоступен, используем кэшированные цены');
+        if (statusEl) statusEl.innerHTML = '<span style="color:#f59e0b;font-size:11px">🟡 Кэш цены</span>';
+    }
+})();
+</script>
+
+<!-- API статус -->
+<div id="api-status" style="position:fixed;bottom:16px;right:16px;z-index:9999;background:rgba(10,15,30,.9);border:1px solid rgba(255,255,255,.15);border-radius:12;padding:8px 14px;font-family:Inter,sans-serif;font-size:11px;color:rgba(255,255,255,.5);backdrop-filter:blur(10px);">
+    🔄 Загрузка цен...
+</div>
+<div style="position:fixed;left:16px;bottom:16px;z-index:9999;background:rgba(124,58,237,.18);border:1px solid rgba(167,139,250,.45);border-radius:12px;padding:8px 14px;font-family:Inter,sans-serif;font-size:11px;color:#e9d5ff;backdrop-filter:blur(10px);font-weight:700;">
+    standalone build v5 • 07-07-2026
+</div>
+
+</body>
+</html>

@@ -53,26 +53,80 @@ function setCache(key, data) {
   cache.set(key, { data, time: Date.now() });
 }
 
-// Вспомогательная функция: дата "сегодня + N дней" (без мутации!)
-function daysFromNow(days) {
-  return new Date(Date.now() + days * 86400000).toISOString().split('T')[0];
-}
-
-// ============================================================
 // IATA коды городов
-// ============================================================
 const CITY_CODES = {
-  'дубай': 'DXB', 'dubai': 'DXB',
-  'бали': 'DPS', 'bali': 'DPS',
-  'париж': 'PAR', 'paris': 'PAR',
-  'токио': 'TYO', 'tokyo': 'TYO',
-  'барселона': 'BCN', 'barcelona': 'BCN',
-  'мальдивы': 'MLE', 'maldives': 'MLE', 'мале': 'MLE', 'male': 'MLE',
-  'москва': 'MOW', 'moscow': 'MOW',
-  'анталья': 'AYT', 'antalya': 'AYT',
-  'стамбул': 'IST', 'istanbul': 'IST',
-  'хургада': 'HRG', 'hurghada': 'HRG',
-  'пхукет': 'HKT', 'phuket': 'HKT',
+  'дагестан': 'MCX',
+  'махачкала': 'MCX',
+  'кавказ': 'MRV',
+  'кисловодск': 'MRV',
+  'минеральные воды': 'MRV',
+  'пятигорск': 'MRV',
+  'ессентуки': 'MRV',
+  'нальчик': 'NAL',
+  'краснодар': 'KRR',
+  'ростов-на-дону': 'ROV',
+  'гагра': 'AER',
+  'сухум': 'SUI',
+  'пицунда': 'AER',
+  'гудаута': 'AER',
+  'дубай': 'DXB',
+  dubai: 'DXB',
+  'бали': 'DPS',
+  bali: 'DPS',
+  'париж': 'PAR',
+  paris: 'PAR',
+  'токио': 'TYO',
+  tokyo: 'TYO',
+  'барселона': 'BCN',
+  barcelona: 'BCN',
+  'мальдивы': 'MLE',
+  maldives: 'MLE',
+  'мале': 'MLE',
+  male: 'MLE',
+  'москва': 'MOW',
+  moscow: 'MOW',
+  'анталья': 'AYT',
+  antalya: 'AYT',
+  'турция': 'IST',
+  turkey: 'IST',
+  'пхукет': 'HKT',
+  phuket: 'HKT',
+  'таиланд': 'BKK',
+  thailand: 'BKK',
+  'калининград': 'KGD',
+  kaliningrad: 'KGD',
+  'казань': 'KZN',
+  kazan: 'KZN',
+  'сахалин': 'UUS',
+  sakhalin: 'UUS',
+  'камчатка': 'PKC',
+  kamchatka: 'PKC',
+  'курилы': 'UUS',
+  kurils: 'UUS',
+  'алтай': 'RGK',
+  altai: 'RGK',
+  'крым': 'SIP',
+  crimea: 'SIP',
+  'абхазия': 'AER',
+  abkhazia: 'AER',
+  'италия': 'ROM',
+  italy: 'ROM',
+  'венеция': 'VCE',
+  venice: 'VCE',
+  'испания': 'MAD',
+  spain: 'MAD',
+  'кипр': 'LCA',
+  cyprus: 'LCA',
+  'куба': 'HAV',
+  cuba: 'HAV',
+  'филиппины': 'MNL',
+  philippines: 'MNL',
+  'китай': 'SHA',
+  china: 'SHA',
+  'северная корея': 'FNJ',
+  'пхеньян': 'FNJ',
+  'north korea': 'FNJ',
+  pyongyang: 'FNJ',
 };
 
 // ============================================================
@@ -87,7 +141,6 @@ app.get('/api/hotels', async (req, res) => {
     const cached = getCached(cacheKey);
     if (cached) return res.json(cached);
 
-    // Шаг 1: Получаем список отелей в городе
     const hotelList = await amadeus.referenceData.locations.hotels.byCity.get({
       cityCode,
       ratings: stars || '3,4,5',
@@ -100,10 +153,9 @@ app.get('/api/hotels', async (req, res) => {
       return res.json({ hotels: [], message: 'Отели не найдены' });
     }
 
-    // Шаг 2: Получаем цены для найденных отелей
-    // ИСПРАВЛЕНО: без мутации даты (было +7, потом ещё +14 = +21 день)
-    const inDate = checkIn || daysFromNow(7);
-    const outDate = checkOut || daysFromNow(14);
+    const today = new Date();
+    const inDate = checkIn || new Date(today.setDate(today.getDate() + 7)).toISOString().split('T')[0];
+    const outDate = checkOut || new Date(today.setDate(today.getDate() + 14)).toISOString().split('T')[0];
 
     const offers = await amadeus.shopping.hotelOffersSearch.get({
       hotelIds,
@@ -112,7 +164,6 @@ app.get('/api/hotels', async (req, res) => {
       checkOutDate: outDate,
     }).catch(() => ({ data: [] }));
 
-    // Форматируем результат
     const result = (offers.data || []).map(offer => {
       const hotelInfo = hotels.find(h => h.hotelId === offer.hotel?.hotelId) || {};
       const roomOffer = offer.offers?.[0] || {};
@@ -127,7 +178,6 @@ app.get('/api/hotels', async (req, res) => {
         rating: offer.hotel?.rating || (4 + Math.random()).toFixed(1),
         price: typeof price === 'string' ? parseFloat(price) : price,
         currency,
-        // Конвертация в рубли (примерный курс 90)
         priceRUB: typeof price === 'string' ? Math.round(parseFloat(price) * 90) : Math.round(price * 90),
         checkIn: inDate,
         checkOut: outDate,
@@ -164,11 +214,10 @@ app.get('/api/flights', async (req, res) => {
     const cached = getCached(cacheKey);
     if (cached) return res.json(cached);
 
-    // ИСПРАВЛЕНО: без мутации даты
-    const depDate = date || daysFromNow(14);
-    const retDate = returnDate || daysFromNow(21);
+    const today = new Date();
+    const depDate = date || new Date(today.setDate(today.getDate() + 14)).toISOString().split('T')[0];
+    const retDate = returnDate || new Date(today.setDate(today.getDate() + 21)).toISOString().split('T')[0];
 
-    // Ищем рейсы через Amadeus
     const params = {
       originLocationCode: originCode,
       destinationLocationCode: destCode,
@@ -240,9 +289,7 @@ app.get('/api/search', async (req, res) => {
   const { destination, date, returnDate, adults = '1' } = req.query;
   const cityCode = CITY_CODES[destination?.toLowerCase()] || destination?.toUpperCase() || 'DXB';
 
-  // Запускаем оба запроса параллельно
   const [hotelsRes, flightsRes] = await Promise.allSettled([
-    // Отели
     (async () => {
       try {
         const hotelList = await amadeus.referenceData.locations.hotels.byCity.get({
@@ -252,8 +299,9 @@ app.get('/api/search', async (req, res) => {
         const hotelIds = (hotelList.data || []).slice(0, 5).map(h => h.hotelId).join(',');
         if (!hotelIds) return [];
 
-        const inDate = date || daysFromNow(7);
-        const outDate = returnDate || daysFromNow(14);
+        const today = new Date();
+        const inDate = date || new Date(today.setDate(today.getDate() + 7)).toISOString().split('T')[0];
+        const outDate = returnDate || new Date(today.setDate(today.getDate() + 14)).toISOString().split('T')[0];
 
         const offers = await amadeus.shopping.hotelOffersSearch.get({
           hotelIds, adults, checkInDate: inDate, checkOutDate: outDate,
@@ -266,13 +314,12 @@ app.get('/api/search', async (req, res) => {
         }));
       } catch { return []; }
     })(),
-    // Рейсы
     (async () => {
       try {
         const resp = await amadeus.shopping.flightOffersSearch.get({
           originLocationCode: 'MOW',
           destinationLocationCode: cityCode,
-          departureDate: date || daysFromNow(14),
+          departureDate: date || new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
           adults, max: 5, currencyCode: 'RUB',
         }).catch(() => ({ data: [] }));
         return (resp.data || []).slice(0, 5).map(o => ({
@@ -349,8 +396,7 @@ app.use(express.static('dist'));
 app.use(express.static('public'));
 
 // SPA fallback
-// ИСПРАВЛЕНО: app.use вместо app.get('*') — работает и в Express 4, и в Express 5
-app.use((req, res) => {
+app.get('*', (req, res) => {
   res.sendFile('dist/index.html', { root: '.' }, (err) => {
     if (err) res.sendFile('public/TravelDeal-website.html', { root: '.' });
   });
@@ -366,5 +412,5 @@ app.listen(PORT, () => {
   console.log(`✈️ Рейсы: http://localhost:${PORT}/api/flights?from=Moscow&to=Dubai`);
   console.log(`🔍 Поиск: http://localhost:${PORT}/api/search?destination=Dubai`);
   console.log(`💚 Health: http://localhost:${PORT}/api/health`);
-  console.log(`\n${process.env.AMADEUS_API_KEY ? '✅ Amadeus API ключ найден' : '⚠️  Amadeus API ключ НЕ найден — используется тестовое окружение'}\n`);
+  console.log(`\n${process.env.AMADEUS_API_KEY ? '✅ Amadeus API ключ найден' : '⚠️  Amadeus API ключ НЕ найден — используйте тестовое окружение'}\n`);
 });

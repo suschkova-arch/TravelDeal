@@ -3,6 +3,8 @@ import Hero from './components/Hero';
 import DestinationsSection from './components/DestinationsSection';
 import HotelsSection from './components/HotelsSection';
 import FlightsSection from './components/FlightsSection';
+import RailwaySection from './components/RailwaySection';
+import CruisesSection from './components/CruisesSection';
 import PriceTrendSection from './components/PriceTrendSection';
 import StatsSection from './components/StatsSection';
 import ReviewsSection from './components/ReviewsSection';
@@ -22,6 +24,8 @@ const App = () => (
     <DestinationsSection />
     <HotelsSection />
     <FlightsSection />
+    <RailwaySection />
+    <CruisesSection />
     <PriceTrendSection />
     <StatsSection />
     <ReviewsSection />

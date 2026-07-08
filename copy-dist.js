@@ -1,29 +1,38 @@
-// copy-dist.js
-// Copies dist/index.html to dist/TravelDeal-website.html for easy sharing
-// Also ensures the dist folder has index.html for GitHub Pages
-
-import { copyFileSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, copyFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, 'dist');
-const src = join(distDir, 'index.html');
-const dest = join(distDir, 'TravelDeal-website.html');
-
 if (!existsSync(distDir)) {
   mkdirSync(distDir, { recursive: true });
-  console.log('Created dist/ directory');
 }
 
-if (existsSync(src)) {
-  copyFileSync(src, dest);
-  console.log('✅ Copied dist/index.html → dist/TravelDeal-website.html');
-  console.log('📦 GitHub Pages will serve dist/index.html');
-  console.log('📄 Standalone file: dist/TravelDeal-website.html');
-} else {
-  console.error('❌ dist/index.html not found. Run "npm run build" first.');
-  process.exit(1);
+// Актуальная React-сборка
+const builtSrc = join(__dirname, 'dist/index.html');
+const builtAlias = join(__dirname, 'dist/TravelDeal-website.html');
+const builtRoot = join(__dirname, 'TravelDeal-website.html');
+
+try {
+  copyFileSync(builtSrc, builtAlias);
+  copyFileSync(builtSrc, builtRoot);
+  const content = readFileSync(builtSrc, 'utf-8');
+  console.log(`✅ Основная сборка: ${builtSrc}`);
+  console.log(`✅ Копия в dist: ${builtAlias}`);
+  console.log(`✅ Копия в корне: ${builtRoot}`);
+  console.log(`📦 Размер актуальной сборки: ${(content.length / 1024).toFixed(1)} КБ`);
+} catch (error) {
+  console.error('❌ Ошибка при копировании React-сборки:', error.message);
 }
+
+// Standalone-версия как отдельный дополнительный вариант
+const publicSrc = join(__dirname, 'public/TravelDeal-website.html');
+const standaloneRoot = join(__dirname, 'TravelDeal-standalone.html');
+
+try {
+  copyFileSync(publicSrc, standaloneRoot);
+  console.log(`✅ Standalone-версия: ${standaloneRoot}`);
+} catch (error) {
+  console.error('❌ Ошибка при копировании standalone:', error.message);
+}
+
