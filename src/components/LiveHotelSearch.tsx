@@ -18,11 +18,74 @@ const cities = [
   { label: '🇷🇺 Иркутск (Байкал)', query: 'Irkutsk' },
   { label: '🇷🇺 Владивосток', query: 'Vladivostok' },
   { label: '🇷🇺 Южно-Сахалинск', query: 'Yuzhno-Sakhalinsk' },
+  { label: '🇷🇺 Петропавловск-Камчатский', query: 'Petropavlovsk-Kamchatsky' },
+  { label: '🇷🇺 Курильск (Курилы)', query: 'Kurilsk' },
+  { label: '🇷🇺 Горно-Алтайск', query: 'Gorno-Altaysk' },
+  { label: '🇷🇺 Манжерок (Алтай)', query: 'Manzherok' },
+  { label: '🇷🇺 Чемал (Алтай)', query: 'Chemal' },
+  { label: '🇷🇺 Ялта (Крым)', query: 'Yalta' },
+  { label: '🇷🇺 Севастополь (Крым)', query: 'Sevastopol' },
+  { label: '🇷🇺 Анапа (Кубань)', query: 'Anapa' },
+  { label: '🇷🇺 Геленджик (Кубань)', query: 'Gelendzhik' },
+  // Кавказ и Дагестан
+  { label: '🇷🇺 Махачкала (Дагестан)', query: 'Makhachkala' },
+  { label: '🇷🇺 Дербент (Дагестан)', query: 'Derbent' },
+  { label: '🇷🇺 Каспийск (Дагестан)', query: 'Kaspiysk' },
+  { label: '🇷🇺 Избербаш (Дагестан)', query: 'Izberbash' },
+  { label: '🇷🇺 Сулак (Дагестан)', query: 'Sulak' },
+  { label: '🇷🇺 Грозный (Чечня)', query: 'Grozny' },
+  { label: '🇷🇺 Аргун (Чечня)', query: 'Argun' },
+  { label: '🇷🇺 Кисловодск (КМВ)', query: 'Kislovodsk' },
+  { label: '🇷🇺 Пятигорск (КМВ)', query: 'Pyatigorsk' },
+  { label: '🇷🇺 Ессентуки (КМВ)', query: 'Yessentuki' },
+  { label: '🇷🇺 Железноводск (КМВ)', query: 'Zheleznovodsk' },
+  { label: '🇷🇺 Минеральные Воды', query: 'Mineralnye Vody' },
+  { label: '🇷🇺 Владикавказ (Осетия)', query: 'Vladikavkaz' },
+  { label: '🇷🇺 Нальчик (КБР)', query: 'Nalchik' },
+  { label: '🇷🇺 Тырныауз (КБР)', query: 'Tyrnyauz' },
+  { label: '🇷🇺 Магас (Ингушетия)', query: 'Magas' },
+  { label: '🇷🇺 Домбай (Карачаево-Черкесия)', query: 'Dombay' },
+  { label: '🇷🇺 Архыз (Карачаево-Черкесия)', query: 'Arkhyz' },
+  { label: '🇷🇺 Черкесск (КЧР)', query: 'Cherkessk' },
+  { label: '🇷🇺 Эльбрус (Кабардино-Балкария)', query: 'Elbrus' },
+  { label: '🇷🇺 Теберда (Карачаево-Черкесия)', query: 'Teberda' },
+  // Юг России
+  { label: '🇷🇺 Краснодар', query: 'Krasnodar' },
+  { label: '🇷🇺 Ростов-на-Дону', query: 'Rostov-on-Don' },
+  { label: '🇷🇺 Волгоград', query: 'Volgograd' },
+  { label: '🇷🇺 Астрахань', query: 'Astrakhan' },
+  { label: '🇷🇺 Ставрополь', query: 'Stavropol' },
+  { label: '🇷🇺 Армавир', query: 'Armavir' },
+  { label: '🇷🇺 Таганрог', query: 'Taganrog' },
+  { label: '🇷🇺 Сочи (Адлер)', query: 'Adler' },
+  // Поволжье
+  { label: '🇷🇺 Самара', query: 'Samara' },
+  { label: '🇷🇺 Саратов', query: 'Saratov' },
+  { label: '🇷🇺 Уфа', query: 'Ufa' },
+  { label: '🇷🇺 Пермь', query: 'Perm' },
+  { label: '🇷🇺 Ярославль', query: 'Yaroslavl' },
+  { label: '🇷🇺 Нижний Новгород', query: 'Nizhny Novgorod' },
+  { label: '🇷🇺 Мурманск', query: 'Murmansk' },
+  // Абхазия
+  { label: '🇦🇬 Сухум (Абхазия)', query: 'Sukhumi' },
+  { label: '🇦🇬 Гагра (Абхазия)', query: 'Gagra' },
+  { label: '🇦🇬 Пицунда (Абхазия)', query: 'Pitsunda' },
+  { label: '🇦🇬 Гудаута (Абхазия)', query: 'Gudauta' },
+  { label: '🇦🇬 Новый Афон (Абхазия)', query: 'Novy Afon' },
   // Турция
   { label: '🇹🇷 Анталья', query: 'Antalya' },
   { label: '🇹🇷 Стамбул', query: 'Istanbul' },
   { label: '🇹🇷 Бодрум', query: 'Bodrum' },
   { label: '🇹🇷 Аланья', query: 'Alanya' },
+  // Италия
+  { label: '🇮🇹 Рим', query: 'Rome' },
+  { label: '🇮🇹 Венеция', query: 'Venice' },
+  { label: '🇮🇹 Милан', query: 'Milan' },
+  { label: '🇮🇹 Флоренция', query: 'Florence' },
+  // Испания
+  { label: '🇪🇸 Барселона', query: 'Barcelona' },
+  { label: '🇪🇸 Мадрид', query: 'Madrid' },
+  { label: '🇪🇸 Тенерифе', query: 'Tenerife' },
   // Китай
   { label: '🇨🇳 Пекин', query: 'Beijing' },
   { label: '🇨🇳 Шанхай', query: 'Shanghai' },
@@ -33,13 +96,18 @@ const cities = [
   { label: '🇹🇭 Пхукет', query: 'Phuket' },
   { label: '🇹🇭 Паттайя', query: 'Pattaya' },
   { label: '🇹🇭 Самуи', query: 'Koh Samui' },
-  // Другие направления
+  // Другие страны
+  { label: '🇨🇾 Айя-Напа (Кипр)', query: 'Ayia Napa' },
+  { label: '🇨🇾 Пафос (Кипр)', query: 'Paphos' },
+  { label: '🇨🇺 Варадеро (Куба)', query: 'Varadero' },
+  { label: '🇨🇺 Гавана (Куба)', query: 'Havana' },
+  { label: '🇵🇭 Себу (Филиппины)', query: 'Cebu' },
+  { label: '🇵🇭 Боракай (Филиппины)', query: 'Boracay' },
   { label: '🇦🇪 Дубай', query: 'Dubai' },
   { label: '🇪🇬 Хургада', query: 'Hurghada' },
   { label: '🇪🇬 Шарм-эль-Шейх', query: 'Sharm El Sheikh' },
   { label: '🇮🇩 Бали', query: 'Bali' },
   { label: '🇲🇻 Мале', query: 'Male' },
-  { label: '🇪🇸 Барселона', query: 'Barcelona' },
   { label: '🇫🇷 Париж', query: 'Paris' },
   { label: '🇯🇵 Токио', query: 'Tokyo' },
 ];
@@ -295,35 +363,95 @@ const LiveHotelSearch = () => {
                   animation: 'fadeIn 0.4s ease',
                 }}
               >
-                {/* 📷 Реальное фото отеля из базы Hotellook */}
-                <div style={{ height: 150, background: 'rgba(255,255,255,0.05)', position: 'relative' }}>
-                  <img
-                    src={`https://photo.hotellook.com/image_v2/limit/h${h.hotelId}_1/640/400.auto`}
-                    alt={h.hotelName}
-                    loading="lazy"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = 'none';
-                      const parent = (e.currentTarget as HTMLImageElement).parentElement;
-                      if (parent) {
-                        parent.style.display = 'flex';
-                        parent.style.alignItems = 'center';
-                        parent.style.justifyContent = 'center';
-                        parent.innerHTML = '<span style="font-size:40px">🏨</span>';
-                      }
+                {/* 📷 Фото отеля: emoji-обложка (работает везде) */}
+                <div
+                  style={{
+                    height: 150,
+                    position: 'relative',
+                    overflow: 'hidden',
+                    background: (() => {
+                      const loc = h.locationName.toLowerCase();
+                      if (loc.includes('россия') || loc.includes('moscow') || loc.includes('saint') || loc.includes('sochi') || loc.includes('kazan') || loc.includes('irkutsk') || loc.includes('vladivostok') || loc.includes('kaliningrad') || loc.includes('yuzhno') || loc.includes('petropavlovsk'))
+                        return 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #6dd5ed 100%)';
+                      if (loc.includes('turkey') || loc.includes('antalya') || loc.includes('istanbul') || loc.includes('bodrum') || loc.includes('alanya'))
+                        return 'linear-gradient(135deg, #f5af19 0%, #f12711 50%, #fceabb 100%)';
+                      if (loc.includes('uae') || loc.includes('dubai') || loc.includes('sharjah') || loc.includes('abu'))
+                        return 'linear-gradient(135deg, #ffd89b 0%, #19547b 100%)';
+                      if (loc.includes('egypt') || loc.includes('hurghada') || loc.includes('sharm'))
+                        return 'linear-gradient(135deg, #fdc830 0%, #f37335 100%)';
+                      if (loc.includes('thailand') || loc.includes('phuket') || loc.includes('bangkok') || loc.includes('pattaya') || loc.includes('samui'))
+                        return 'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 50%, #43cea2 100%)';
+                      if (loc.includes('indonesia') || loc.includes('bali'))
+                        return 'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)';
+                      if (loc.includes('maldives') || loc.includes('male'))
+                        return 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)';
+                      if (loc.includes('italy') || loc.includes('rome') || loc.includes('venice') || loc.includes('milan') || loc.includes('florence'))
+                        return 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)';
+                      if (loc.includes('spain') || loc.includes('barcelona') || loc.includes('madrid') || loc.includes('tenerife'))
+                        return 'linear-gradient(135deg, #f7b733 0%, #fc4a1a 100%)';
+                      if (loc.includes('france') || loc.includes('paris'))
+                        return 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)';
+                      if (loc.includes('japan') || loc.includes('tokyo'))
+                        return 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)';
+                      if (loc.includes('china') || loc.includes('beijing') || loc.includes('shanghai') || loc.includes('sanya') || loc.includes('guangzhou'))
+                        return 'linear-gradient(135deg, #e53935 0%, #ffb300 100%)';
+                      if (loc.includes('cyprus') || loc.includes('paphos') || loc.includes('ayia'))
+                        return 'linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%)';
+                      if (loc.includes('cuba') || loc.includes('havana') || loc.includes('varadero'))
+                        return 'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)';
+                      if (loc.includes('philippines') || loc.includes('cebu') || loc.includes('boracay'))
+                        return 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)';
+                      if (loc.includes('abkhazia') || loc.includes('sukhumi') || loc.includes('gagra') || loc.includes('pitsunda'))
+                        return 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #6dd5ed 100%)';
+                      return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    })(),
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 80,
+                      opacity: 0.55,
+                      filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))',
                     }}
-                  />
+                  >
+                    {(() => {
+                      const loc = h.locationName.toLowerCase();
+                      if (loc.includes('россия') || loc.includes('moscow') || loc.includes('saint') || loc.includes('sochi') || loc.includes('kazan') || loc.includes('irkutsk') || loc.includes('vladivostok') || loc.includes('kaliningrad') || loc.includes('yuzhno') || loc.includes('petropavlovsk')) return '🏔️';
+                      if (loc.includes('turkey') || loc.includes('antalya') || loc.includes('istanbul') || loc.includes('bodrum') || loc.includes('alanya')) return '🏖️';
+                      if (loc.includes('uae') || loc.includes('dubai')) return '🏜️';
+                      if (loc.includes('egypt')) return '🐪';
+                      if (loc.includes('thailand') || loc.includes('phuket') || loc.includes('bangkok') || loc.includes('pattaya') || loc.includes('samui')) return '🌴';
+                      if (loc.includes('indonesia') || loc.includes('bali')) return '🌺';
+                      if (loc.includes('maldives')) return '🏖️';
+                      if (loc.includes('italy') || loc.includes('rome') || loc.includes('venice') || loc.includes('milan')) return '🏛️';
+                      if (loc.includes('spain') || loc.includes('barcelona') || loc.includes('madrid') || loc.includes('tenerife')) return '⛪';
+                      if (loc.includes('france') || loc.includes('paris')) return '🗼';
+                      if (loc.includes('japan') || loc.includes('tokyo')) return '🏯';
+                      if (loc.includes('china') || loc.includes('beijing') || loc.includes('shanghai') || loc.includes('sanya') || loc.includes('guangzhou')) return '🏮';
+                      if (loc.includes('cyprus')) return '🌅';
+                      if (loc.includes('cuba')) return '🌴';
+                      if (loc.includes('philippines')) return '🏝️';
+                      if (loc.includes('abkhazia')) return '🌊';
+                      return '🏨';
+                    })()}
+                  </div>
                   {h.stars > 0 && (
                     <div
                       style={{
                         position: 'absolute',
                         top: 8,
-                        left: 8,
+                        right: 8,
                         background: 'rgba(10,15,30,0.85)',
                         borderRadius: 6,
                         padding: '3px 8px',
                         color: '#fbbf24',
                         fontSize: 12,
+                        zIndex: 2,
                       }}
                     >
                       {'★'.repeat(h.stars)}

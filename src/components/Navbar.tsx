@@ -13,8 +13,9 @@ const Navbar = () => {
   const links = [
     { href: '#destinations', label: 'Направления' },
     { href: '#hotels', label: 'Отели' },
-    { href: '#flights', label: 'Авиабилеты' },
-    { href: '#prices', label: 'Цены' },
+    { href: '#flights', label: 'Авиа' },
+    { href: '#railway', label: 'Ж/Д' },
+    { href: '#cruises', label: 'Круизы' },
     { href: '#partners', label: 'Партнёры' },
   ];
 

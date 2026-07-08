@@ -1,48 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
-const groups = {
-  flights: [
-    { name: 'Aviasales', url: 'https://aviasales.tpk.lu/u9lFIAmF' },
-  ],
-  hotels: [
-    { name: 'Ostrovok', url: 'https://ostrovok.tpk.lu/qm3uUcuL' },
-    { name: 'Яндекс Путешествия', url: 'https://yandex.tpk.lu/n2k5ulFQ' },
-    { name: 'Sutochno', url: 'https://sutochno.tpk.lu/uTSAebHB' },
-    { name: 'Avito Путешествия', url: 'https://avito.tpk.lu/vQaFIi9P' },
-    { name: 'МирТурБаз', url: 'https://mirturbaz.tpk.lu/UW7Z9Iw1' },
-  ],
-  rail: [
-    { name: 'Туту', url: 'https://tutu.tpk.lu/35nYuIo5' },
-  ],
-  tours: [
-    { name: 'Travelata', url: 'https://travelata.tpk.lu/iXthmQlV' },
-    { name: 'Level.Travel', url: 'https://level.tpk.lu/pEKE6u4T' },
-    { name: 'Onlinetours', url: 'https://onlinetours.tpk.lu/9gx8uXiK' },
-    { name: 'Слетать', url: 'https://sletat.tpk.lu/qOge5Itj' },
-    { name: 'Большая Страна', url: 'https://bolshayastrana.tpk.lu/tDKbPrzA' },
-    { name: 'МирТурБаз', url: 'https://mirturbaz.tpk.lu/UW7Z9Iw1' },
-    { name: 'Путёвка', url: 'https://putevka.tpk.lu/LLOG5aJa' },
-    { name: 'Sanatoriums', url: 'https://sanatoriums.tpk.lu/9jud9LjB' },
-  ],
-  cruises: [
-    { name: 'Круиз-Онлайн', url: 'https://kruiz-online.tpk.lu/ctXuG3FL' },
-  ],
-  cars: [
-    { name: 'Localrent', url: 'https://localrent.tpk.lu/axWJbRm1' },
-    { name: 'EconomyBookings', url: 'https://economybookings.tpk.lu/ANU2xTqv' },
-    { name: 'QEEQ', url: 'https://qeeq.tpk.lu/z8sf6b95' },
-    { name: 'BikesBooking', url: 'https://bikesbooking.tpk.lu/UHyVjzq5' },
-  ],
-  services: [
-    { name: 'SeaRadar', url: 'https://searadar.tpk.lu/pus6EpES' },
-    { name: 'Radical Storage', url: 'https://radicalstorage.tpk.lu/lkM8cN3r' },
-    { name: 'VIP-Зал', url: 'https://vip-zal.tpk.lu/gQ8g0epq' },
-    { name: 'EKTA Traveling', url: 'https://ektatraveling.tpk.lu/9aHvFarq' },
-    { name: 'La Voyage', url: 'https://lavoyage.tpk.lu/PC4ITkPJ' },
-  ],
-};
-
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
@@ -71,14 +29,21 @@ const Footer = () => {
             marginBottom: 60,
           }}
         >
-          <h3 style={{ color: '#fff', fontSize: 24, fontWeight: 700, marginBottom: 8 }}>✉️ Подписка на лучшие предложения</h3>
+          <h3 style={{ color: '#fff', fontSize: 24, fontWeight: 700, marginBottom: 8 }}>
+            ✉️ Подписка на лучшие предложения
+          </h3>
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginBottom: 24 }}>
-            Получайте свежие подборки 2026–2027 по России, Турции, Таиланду, Европе, островам и речным маршрутам.
+            Первыми узнавайте о горящих турах и эксклюзивных скидках
           </p>
           {sent ? (
-            <div style={{ color: '#34d399', fontWeight: 700, fontSize: 16 }}>✅ Вы подписаны! Ждите лучшие предложения на {email}</div>
+            <div style={{ color: '#34d399', fontWeight: 700, fontSize: 16 }}>
+              ✅ Вы подписаны! Ждите лучших предложений на {email}
+            </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 12, maxWidth: 440, margin: '0 auto', flexWrap: 'wrap' }}>
+            <form
+              onSubmit={handleSubmit}
+              style={{ display: 'flex', gap: 12, maxWidth: 440, margin: '0 auto', flexWrap: 'wrap' }}
+            >
               <input
                 type="email"
                 value={email}
@@ -117,7 +82,14 @@ const Footer = () => {
           )}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 32, marginBottom: 48 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+            gap: 40,
+            marginBottom: 48,
+          }}
+        >
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
               <div
@@ -146,45 +118,112 @@ const Footer = () => {
                 TravelDeal
               </span>
             </div>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, lineHeight: 1.6 }}>
-              Агрегатор путешествий — сравниваем отели, авиа, ж/д, туры, круизы и дополнительные сервисы для поездок.
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>
+              Агрегатор путешествий — находим лучшие цены на отели и авиабилеты
             </p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              {['📘', '📸', '💬', '🐦'].map((icon, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    background: 'rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 16,
+                    textDecoration: 'none',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLElement).style.background = 'rgba(102,126,234,0.2)')
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)')
+                  }
+                >
+                  {icon}
+                </a>
+              ))}
+            </div>
           </div>
 
           <div>
-            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, fontSize: 14 }}>✈️ Перелёты</h4>
-            {groups.flights.map((p) => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13, marginBottom: 10 }}>{p.name}</a>
-            ))}
-            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, marginTop: 18, fontSize: 14 }}>🏨 Отели</h4>
-            {groups.hotels.map((p) => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13, marginBottom: 10 }}>{p.name}</a>
-            ))}
-          </div>
-
-          <div>
-            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, fontSize: 14 }}>🚆 Ж/д</h4>
-            {groups.rail.map((p) => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13, marginBottom: 10 }}>{p.name}</a>
-            ))}
-            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, marginTop: 18, fontSize: 14 }}>🛳️ Круизы</h4>
-            {groups.cruises.map((p) => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13, marginBottom: 10 }}>{p.name}</a>
-            ))}
-            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, marginTop: 18, fontSize: 14 }}>🚗 Авто / транспорт</h4>
-            {groups.cars.map((p) => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13, marginBottom: 10 }}>{p.name}</a>
+            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, fontSize: 14 }}>Направления</h4>
+            {['Дубай', 'Бали', 'Париж', 'Токио', 'Барселона', 'Мальдивы'].map((d) => (
+              <a
+                key={d}
+                href="#destinations"
+                style={{
+                  display: 'block',
+                  color: 'rgba(255,255,255,0.5)',
+                  textDecoration: 'none',
+                  fontSize: 13,
+                  marginBottom: 10,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#a78bfa')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.5)')}
+              >
+                {d}
+              </a>
             ))}
           </div>
 
           <div>
-            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, fontSize: 14 }}>🌴 Туры</h4>
-            {groups.tours.map((p) => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13, marginBottom: 10 }}>{p.name}</a>
+            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, fontSize: 14 }}>Партнёры</h4>
+            {[
+              { name: 'Booking.com', url: 'https://booking.com' },
+              { name: 'Aviasales', url: 'https://aviasales.ru' },
+              { name: 'Skyscanner', url: 'https://skyscanner.ru' },
+              { name: 'KAYAK', url: 'https://kayak.ru' },
+              { name: 'Ostrovok', url: 'https://ostrovok.ru' },
+              { name: 'Hotels.com', url: 'https://hotels.com' },
+            ].map((p) => (
+              <a
+                key={p.name}
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'block',
+                  color: 'rgba(255,255,255,0.5)',
+                  textDecoration: 'none',
+                  fontSize: 13,
+                  marginBottom: 10,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#a78bfa')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.5)')}
+              >
+                {p.name}
+              </a>
             ))}
-            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, marginTop: 18, fontSize: 14 }}>🧳 Сервисы</h4>
-            {groups.services.map((p) => (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: 'rgba(255,255,255,0.5)', textDecoration: 'none', fontSize: 13, marginBottom: 10 }}>{p.name}</a>
+          </div>
+
+          <div>
+            <h4 style={{ color: '#fff', fontWeight: 700, marginBottom: 16, fontSize: 14 }}>Сервис</h4>
+            {['О нас', 'Как работает', 'Блог', 'Помощь', 'Контакты', 'Вакансии'].map((item) => (
+              <a
+                key={item}
+                href="#"
+                style={{
+                  display: 'block',
+                  color: 'rgba(255,255,255,0.5)',
+                  textDecoration: 'none',
+                  fontSize: 13,
+                  marginBottom: 10,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#a78bfa')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.5)')}
+              >
+                {item}
+              </a>
             ))}
           </div>
         </div>
@@ -200,15 +239,26 @@ const Footer = () => {
             gap: 12,
           }}
         >
-          <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13 }}>© 2026 TravelDeal. Все права защищены.</div>
+          <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13 }}>© 2025 TravelDeal. Все права защищены.</div>
           <div style={{ display: 'flex', gap: 16 }}>
             {['Политика конфиденциальности', 'Условия использования', 'Cookie'].map((item) => (
-              <a key={item} href="#" style={{ color: 'rgba(255,255,255,0.3)', textDecoration: 'none', fontSize: 12 }}>
+              <a
+                key={item}
+                href="#"
+                style={{
+                  color: 'rgba(255,255,255,0.3)',
+                  textDecoration: 'none',
+                  fontSize: 12,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.6)')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.3)')}
+              >
                 {item}
               </a>
             ))}
           </div>
-          <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>Живой каталог направлений 2026–2027 • build 07-07-v3</div>
+          <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>Сделано с ❤️ для путешественников</div>
         </div>
       </div>
     </footer>

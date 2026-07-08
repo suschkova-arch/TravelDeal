@@ -3,95 +3,43 @@ import type { FormEvent } from 'react';
 
 const slides = [
   {
-    bg: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=1600&q=80&auto=format&fit=crop',
-    city: 'Анталья',
-    country: 'Турция',
-    tagline: 'Пятизвёздочные отели и море уже с конца июля 2026',
-    price: '67 900₽',
+    bg: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1600&q=80',
+    city: 'Дубай',
+    country: 'ОАЭ',
+    tagline: 'Город золота и небоскрёбов',
+    price: '45 000₽',
   },
   {
-    bg: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80&auto=format&fit=crop',
-    city: 'Пхукет',
-    country: 'Таиланд',
-    tagline: 'Тропики, пляжи и длинные зимние бронирования заранее',
-    price: '84 200₽',
+    bg: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1600&q=80',
+    city: 'Бали',
+    country: 'Индонезия',
+    tagline: 'Остров богов и рисовых террас',
+    price: '38 000₽',
   },
   {
-    bg: 'https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=1600&q=80&auto=format&fit=crop',
-    city: 'Калининград',
-    country: 'Россия',
-    tagline: 'Балтийские выходные, отели и ж/д как альтернатива перелёту',
-    price: '32 900₽',
+    bg: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600&q=80',
+    city: 'Париж',
+    country: 'Франция',
+    tagline: 'Вечная романтика на берегах Сены',
+    price: '52 000₽',
   },
   {
-    bg: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1600&q=80&auto=format&fit=crop',
-    city: 'Алтай',
-    country: 'Россия',
-    tagline: 'Горы, эко-отели и самостоятельные маршруты с прокатом авто',
-    price: '54 600₽',
-  },
-  {
-    bg: 'https://images.unsplash.com/photo-1514890547357-a9ee288728e0?w=1600&q=80&auto=format&fit=crop',
-    city: 'Венеция',
-    country: 'Италия',
-    tagline: 'Бутик-отели, каналы и осенние city-break маршруты 2026',
-    price: '96 300₽',
+    bg: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1600&q=80',
+    city: 'Токио',
+    country: 'Япония',
+    tagline: 'Будущее и традиции в одном городе',
+    price: '65 000₽',
   },
 ];
 
-const suggestions = [
-  'Анталья',
-  'Стамбул',
-  'Пхукет',
-  'Бангкок',
-  'Калининград',
-  'Казань',
-  'Дагестан',
-  'Махачкала',
-  'Кавказ',
-  'Кисловодск',
-  'Минеральные Воды',
-  'Пятигорск',
-  'Ессентуки',
-  'Нальчик',
-  'Краснодар',
-  'Ростов-на-Дону',
-  'Сахалин',
-  'Камчатка',
-  'Курилы',
-  'Алтай',
-  'Крым',
-  'Абхазия',
-  'Гагра',
-  'Сухум',
-  'Пицунда',
-  'Гудаута',
-  'Италия',
-  'Венеция',
-  'Испания',
-  'Кипр',
-  'Куба',
-  'Филиппины',
-  'Китай',
-  'Пхеньян',
-  'Турция',
-  'Россия',
-  'Таиланд',
-  'Дубай',
-  'Париж',
-  'Токио',
-];
+const suggestions = ['Дубай', 'Бали', 'Париж', 'Токио', 'Барселона', 'Мальдивы', 'Рим', 'Нью-Йорк', 'Бангкок', 'Амстердам'];
 
 const notifications = [
-  { text: 'Екатерина забронировала Анталью на 9 ночей и сэкономила 32 800₽ 🏖️', time: '47 мин назад', icon: '🏨' },
-  { text: 'Семья из Казани выбрала ж/д + отель в Калининграде выгоднее на 21 400₽ 🚆', time: '49 мин назад', icon: '🚆' },
-  { text: 'На Дагестан сейчас смотрят 18 человек 👀', time: '45 мин назад', icon: '👀' },
-  { text: 'На Пхукет купили перелёт с выгодой 28 600₽ ✈️', time: '50 мин назад', icon: '✈️' },
+  { text: 'Анна из Москвы купила тур на Бали', time: '2 мин назад', icon: '🎉' },
+  { text: 'Цена на Дубай снизилась на 15%', time: '5 мин назад', icon: '📉' },
+  { text: 'Михаил забронировал отель в Париже', time: '8 мин назад', icon: '🏨' },
+  { text: '47 человек смотрят Токио прямо сейчас', time: '1 мин назад', icon: '👀' },
 ];
-
-const AVIASALES_AFFILIATE = 'https://aviasales.tpk.lu/u9lFIAmF';
-const TUTU_AFFILIATE = 'https://tutu.tpk.lu/35nYuIo5';
-const TRAVELATA_AFFILIATE = 'https://travelata.tpk.lu/iXthmQlV';
 
 const Hero = () => {
   const [slide, setSlide] = useState(0);
@@ -103,47 +51,68 @@ const Hero = () => {
   const [showNotif, setShowNotif] = useState(true);
 
   useEffect(() => {
-    const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 6500);
+    const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 5000);
     return () => clearInterval(t);
   }, []);
 
   useEffect(() => {
-    let timer: number;
+    // Реалистичные уведомления: первый показ через 25 сек после входа на сайт,
+    // затем 1 раз в 90 сек (полторы минуты) — спокойный ритм.
+    // Показываются только после небольшой прокрутки (пользователь реально листает).
+    let mounted = true;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let scrolled = false;
 
-    const schedule = () => {
-      const delay = 55000 + Math.floor(Math.random() * 20000);
-      timer = window.setTimeout(() => {
-        setShowNotif(false);
-        window.setTimeout(() => {
-          setNotif((n) => (n + 1) % notifications.length);
-          setShowNotif(true);
-          schedule();
-        }, 450);
-      }, delay);
+    const showNext = () => {
+      if (!mounted) return;
+      setShowNotif(false);
+      setTimeout(() => {
+        if (!mounted) return;
+        setNotif((n) => (n + 1) % notifications.length);
+        setShowNotif(true);
+      }, 600);
     };
 
-    schedule();
+    const schedule = () => {
+      if (!mounted) return;
+      timer = setTimeout(showNext, scrolled ? 90000 : 25000);
+    };
 
-    return () => window.clearTimeout(timer);
+    const onScroll = () => {
+      if (window.scrollY > 200 && !scrolled) {
+        scrolled = true;
+        // При первой прокрутке — сразу покажем через 8 сек
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(showNext, 8000);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    schedule();
+    const interval = setInterval(() => {
+      if (scrolled) showNext();
+    }, 90000);
+
+    return () => {
+      mounted = false;
+      if (timer) clearTimeout(timer);
+      clearInterval(interval);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   const filtered = suggestions.filter(
     (s) => s.toLowerCase().includes(search.toLowerCase()) && search.length > 0,
   );
 
-  const openAviasales = (query: string) => {
-    const q = encodeURIComponent(query);
-    window.open(`${AVIASALES_AFFILIATE}?search=${q}`, '_blank', 'noopener,noreferrer');
-  };
-
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     const q = search || slides[slide].city;
-    openAviasales(q);
+    window.open(`https://aviasales.ru/search/${encodeURIComponent(q)}`, '_blank');
   };
 
   return (
-    <section style={{ position: 'relative', height: '100vh', minHeight: 660, overflow: 'hidden' }}>
+    <section style={{ position: 'relative', height: '100vh', minHeight: 600, overflow: 'hidden' }}>
       {slides.map((s, i) => (
         <div
           key={i}
@@ -166,17 +135,7 @@ const Hero = () => {
           inset: 0,
           zIndex: 1,
           background:
-            'linear-gradient(to bottom, rgba(6,12,28,0.55) 0%, rgba(10,15,30,0.38) 36%, rgba(10,15,30,0.9) 100%)',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-          background:
-            'radial-gradient(circle at 52% 16%, rgba(125,211,252,0.28), transparent 24%), radial-gradient(circle at 82% 76%, rgba(45,212,191,0.16), transparent 22%), radial-gradient(circle at 16% 74%, rgba(191,219,254,0.14), transparent 22%), linear-gradient(to top, rgba(4,14,26,0.62) 0%, transparent 42%)',
-          mixBlendMode: 'screen',
+            'linear-gradient(to bottom, rgba(10,15,30,0.5) 0%, rgba(10,15,30,0.3) 40%, rgba(10,15,30,0.85) 100%)',
         }}
       />
 
@@ -193,7 +152,7 @@ const Hero = () => {
       >
         <div
           style={{
-            background: 'rgba(10,15,30,0.88)',
+            background: 'rgba(10,15,30,0.9)',
             backdropFilter: 'blur(20px)',
             border: '1px solid rgba(102,126,234,0.3)',
             borderRadius: 12,
@@ -201,7 +160,7 @@ const Hero = () => {
             display: 'flex',
             alignItems: 'center',
             gap: 10,
-            maxWidth: 320,
+            maxWidth: 280,
           }}
         >
           <span style={{ fontSize: 24 }}>{notifications[notif].icon}</span>
@@ -259,9 +218,7 @@ const Hero = () => {
               animation: 'pulse 2s infinite',
             }}
           />
-          <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>
-            Сезон поиска: июль 2026 → 2027 · цены в hero указаны за 2 взрослых
-          </span>
+          <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>Экономьте до 60% на путешествиях</span>
         </div>
 
         <h1
@@ -285,7 +242,7 @@ const Hero = () => {
 
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32 }}>
           <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, textDecoration: 'line-through' }}>
-            от 94 400₽
+            от 68 000₽
           </span>
           <span
             style={{
@@ -309,12 +266,12 @@ const Hero = () => {
             borderRadius: 20,
             padding: 20,
             width: '100%',
-            maxWidth: 760,
+            maxWidth: 720,
             marginBottom: 24,
           }}
         >
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
-            <div style={{ flex: '1 1 220px', position: 'relative' }}>
+            <div style={{ flex: '1 1 200px', position: 'relative' }}>
               <div
                 style={{
                   color: 'rgba(255,255,255,0.5)',
@@ -335,7 +292,7 @@ const Hero = () => {
                 }}
                 onFocus={() => setShowSugg(true)}
                 onBlur={() => setTimeout(() => setShowSugg(false), 200)}
-                placeholder={`🔍 ${slides[slide].city}, ${slides[slide].country}`}
+                placeholder={`🔍 ${slides[slide].city}`}
                 style={{
                   width: '100%',
                   background: 'rgba(255,255,255,0.08)',
@@ -361,8 +318,6 @@ const Hero = () => {
                     marginTop: 4,
                     overflow: 'hidden',
                     zIndex: 100,
-                    maxHeight: 260,
-                    overflowY: 'auto',
                   }}
                 >
                   {filtered.map((s) => (
@@ -421,10 +376,18 @@ const Hero = () => {
                   boxSizing: 'border-box',
                 }}
               >
-                <option value="7" style={{ background: '#1a1f35' }}>1 неделя</option>
-                <option value="10" style={{ background: '#1a1f35' }}>10 дней</option>
-                <option value="14" style={{ background: '#1a1f35' }}>2 недели</option>
-                <option value="21" style={{ background: '#1a1f35' }}>3 недели</option>
+                <option value="7" style={{ background: '#1a1f35' }}>
+                  1 неделя
+                </option>
+                <option value="14" style={{ background: '#1a1f35' }}>
+                  2 недели
+                </option>
+                <option value="21" style={{ background: '#1a1f35' }}>
+                  3 недели
+                </option>
+                <option value="30" style={{ background: '#1a1f35' }}>
+                  Месяц
+                </option>
               </select>
             </div>
 
@@ -454,15 +417,35 @@ const Hero = () => {
                 <button
                   type="button"
                   onClick={() => setTourists(Math.max(1, tourists - 1))}
-                  style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 6, width: 28, height: 28, color: '#fff', cursor: 'pointer', fontSize: 18 }}
+                  style={{
+                    background: 'rgba(255,255,255,0.1)',
+                    border: 'none',
+                    borderRadius: 6,
+                    width: 28,
+                    height: 28,
+                    color: '#fff',
+                    cursor: 'pointer',
+                    fontSize: 18,
+                  }}
                 >
                   −
                 </button>
-                <span style={{ color: '#fff', fontWeight: 600, flex: 1, textAlign: 'center' }}>👤 {tourists}</span>
+                <span style={{ color: '#fff', fontWeight: 600, flex: 1, textAlign: 'center' }}>
+                  👤 {tourists}
+                </span>
                 <button
                   type="button"
                   onClick={() => setTourists(Math.min(10, tourists + 1))}
-                  style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 6, width: 28, height: 28, color: '#fff', cursor: 'pointer', fontSize: 18 }}
+                  style={{
+                    background: 'rgba(255,255,255,0.1)',
+                    border: 'none',
+                    borderRadius: 6,
+                    width: 28,
+                    height: 28,
+                    color: '#fff',
+                    cursor: 'pointer',
+                    fontSize: 18,
+                  }}
                 >
                   +
                 </button>
@@ -487,43 +470,16 @@ const Hero = () => {
               letterSpacing: 0.5,
             }}
           >
-            🔍 Найти лучшую цену — {tourists} {tourists === 1 ? 'турист' : tourists < 5 ? 'туриста' : 'туристов'} · {dateRange} дней
+            🔍 Найти лучшую цену — {tourists} {tourists === 1 ? 'турист' : tourists < 5 ? 'туриста' : 'туристов'} ·{' '}
+            {dateRange} дней
           </button>
         </form>
 
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 24 }}>
-          <button
-            onClick={() => window.open(TRAVELATA_AFFILIATE, '_blank', 'noopener,noreferrer')}
-            style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: 100,
-              padding: '8px 16px',
-              color: 'rgba(255,255,255,0.8)',
-              cursor: 'pointer',
-              fontSize: 13,
-            }}
-          >
-            🔥 Туры
-          </button>
-          <button
-            onClick={() => window.open(TUTU_AFFILIATE, '_blank', 'noopener,noreferrer')}
-            style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: 100,
-              padding: '8px 16px',
-              color: 'rgba(255,255,255,0.8)',
-              cursor: 'pointer',
-              fontSize: 13,
-            }}
-          >
-            🚆 Ж/д по России
-          </button>
-          {['🏖️ Пляжный отдых', '🏔️ Горы', '🌆 Города', '💑 Романтика'].map((tag) => (
+          {['🔥 Горящие туры', '🏖️ Пляжный отдых', '🏔️ Горы', '🌆 Города', '💑 Романтика'].map((tag) => (
             <button
               key={tag}
-              onClick={() => openAviasales(search || slides[slide].city)}
+              onClick={() => window.open('https://aviasales.ru', '_blank')}
               style={{
                 background: 'rgba(255,255,255,0.08)',
                 border: '1px solid rgba(255,255,255,0.2)',
@@ -532,6 +488,15 @@ const Hero = () => {
                 color: 'rgba(255,255,255,0.8)',
                 cursor: 'pointer',
                 fontSize: 13,
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = 'rgba(102,126,234,0.3)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(102,126,234,0.5)';
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.2)';
               }}
             >
               {tag}
