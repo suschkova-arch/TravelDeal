@@ -80,13 +80,13 @@ const CruisesSection = () => (
         </p>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-          gap: 26,
-        }}
-      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
+            gap: 26,
+          }}
+        >
         {cruises.map((cruise) => (
           <div
             key={cruise.id}

@@ -200,7 +200,7 @@ const HotelsSection = () => {
           Найдено <strong style={{ color: '#fff' }}>{filtered.length}</strong> отелей • фотографии подтягиваются из внешних источников и закреплены в карточках вручную
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 24 }}>
           {filtered.map((hotel) => {
             const offers = hotel.offers?.length
               ? [...hotel.offers].sort((a, b) => a.price - b.price)
