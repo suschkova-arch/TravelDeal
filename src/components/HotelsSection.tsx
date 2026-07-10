@@ -2,51 +2,134 @@ import { useMemo, useState } from 'react';
 import { hotels } from '../data/travelData';
 import { getPartnerLink } from '../utils/partnerLinks';
 
-const HOTEL_PLACEHOLDER = `data:image/svg+xml;utf8,${encodeURIComponent(`
-  <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
-    <defs>
-      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#0b0f19"/>
-        <stop offset="100%" stop-color="#111827"/>
-      </linearGradient>
-      <linearGradient id="hotelGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#8b5cf6"/>
-        <stop offset="100%" stop-color="#6366f1"/>
-      </linearGradient>
-    </defs>
-    <rect width="1200" height="800" fill="url(#sky)"/>
-    <circle cx="600" cy="180" r="10" fill="#fff" opacity="0.4"/>
-    <circle cx="200" cy="220" r="2" fill="#fff" opacity="0.3"/>
-    <circle cx="1000" cy="300" r="3" fill="#fff" opacity="0.5"/>
-    <circle cx="600" cy="250" r="120" fill="#a78bfa" opacity="0.08"/>
-    
-    <!-- Премиальный фасад отеля -->
-    <path d="M380 650 V280 h440 v370 Z" fill="url(#hotelGrad)" opacity="0.15"/>
-    <rect x="420" y="240" width="360" height="410" rx="16" fill="none" stroke="#8b5cf6" stroke-width="6" opacity="0.4"/>
-    
-    <!-- Колонны и парадный вход -->
-    <rect x="470" y="380" width="30" height="270" fill="#a78bfa" opacity="0.6"/>
-    <rect x="700" y="380" width="30" height="270" fill="#a78bfa" opacity="0.6"/>
-    <path d="M440 380 h320 l-30-50 H470 Z" fill="#8b5cf6" opacity="0.8"/>
-    
-    <!-- Светящиеся окна курортного отеля -->
-    <rect x="470" y="280" width="40" height="40" rx="6" fill="#fbbf24" opacity="0.85"/>
-    <rect x="540" y="280" width="40" height="40" rx="6" fill="#fbbf24" opacity="0.9"/>
-    <rect x="610" y="280" width="40" height="40" rx="6" fill="#38bdf8" opacity="0.7"/>
-    <rect x="680" y="280" width="40" height="40" rx="6" fill="#fbbf24" opacity="0.85"/>
-    
-    <rect x="540" y="440" width="120" height="210" rx="20" fill="none" stroke="#a78bfa" stroke-width="4" opacity="0.7"/>
-    <path d="M600 400 l15 15 m-15-15 l-15 15" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
-    
-    <!-- Звезды отеля -->
-    <g transform="translate(480, 160) scale(1.5)">
-      <text x="0" y="0" fill="#fbbf24" font-size="24">★★★★★</text>
-    </g>
+// Генерация встроенных графических заглушек высокого разрешения в зависимости от типа направления
+const getSvgPlaceholder = (hotel: any) => {
+  const isSea = ['Турция', 'Таиланд', 'Индонезия', 'Мальдивы', 'Абхазия', 'Кипр', 'Куба', 'Филиппины'].includes(hotel.country);
+  const isMountain = ['Алтай', 'Камчатка', 'Кавказ', 'Минеральные Воды', 'Нальчик', 'Ессентуки', 'Пятигорск', 'Южно-Сахалинск', 'Курильск'].includes(hotel.city) || ['Кавказ'].includes(hotel.country);
+  
+  if (isSea) {
+    // Стиль 1: Спокойное море, полная золотая луна с дорожкой на воде и пальма
+    return `data:image/svg+xml;utf8,${encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#050b18"/>
+            <stop offset="100%" stop-color="#0a152d"/>
+          </linearGradient>
+          <linearGradient id="moonGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#fef08a"/>
+            <stop offset="100%" stop-color="#f59e0b"/>
+          </linearGradient>
+        </defs>
+        <rect width="1200" height="800" fill="url(#skyGrad)"/>
+        
+        <!-- Мерцающие звезды -->
+        <circle cx="150" cy="120" r="1.5" fill="#fff" opacity="0.4"/>
+        <circle cx="380" cy="80" r="1" fill="#fff" opacity="0.3"/>
+        <circle cx="850" cy="140" r="2" fill="#fff" opacity="0.5"/>
+        <circle cx="1050" cy="90" r="1.2" fill="#fff" opacity="0.4"/>
+        
+        <!-- Большая полная луна -->
+        <circle cx="600" cy="240" r="95" fill="url(#moonGrad)" filter="drop-shadow(0 0 35px rgba(245,158,11,0.32))"/>
+        
+        <!-- Спокойное море -->
+        <path d="M0 480 Q300 472 600 480 T1200 480 V800 H0 Z" fill="#070d1d"/>
+        <path d="M0 530 Q300 520 600 530 T1200 530 V800 H0 Z" fill="#040814" opacity="0.8"/>
+        
+        <!-- Лунная дорожка и рябь воды -->
+        <ellipse cx="600" cy="480" rx="140" ry="6" fill="#fef08a" opacity="0.32" />
+        <ellipse cx="600" cy="510" rx="190" ry="8" fill="#fef08a" opacity="0.22" />
+        <ellipse cx="600" cy="550" rx="240" ry="12" fill="#fef08a" opacity="0.14" />
+        <ellipse cx="600" cy="610" rx="300" ry="18" fill="#fef08a" opacity="0.08" />
+        
+        <!-- Изящная пальма -->
+        <path d="M1020 480 Q1000 320 920 220" fill="none" stroke="#451a03" stroke-width="14" stroke-linecap="round"/>
+        <path d="M920 220 Q840 210 800 240 M920 220 Q870 160 840 140 M920 220 Q960 150 1000 160 M920 220 Q990 210 1020 260" fill="none" stroke="#10b981" stroke-width="11" stroke-linecap="round"/>
+        
+        <!-- Декоративные 5 звезд -->
+        <text x="600" y="100" text-anchor="middle" fill="#f59e0b" font-family="Arial, sans-serif" font-size="28" letter-spacing="4">★★★★★</text>
+        <text x="600" y="690" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="44" font-weight="900" letter-spacing="1">${hotel.name}</text>
+        <text x="600" y="735" text-anchor="middle" fill="#38bdf8" font-family="Arial, sans-serif" font-size="20" font-weight="600">Эксклюзивный морской курорт • Спецпредложение 2026</text>
+      </svg>
+    `)}`;
+  } else if (isMountain) {
+    // Стиль 2: Величественные горы, сияющие звезды и растущий полумесяц
+    return `data:image/svg+xml;utf8,${encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#040814"/>
+            <stop offset="100%" stop-color="#0a122c"/>
+          </linearGradient>
+          <linearGradient id="mountGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4f46e5"/>
+            <stop offset="100%" stop-color="#1e1b4b"/>
+          </linearGradient>
+        </defs>
+        <rect width="1200" height="800" fill="url(#skyGrad)"/>
+        
+        <!-- Звездное небо -->
+        <circle cx="200" cy="150" r="1" fill="#fff" opacity="0.4"/>
+        <circle cx="850" cy="90" r="1.5" fill="#fff" opacity="0.6"/>
+        <circle cx="1050" cy="180" r="1" fill="#fff" opacity="0.3"/>
+        
+        <!-- Растущий полумесяц -->
+        <path d="M600 150 A 60 60 0 1 0 660 210 A 50 50 0 1 1 600 150" fill="#fbbf24" filter="drop-shadow(0 0 18px rgba(251,191,36,0.35))"/>
+        
+        <!-- Горы -->
+        <path d="M100 480 L450 180 L800 480 Z" fill="url(#mountGrad)" opacity="0.8" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+        <path d="M400 480 L750 240 L1100 480 Z" fill="url(#mountGrad)" opacity="0.6" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+        <path d="M0 480 Q300 460 600 480 T1200 480 V800 H0 Z" fill="#030712"/>
+        
+        <!-- Ели внизу -->
+        <polygon points="200,480 185,440 215,440" fill="#065f46" opacity="0.9"/>
+        <polygon points="200,450 190,410 210,410" fill="#065f46" opacity="0.9"/>
+        <polygon points="230,480 215,430 245,430" fill="#065f46" opacity="0.7"/>
+        
+        <text x="600" y="100" text-anchor="middle" fill="#fbbf24" font-family="Arial, sans-serif" font-size="28" letter-spacing="4">★★★★★</text>
+        <text x="600" y="690" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="44" font-weight="900" letter-spacing="1">${hotel.name}</text>
+        <text x="600" y="735" text-anchor="middle" fill="#a78bfa" font-family="Arial, sans-serif" font-size="20" font-weight="600">Горный отель и эко-отдых • Спецпредложение 2026</text>
+      </svg>
+    `)}`;
+  } else {
+    // Стиль 3: Вечерний европейский город, неоновое классическое здание
+    return `data:image/svg+xml;utf8,${encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#020617"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+          <linearGradient id="facadeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4f46e5"/>
+            <stop offset="100%" stop-color="#312e81"/>
+          </linearGradient>
+        </defs>
+        <rect width="1200" height="800" fill="url(#skyGrad)"/>
+        
+        <!-- Неоновые очертания отеля -->
+        <rect x="360" y="200" width="480" height="420" rx="16" fill="url(#facadeGrad)" opacity="0.14" stroke="#6366f1" stroke-width="4" filter="drop-shadow(0 0 15px rgba(99,102,241,0.25))"/>
+        
+        <!-- Колонны -->
+        <rect x="420" y="320" width="24" height="300" fill="#818cf8" opacity="0.6"/>
+        <rect x="756" y="320" width="24" height="300" fill="#818cf8" opacity="0.6"/>
+        <path d="M390 320 H810 L780 270 H420 Z" fill="#4f46e5" opacity="0.8"/>
+        
+        <!-- Окна с теплым светом -->
+        <rect x="430" y="230" width="45" height="45" rx="6" fill="#fbbf24" opacity="0.95"/>
+        <rect x="510" y="230" width="45" height="45" rx="6" fill="#fbbf24" opacity="0.85"/>
+        <rect x="590" y="230" width="45" height="45" rx="6" fill="#38bdf8" opacity="0.7"/>
+        <rect x="670" y="230" width="45" height="45" rx="6" fill="#fbbf24" opacity="0.9"/>
+        <rect x="750" y="230" width="45" height="45" rx="6" fill="#fff" opacity="0.2"/>
+        
+        <text x="600" y="100" text-anchor="middle" fill="#fbbf24" font-family="Arial, sans-serif" font-size="28" letter-spacing="4">★★★★★</text>
+        <text x="600" y="690" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="44" font-weight="900" letter-spacing="1">${hotel.name}</text>
+        <text x="600" y="735" text-anchor="middle" fill="#f59e0b" font-family="Arial, sans-serif" font-size="20" font-weight="600">Премиальный городской отель • Спецпредложение 2026</text>
+      </svg>
+    `)}`;
+  }
+};
 
-    <text x="600" y="690" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="44" font-weight="800">TravelDeal Premium Resort</text>
-    <text x="600" y="735" text-anchor="middle" fill="#a78bfa" font-family="Arial, sans-serif" font-size="22" font-weight="600">Фотография обновляется • Идёт подбор лучшего предложения</text>
-  </svg>
-`)}`;
 
 const HotelsSection = () => {
   const [filter, setFilter] = useState('Все');
@@ -239,7 +322,7 @@ const HotelsSection = () => {
                     onError={(e) => {
                       const target = e.currentTarget;
                       target.onerror = null;
-                      target.src = HOTEL_PLACEHOLDER;
+                      target.src = getSvgPlaceholder(hotel);
                     }}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', background: '#121828' }}
                   />
