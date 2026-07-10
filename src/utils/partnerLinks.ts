@@ -32,6 +32,7 @@ const PARTNER_LINKS: Record<string, string> = {
   'Skyscanner': 'https://www.skyscanner.ru/',
   'KAYAK': 'https://www.kayak.ru/',
   'Trip.com': 'https://ru.trip.com/',
+  '12Go': 'https://12go.tpk.lu/uTSAebHB',
 };
 
 export const getPartnerLink = (partnerName: string, fallbackUrl?: string) => {

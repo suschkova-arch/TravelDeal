@@ -14,6 +14,7 @@ const groups = {
   ],
   rail: [
     { name: 'Туту', url: 'https://tutu.tpk.lu/35nYuIo5' },
+    { name: '12Go (Промокод: TP10)', url: 'https://12go.tpk.lu/uTSAebHB' },
   ],
   tours: [
     { name: 'Travelata', url: 'https://travelata.tpk.lu/iXthmQlV' },

@@ -1759,6 +1759,16 @@ export const partners: Partner[] = [
     category: 'Санатории',
     color: '#0891b2',
   },
+  {
+    id: 23,
+    name: '12Go',
+    logo: '🚂',
+    description: 'Промокод TP10: Скидка 10% на все поезда, автобусы и паромы по Азии. Отличный способ сэкономить!',
+    discount: 'Скидка 10%',
+    url: 'https://12go.tpk.lu/uTSAebHB',
+    category: 'Ж/д',
+    color: '#22c55e',
+  },
 ];
 
 export const reviews: Review[] = [
