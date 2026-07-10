@@ -429,6 +429,22 @@ const hotelsDB = [
         {name:"Ostrovok",price:15400,url:"https://ostrovok.ru/"},
         {name:"Booking.com",price:16200,url:"https://www.booking.com/"},
     ]},
+    { id:47, name:"Grand Hyatt Dubai", city:"Дубай", country:"ОАЭ", stars:5, rating:4.8, reviews:2150, image:"images/hotel-dubai-luxury.png", amenities:["Вид на небоскребы", "Бассейны", "СПА", "Завтрак"], partners:[
+        {name:"Ostrovok",price:18200,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:19100,url:"https://www.booking.com/"},
+    ]},
+    { id:48, name:"Mirela Apartments", city:"Будва", country:"Черногория", stars:4, rating:4.7, reviews:420, image:"images/hotel-tropical-resort.png", amenities:["Рядом Адриатика", "Терраса", "WiFi", "Кухня"], partners:[
+        {name:"Ostrovok",price:8400,url:"https://ostrovok.ru/"},
+        {name:"Sutochno",price:8900,url:"https://sutochno.ru/"},
+    ]},
+    { id:49, name:"Hotel Excelsior Dubrovnik", city:"Дубровник", country:"Хорватия", stars:5, rating:4.9, reviews:840, image:"images/hotel-europe-city-luxury.png", amenities:["Вид на старый город", "Пляж", "СПА", "Завтрак"], partners:[
+        {name:"Ostrovok",price:24600,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:25800,url:"https://www.booking.com/"},
+    ]},
+    { id:50, name:"Atrium Palace Thalasso Spa", city:"Родос", country:"Греция", stars:5, rating:4.8, reviews:1140, image:"images/hotel-tropical-resort.png", amenities:["Средиземное море", "СПА", "Завтрак", "Бассейны"], partners:[
+        {name:"Ostrovok",price:19800,url:"https://ostrovok.ru/"},
+        {name:"Booking.com",price:20600,url:"https://www.booking.com/"},
+    ]},
 ];
 
 // ============================================================
@@ -520,7 +536,7 @@ const Hero = () => {
     const [notif,setNotif]=useState(0);
     const [showNotif,setShowNotif]=useState(true);
     
-    const suggestions = ['Дубай','Бали','Париж','Токио','Барселона','Мальдивы','Рим','Бангкок','Сингапур','Абхазия','Кипр','Италия','Испания','Таиланд','Вьетнам','Филиппины','Куба','Китай','Калининград','Казань','Сахалин','Камчатка','Курилы','Алтай','Крым','Дагестан','Кавказ'];
+    const suggestions = ['Дубай','Бали','Париж','Токио','Барселона','Мальдивы','Рим','Бангкок','Сингапур','Абхазия','Кипр','Италия','Испания','Таиланд','Вьетнам','Филиппины','Куба','Китай','Калининград','Казань','Сахалин','Камчатка','Курилы','Алтай','Крым','Дагестан','Кавказ','Греция','Хорватия','Черногория','ОАЭ'];
     const filtered = suggestions.filter(s=>s.toLowerCase().includes(search.toLowerCase())&&search.length>0);
 
     useEffect(()=>{
