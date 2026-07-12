@@ -26,22 +26,19 @@ const PartnersSection = () => (
     <div style={{ maxWidth: 1220, margin: '0 auto' }}>
       <style>{`
         .partner-grid-center {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 18px;
+          display: flex;
+          flex-wrap: wrap;
           justify-content: center;
-        }
-        @media (min-width: 1024px) {
-          .partner-grid-center {
-            grid-template-columns: repeat(3, minmax(280px, 340px));
-            justify-content: center;
-          }
+          gap: 18px;
         }
         .partner-card-content {
           text-align: center;
           display: flex;
           flex-direction: column;
           align-items: center;
+          width: 100%;
+          max-width: 340px;
+          box-sizing: border-box;
         }
       `}</style>
       <div style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -57,14 +54,11 @@ const PartnersSection = () => (
             marginBottom: 16,
           }}
         >
-          <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>🤝 Партнёры и монетизация</span>
+          <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}> Наши партнёры</span>
         </div>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-          Всё сгруппировано по типу сервиса
+          Поиск по всем базам в один клик
         </h2>
-        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, maxWidth: 720, margin: '0 auto' }}>
-          Теперь блок партнёров не разваливается по вертикали: авиа, отели, ж/д, круизы, авто, туры и полезные сервисы собраны в компактные секции и заполняют ширину экрана.
-        </p>
       </div>
 
       <div
