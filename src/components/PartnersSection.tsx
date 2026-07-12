@@ -24,6 +24,26 @@ const sections = [
 const PartnersSection = () => (
   <section id="partners" style={{ padding: '80px 24px', background: 'rgba(10,15,30,1)' }}>
     <div style={{ maxWidth: 1220, margin: '0 auto' }}>
+      <style>{`
+        .partner-grid-center {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 18px;
+          justify-content: center;
+        }
+        @media (min-width: 1024px) {
+          .partner-grid-center {
+            grid-template-columns: repeat(3, minmax(280px, 340px));
+            justify-content: center;
+          }
+        }
+        .partner-card-content {
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+      `}</style>
       <div style={{ textAlign: 'center', marginBottom: 56 }}>
         <div
           style={{
@@ -105,16 +125,19 @@ const PartnersSection = () => (
               <div style={{ height: 1, flex: 1, background: 'linear-gradient(to right, rgba(102,126,234,0.5), transparent)' }} />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 18 }}>
+            <div className="partner-grid-center">
               {items.map((p) => (
                 <div
                   key={p.id}
+                  className="partner-card-content"
                   style={{
                     background: 'rgba(255,255,255,0.04)',
                     border: '1px solid rgba(255,255,255,0.1)',
                     borderRadius: 20,
-                    padding: 20,
+                    padding: 24,
                     transition: 'all 0.3s',
+                    width: '100%',
+                    boxSizing: 'border-box'
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
@@ -127,57 +150,57 @@ const PartnersSection = () => (
                     (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
-                    <div
+                  {/* Иконка и значок по центру */}
+                  <div style={{
+                    width: 64,
+                    height: 64,
+                    background: `${p.color}22`,
+                    border: `1px solid ${p.color}44`,
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 30,
+                    marginBottom: 14,
+                    boxShadow: `0 8px 20px ${p.color}15`
+                  }}>
+                    {p.logo}
+                  </div>
+
+                  <div style={{ color: '#fff', fontWeight: 800, fontSize: 19, marginBottom: 6 }}>
+                    {p.name}
+                  </div>
+
+                  {/* Теги по центру */}
+                  <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 14, alignItems: 'center' }}>
+                    <span
                       style={{
-                        width: 50,
-                        height: 50,
-                        background: `${p.color}22`,
-                        border: `1px solid ${p.color}44`,
-                        borderRadius: 14,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 24,
-                        flexShrink: 0,
+                        background: `${p.color}18`,
+                        border: `1px solid ${p.color}35`,
+                        borderRadius: 100,
+                        padding: '3px 12px',
+                        color: p.color,
+                        fontSize: 12,
+                        fontWeight: 700,
                       }}
                     >
-                      {p.logo}
-                    </div>
-                    <div style={{ minWidth: 0, flex: 1 }}>
-                      <div style={{ color: '#fff', fontWeight: 700, fontSize: 17, marginBottom: 2 }}>{p.name}</div>
-                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                        <span
-                          style={{
-                            background: `${p.color}22`,
-                            border: `1px solid ${p.color}44`,
-                            borderRadius: 100,
-                            padding: '2px 10px',
-                            color: p.color,
-                            fontSize: 11,
-                            fontWeight: 600,
-                          }}
-                        >
-                          {p.category}
-                        </span>
-                      </div>
-                    </div>
-                    <div
+                      {p.category}
+                    </span>
+                    <span
                       style={{
                         background: 'linear-gradient(135deg, #f97316, #ef4444)',
-                        borderRadius: 10,
-                        padding: '4px 12px',
+                        borderRadius: 100,
+                        padding: '3px 12px',
                         color: '#fff',
-                        fontSize: 13,
-                        fontWeight: 700,
-                        flexShrink: 0,
+                        fontSize: 12,
+                        fontWeight: 800,
                       }}
                     >
                       {p.discount}
-                    </div>
+                    </span>
                   </div>
 
-                  <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: 13, lineHeight: 1.65, marginBottom: 16, minHeight: 66 }}>
+                  <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13, lineHeight: 1.6, marginBottom: 20, minHeight: 60 }}>
                     {p.description}
                   </p>
 
@@ -190,7 +213,8 @@ const PartnersSection = () => (
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: 8,
-                      padding: '11px 12px',
+                      width: '100%',
+                      padding: '12px',
                       background: `${p.color}22`,
                       border: `1px solid ${p.color}44`,
                       borderRadius: 12,
@@ -198,6 +222,13 @@ const PartnersSection = () => (
                       textDecoration: 'none',
                       fontWeight: 700,
                       fontSize: 13,
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLElement).style.background = `${p.color}33`;
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLElement).style.background = `${p.color}22`;
                     }}
                   >
                     Перейти в раздел {p.name} →
