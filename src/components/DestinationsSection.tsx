@@ -158,13 +158,14 @@ const DestinationsSection = () => {
                       <span
                         key={tag}
                         style={{
-                          background: 'rgba(102,126,234,0.3)',
-                          border: '1px solid rgba(102,126,234,0.4)',
+                          background: '#1e40af', // Сочный темный синий
+                          border: '1.5px solid #3b82f6', // Яркий синий ободок
                           borderRadius: 100,
-                          padding: '3px 10px',
-                          color: '#a78bfa',
+                          padding: '4px 12px',
+                          color: '#ffffff', // Чистый белый жирный текст
                           fontSize: 11,
-                          fontWeight: 600,
+                          fontWeight: 800, // Очень жирно
+                          letterSpacing: '0.4px'
                         }}
                       >
                         {tag}
@@ -172,9 +173,9 @@ const DestinationsSection = () => {
                     ))}
                   </div>
 
-                  <h3 style={{ color: '#fff', fontSize: 22, fontWeight: 800, marginBottom: 2 }}>{dest.name}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, marginBottom: 10 }}>
-                    {dest.country} · {dest.description}
+                  <h3 style={{ color: '#ffffff', fontSize: 24, fontWeight: 900, marginBottom: 4, textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>{dest.name}</h3>
+                  <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14, fontWeight: 700, marginBottom: 10, textShadow: '0 1px 6px rgba(0,0,0,0.8)' }}>
+                    {dest.country}
                   </p>
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
