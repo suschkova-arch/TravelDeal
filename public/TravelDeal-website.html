@@ -1100,16 +1100,17 @@ ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(
         console.log('✅ API доступен:', healthData);
         if (statusEl) statusEl.innerHTML = '<span style="color:#34d399;font-size:11px">🟢 LIVE цены</span>';
         
-        // Загружаем реальные отели для популярных городов
+        // Загружаем реальные отели для популярных городов через PHP-бэкенд
         const cities = ['dubai', 'paris', 'bali', 'tokyo', 'barcelona', 'maldives', 'antalya', 'phuket', 'kaliningrad', 'kazan', 'sakhalin', 'kamchatka', 'altai', 'abkhazia', 'dagestan', 'caucasus', 'venice', 'cyprus', 'cuba', 'philippines', 'china'];
+        
         const hotelPromises = cities.map(city => 
-            fetch(`${API_BASE}/api/hotels?city=${city}&adults=2`)
+            fetch(`${API_BASE}/api/hotels.php?city=${city}&adults=2`) // Изменено на .php
                 .then(r => r.json())
                 .catch(() => ({ hotels: [] }))
         );
         
         const flightPromises = cities.map(city =>
-            fetch(`${API_BASE}/api/flights?from=Moscow&to=${city}&adults=1`)
+            fetch(`${API_BASE}/api/flights.php?from=Moscow&to=${city}&adults=1`) // Изменено на .php
                 .then(r => r.json())
                 .catch(() => ({ flights: [] }))
         );
