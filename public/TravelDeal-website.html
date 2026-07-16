@@ -11,6 +11,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Travelpayouts Drive -->
+    <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1">
+      (function () {
+          var script = document.createElement("script");
+          script.async = 1;
+          script.src = 'https://tpembars.com/NTUxMTY3.js?t=551167';
+          document.head.appendChild(script);
+      })();
+    </script>
     <style>
         :root {
             --bg: #0a0f1e;
@@ -143,8 +152,11 @@
 
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback, useMemo } = React;
+const IS_MAIN_HOST = window.location.hostname.includes('sushkova-emma.ru');
 const SAFE_LINKS = {
-    'Aviasales':'https://aviasales.tpk.lu/u9lFIAmF',
+    'Aviasales': IS_MAIN_HOST
+        ? 'https://tp.media/r?marker=747557.747557&trs=551167&p=4114&u=https%3A%2F%2Faviasales.ru&campaign_id=100'
+        : 'https://tp.media/r?marker=747557.747557&trs=547188&p=4114&u=https%3A%2F%2Faviasales.ru&campaign_id=100',
     'Ostrovok':'https://ostrovok.tpk.lu/qm3uUcuL',
     'Travelata':'https://travelata.tpk.lu/iXthmQlV',
     'Onlinetours':'https://onlinetours.tpk.lu/9gx8uXiK',

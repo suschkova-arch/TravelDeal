@@ -1,5 +1,9 @@
+const IS_MAIN_HOST = typeof window !== 'undefined' && window.location.hostname.includes('sushkova-emma.ru');
+
 const PARTNER_LINKS: Record<string, string> = {
-  'Aviasales': 'https://aviasales.tpk.lu/u9lFIAmF',
+  'Aviasales': IS_MAIN_HOST 
+    ? 'https://tp.media/r?marker=747557.747557&trs=551167&p=4114&u=https%3A%2F%2Faviasales.ru&campaign_id=100' // Timeweb
+    : 'https://tp.media/r?marker=747557.747557&trs=547188&p=4114&u=https%3A%2F%2Faviasales.ru&campaign_id=100', // GitHub
   'Ostrovok': 'https://ostrovok.tpk.lu/qm3uUcuL',
   'Travelata': 'https://travelata.tpk.lu/iXthmQlV',
   'Onlinetours': 'https://onlinetours.tpk.lu/9gx8uXiK',
