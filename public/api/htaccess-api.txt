@@ -1,0 +1,14 @@
+# Переименуйте этот файл в .htaccess внутри папки api
+# Защищает config.php и папку cache от прямого доступа.
+
+Options -Indexes
+
+<Files "config.php">
+  Order allow,deny
+  Deny from all
+</Files>
+
+<FilesMatch "\.(json|log|env|bak|txt)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>

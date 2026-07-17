@@ -1,32 +1,5 @@
 import { useState } from 'react';
 import { destinations } from '../data/travelData';
-import { getPartnerLink } from '../utils/partnerLinks';
-
-const DESTINATION_PLACEHOLDER = `data:image/svg+xml;utf8,${encodeURIComponent(`
-  <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
-    <defs>
-      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#0b1224"/>
-        <stop offset="100%" stop-color="#18233a"/>
-      </linearGradient>
-      <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#f59e0b"/>
-        <stop offset="100%" stop-color="#fb7185"/>
-      </linearGradient>
-      <linearGradient id="mount" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#667eea"/>
-        <stop offset="100%" stop-color="#764ba2"/>
-      </linearGradient>
-    </defs>
-    <rect width="1200" height="800" fill="url(#bg)"/>
-    <circle cx="925" cy="185" r="82" fill="url(#sun)" opacity="0.9"/>
-    <path d="M0 650C111 585 182 560 282 560C385 560 456 615 560 615C665 615 733 545 844 545C962 545 1046 614 1200 680V800H0V650Z" fill="#0f172a"/>
-    <path d="M120 620L350 360L510 555L650 430L860 620H120Z" fill="url(#mount)" opacity="0.75"/>
-    <path d="M250 620L430 460L520 555L660 500L810 620H250Z" fill="#A78BFA" opacity="0.28"/>
-    <text x="600" y="690" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="46" font-weight="700">TravelDeal Destination</text>
-    <text x="600" y="738" text-anchor="middle" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="24">Фото направления временно недоступно</text>
-  </svg>
-`)}`;
 
 const DestinationsSection = () => {
   const [hovered, setHovered] = useState<number | null>(null);
@@ -59,15 +32,15 @@ const DestinationsSection = () => {
           >
             Горящие предложения недели
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, maxWidth: 560, margin: '0 auto' }}>
-            Если внешняя фотография не загрузилась, будет показана локальная заглушка с вашего хостинга — без битых иконок и мерцания.
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, maxWidth: 500, margin: '0 auto' }}>
+            Лучшие цены на популярные направления, обновляются ежедневно
           </p>
         </div>
 
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
             gap: 24,
           }}
         >
@@ -90,39 +63,24 @@ const DestinationsSection = () => {
                     : '0 8px 30px rgba(0,0,0,0.3)',
                   transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                   height: 300,
-                  background: '#111827',
                 }}
               >
-                <img
-                  src={dest.image}
-                  alt={dest.name}
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    target.onerror = null;
-                    target.src = DESTINATION_PLACEHOLDER;
-                  }}
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    transform: isHov ? 'scale(1.05)' : 'scale(1)',
-                    transition: 'transform 0.6s ease',
-                    display: 'block',
-                    background: '#121828',
-                  }}
-                />
-
                 <div
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: isHov
-                      ? 'linear-gradient(to top, rgba(10,15,30,0.95) 0%, rgba(10,15,30,0.4) 60%, transparent 100%)'
-                      : 'linear-gradient(to top, rgba(10,15,30,0.85) 0%, rgba(10,15,30,0.2) 60%, transparent 100%)',
+                    backgroundImage: `url(${dest.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    transform: isHov ? 'scale(1.05)' : 'scale(1)',
+                    transition: 'transform 0.6s ease',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(4,7,16,0.99) 0%, rgba(4,7,16,0.95) 30%, rgba(4,7,16,0.7) 55%, rgba(4,7,16,0.25) 80%, rgba(4,7,16,0) 100%)',
                     transition: 'background 0.4s',
                   }}
                 />
@@ -150,22 +108,23 @@ const DestinationsSection = () => {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    padding: 24,
+                    padding: '28px 24px 24px',
+                    textAlign: 'center',
                   }}
                 >
-                  <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
                     {dest.tags.map((tag) => (
                       <span
                         key={tag}
                         style={{
-                          background: '#1e40af', // Сочный темный синий
-                          border: '1.5px solid #3b82f6', // Яркий синий ободок
+                          background: 'rgba(0,0,0,0.6)',
+                          border: '1px solid rgba(34,211,238,0.5)',
                           borderRadius: 100,
                           padding: '4px 12px',
-                          color: '#ffffff', // Чистый белый жирный текст
+                          color: '#67e8f9',
                           fontSize: 11,
-                          fontWeight: 800, // Очень жирно
-                          letterSpacing: '0.4px'
+                          fontWeight: 700,
+                          letterSpacing: '0.3px',
                         }}
                       >
                         {tag}
@@ -173,39 +132,78 @@ const DestinationsSection = () => {
                     ))}
                   </div>
 
-                  <h3 style={{ color: '#ffffff', fontSize: 24, fontWeight: 900, marginBottom: 4, textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>{dest.name}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14, fontWeight: 700, marginBottom: 10, textShadow: '0 1px 6px rgba(0,0,0,0.8)' }}>
-                    {dest.country}
+                  <h3
+                    style={{
+                      color: '#fff',
+                      fontSize: 28,
+                      fontWeight: 900,
+                      marginBottom: 6,
+                      textShadow: '0 3px 16px rgba(0,0,0,1), 0 1px 3px rgba(0,0,0,0.9)',
+                      letterSpacing: '-0.5px',
+                    }}
+                  >
+                    {dest.name}
+                  </h3>
+                  <p
+                    style={{
+                      color: '#e2e8f0',
+                      fontSize: 13,
+                      fontWeight: 600,
+                      marginBottom: 14,
+                      textShadow: '0 2px 10px rgba(0,0,0,1), 0 1px 2px rgba(0,0,0,0.9)',
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    {dest.country} · {dest.description}
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, textDecoration: 'line-through' }}>
-                        от {dest.oldPrice.toLocaleString()}₽
-                      </div>
-                      <div
-                        style={{
-                          background: 'linear-gradient(135deg, #667eea, #a78bfa)',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          fontSize: 22,
-                          fontWeight: 800,
-                        }}
-                      >
-                        от {dest.price.toLocaleString()}₽
-                      </div>
-                    </div>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      background: 'rgba(0,0,0,0.55)',
+                      padding: '5px 12px',
+                      borderRadius: 100,
+                      marginBottom: 12,
+                    }}
+                  >
+                    <span style={{ color: '#fbbf24', fontSize: 14, textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
+                      {'★'.repeat(Math.floor(dest.rating))}
+                    </span>
+                    <span style={{ color: '#fff', fontWeight: 800, fontSize: 14 }}>{dest.rating}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 12 }}>({dest.reviews.toLocaleString()})</span>
+                  </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <span style={{ color: '#fbbf24', fontSize: 14 }}>{'★'.repeat(Math.floor(dest.rating))}</span>
-                      <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>{dest.rating}</span>
-                      <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>({dest.reviews})</span>
+                  <div>
+                    <div
+                      style={{
+                        color: 'rgba(255,255,255,0.75)',
+                        fontSize: 13,
+                        textDecoration: 'line-through',
+                        textShadow: '0 1px 6px rgba(0,0,0,1)',
+                        marginBottom: 2,
+                      }}
+                    >
+                      от {dest.oldPrice.toLocaleString()}₽
+                    </div>
+                    <div
+                      style={{
+                        color: '#fbbf24',
+                        fontSize: 30,
+                        fontWeight: 900,
+                        textShadow: '0 3px 14px rgba(0,0,0,1), 0 1px 3px rgba(0,0,0,0.9)',
+                        letterSpacing: '-0.5px',
+                        lineHeight: 1.1,
+                      }}
+                    >
+                      от {dest.price.toLocaleString()}₽
                     </div>
                   </div>
 
                   {isHov && (
                     <a
-                      href={getPartnerLink(dest.partner, dest.partnerUrl)}
+                      href={dest.partnerUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -234,7 +232,7 @@ const DestinationsSection = () => {
 
         <div style={{ textAlign: 'center', marginTop: 40 }}>
           <a
-            href="https://aviasales.tpk.lu/u9lFIAmF"
+            href="https://aviasales.ru"
             target="_blank"
             rel="noopener noreferrer"
             style={{

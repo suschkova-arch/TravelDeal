@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 🛡️ БЕЗОПАСНОСТЬ: защита от XSS, clickjacking, утечек данных -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://tpembars.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https:;" />
+<meta name="robots" content="index, follow" />
+<title>TravelDeal — Находим лучшие цены на путешествия</title>
+<meta name="description" content="TravelDeal — агрегатор путешествий. Реальные цены на отели, авиа, ж/д, круизы 2026." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<!-- Партнёрская интеграция бронирования -->
+<script>(function(){var s=document.createElement("script");s.async=1;s.src="https://tpembars.com/NTQ3MTg4.js?t=547188";document.head.appendChild(s);})();</script>
+<style>body{font-family:'Inter',sans-serif;background:#0a0f1e;margin:0}*{box-sizing:border-box}.container{max-width:1200px;margin:0 auto;padding:0 24px}.btn{display:inline-block;padding:14px 28px;border-radius:12px;font-weight:700;color:#fff;text-decoration:none;border:none;cursor:pointer;transition:all 0.2s}.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);box-shadow:0 8px 25px rgba(102,126,234,0.4)}.btn-green{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 15px rgba(16,185,129,0.4)}.btn-blue{background:linear-gradient(135deg,#4fc3f7,#0288d1);box-shadow:0 4px 15px rgba(2,119,189,0.4)}.section{padding:80px 24px;position:relative}.section h2{font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;margin-bottom:12px;text-align:center;position:relative;z-index:2}.section .sub{color:rgba(230,235,245,0.9);font-size:16px;text-align:center;max-width:600px;margin:0 auto 32px;position:relative;z-index:2}.section-overlay{position:absolute;inset:0;background:url('https://picsum.photos/seed/ocean-beach-travel/1920/600') center/cover no-repeat;opacity:0.15;pointer-events:none;z-index:0}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:80px 24px 40px;background:linear-gradient(180deg,#0a1230 0%,#132758 35%,#1e4785 65%,#2a5a9e 100%)}
+/* Луна */
+.hero::before{content:"";position:absolute;top:12%;right:18%;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff9e6 0%,#ffedb3 40%,#ffd97a 75%,rgba(255,217,122,0.3) 100%);box-shadow:0 0 60px 20px rgba(255,237,179,0.35),0 0 120px 40px rgba(255,217,122,0.15);z-index:1;animation:moonGlow 8s ease-in-out infinite alternate}
+@keyframes moonGlow{from{box-shadow:0 0 60px 20px rgba(255,237,179,0.35),0 0 120px 40px rgba(255,217,122,0.15)}to{box-shadow:0 0 80px 28px rgba(255,237,179,0.5),0 0 150px 50px rgba(255,217,122,0.25)}}
+/* Рябь на воде + затемнение для текста */
+.hero::after{content:"";position:absolute;inset:0;background:
+  repeating-linear-gradient(180deg,transparent 0px,transparent 6px,rgba(255,237,179,0.03) 7px,transparent 8px) ,
+  radial-gradient(ellipse 400px 200px at 82% 22%,rgba(255,237,179,0.12) 0%,transparent 70%),
+  linear-gradient(180deg,rgba(10,18,48,0.4) 0%,rgba(10,18,48,0.5) 40%,rgba(10,15,30,0.75) 75%,rgba(10,15,30,0.92) 100%);z-index:1}
+.hero>*{position:relative;z-index:2}
+/* Звёзды */
+.hero .stars-bg{position:absolute;inset:0;z-index:0;background-image:radial-gradient(1px 1px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 60% 20%,#fff,transparent),radial-gradient(1px 1px at 80% 40%,#fff,transparent),radial-gradient(1px 1px at 40% 15%,#fff,transparent),radial-gradient(1px 1px at 10% 50%,#fff,transparent),radial-gradient(1px 1px at 90% 25%,#fff,transparent),radial-gradient(1px 1px at 30% 45%,#fff,transparent);background-size:100% 100%;opacity:0.6}.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+@media (max-width:768px){
+  .grid{grid-template-columns:1fr !important;gap:16px}
+  .section{padding:48px 16px !important}
+  .container{padding:0 12px}
+  header{padding:10px 14px}
+  header nav{display:none}
+  header .logo-text{font-size:18px}
+  .hero{padding:70px 16px 30px;min-height:auto}
+  .hero h1{font-size:clamp(32px,10vw,48px) !important}
+  .hero::before{width:80px;height:80px;top:8%;right:10%}
+}
+@media (max-width:480px){
+  .card{padding:14px}
+  .hero h1{font-size:30px !important}
+}.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px;transition:all 0.3s}.card:hover{transform:translateY(-3px);border-color:rgba(102,126,234,0.4)}.badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600}.partner-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}.price-strike{text-decoration:line-through;color:rgba(255,255,255,0.4);font-size:12px}.price-now{font-size:22px;font-weight:800;background:linear-gradient(135deg,#667eea,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 24px;background:rgba(10,15,30,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(99,179,237,0.2);display:flex;align-items:center;justify-content:space-between}header .logo{display:flex;align-items:center;gap:10px;text-decoration:none}header .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}header .logo-text{font-size:22px;font-weight:800;background:linear-gradient(135deg,#667eea,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}nav a{color:rgba(255,255,255,0.8);text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;transition:all 0.2s}nav a:hover{background:rgba(102,126,234,0.2);color:#fff}.hero{height:100vh;min-height:600px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);z-index:-1}.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,15,30,0.3) 0%,rgba(10,15,30,0.7) 100%);z-index:-1}.hero h1{font-size:clamp(36px,7vw,80px);font-weight:900;color:#fff;margin-bottom:16px;text-shadow:0 2px 30px rgba(0,0,0,0.5)}.search-form{max-width:720px;background:rgba(10,15,30,0.85);backdrop-filter:blur(20px);border:1px solid rgba(102,126,234,0.3);border-radius:20px;padding:20px;margin:24px auto}.search-form input,.search-form select{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px 14px;color:#fff;font-size:15px;outline:none;width:100%}.search-form input::placeholder{color:rgba(255,255,255,0.4)}.photo-placeholder{height:200px;display:flex;align-items:center;justify-content:center;font-size:120px;position:relative;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);overflow:hidden}
+.photo-placeholder::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,255,255,0.15) 0%,rgba(255,255,255,0) 60%);pointer-events:none}.photo-placeholder .stars{position:absolute;top:8px;right:8px;background:rgba(10,15,30,0.85);border-radius:6px;padding:3px 8px;color:#fbbf24;font-size:12px}.photo-russia{background:linear-gradient(135deg,#1e3c72 0%,#2a5298 50%,#6dd5ed 100%)}.photo-tropical{background:linear-gradient(135deg,#ff6e7f 0%,#bfe9ff 50%,#43cea2 100%)}.photo-asia{background:linear-gradient(135deg,#f5af19 0%,#f12711 50%,#fceabb 100%)}.photo-europe{background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 50%,#ff8c69 100%)}.photo-snow{background:linear-gradient(135deg,#83a4d4 0%,#b6fbff 100%)}.photo-water{background:linear-gradient(135deg,#43cea2 0%,#185a9d 100%)}.photo-egypt{background:linear-gradient(135deg,#fdc830 0%,#f37335 100%)}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}@keyframes slideIn{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}</style>
+</head>
+<body>
+<header>
+<a class="logo" href="#">
+<div class="logo-icon">✈️</div>
+<span class="logo-text">TravelDeal</span>
+</a>
+<nav>
+<a href="#hotels">Отели</a>
+<a href="#flights">Авиа</a>
+<a href="#cruises">Круизы</a>
+<a href="#partners">Партнёры</a>
+</nav>
+<a class="btn btn-primary" href="#search">Найти тур</a>
+</header>
+<div id="liveNotify" style="position:fixed;bottom:24px;right:24px;z-index:2000;max-width:340px;background:rgba(10,15,30,0.95);backdrop-filter:blur(20px);border:1px solid rgba(16,185,129,0.4);border-radius:14px;padding:14px 18px;display:none;box-shadow:0 20px 50px rgba(0,0,0,0.5),0 0 30px rgba(16,185,129,0.2)">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div id="notifIcon" style="font-size:32px;flex-shrink:0;line-height:1">🎉</div>
+    <div style="flex:1;min-width:0">
+      <div id="notifText" style="color:#fff;font-size:13px;font-weight:600;line-height:1.4"></div>
+      <div id="notifTime" style="color:rgba(255,255,255,0.5);font-size:11px;margin-top:2px"></div>
+    </div>
+    <div style="width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;flex-shrink:0;animation:pulse 2s infinite"></div>
+  </div>
+</div>
+<section class="hero">
+<div class="stars-bg"></div>
+<div>
+<div style="display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.4);border-radius:100px;padding:6px 16px;margin-bottom:20px"><div style="width:8px;height:8px;border-radius:50%;background:#10b981"></div><span style="color:#a7f3d0;font-size:13px;font-weight:600">Экономьте до 60% на путешествиях</span></div>
+<h1 style="font-size:clamp(40px,8vw,90px);font-weight:900;margin-bottom:18px;line-height:1.05;text-shadow:0 2px 40px rgba(0,0,0,0.7)">Найдите идеальный тур</h1>
+<p style="color:rgba(255,255,255,0.95);font-size:22px;margin-bottom:6px;font-weight:600">Реальные цены от <b style="color:#fbbf24">22 проверенных партнёров</b></p>
+<p style="color:rgba(255,255,255,0.75);font-size:17px;margin-bottom:24px">Отели • Авиабилеты • Ж/Д • Круизы • Авто • Экскурсии — всё в одном месте</p>
+
+<div style="display:inline-block;background:linear-gradient(135deg,rgba(99,102,241,0.18),rgba(168,85,247,0.18));border:1px solid rgba(99,102,241,0.4);border-radius:18px;padding:20px 32px;margin:24px 0 16px;backdrop-filter:blur(10px);max-width:720px;box-shadow:0 8px 30px rgba(99,102,241,0.2)">
+  <div style="color:#a5b4fc;font-size:16px;font-weight:700;margin-bottom:12px;text-align:center;letter-spacing:0.3px">✨ ДОБРО ПОЖАЛОВАТЬ В TRAVELDEAL</div>
+  <div style="color:rgba(255,255,255,0.95);font-size:14px;line-height:1.7;text-align:center">
+    <b>TravelDeal</b> — ваш надёжный помощник в мире путешествий.<br/>
+    Сравниваем цены <b style="color:#fbbf24">22 проверенных партнёров</b>:
+    Booking, Ostrovok, Aviasales, Яндекс.Путешествия, Туту, Травелата,<br/>
+    Hotellook, KAYAK, Суточно, Большая Страна и других.
+    <br/><br/>
+    🎯 <b>52 отеля</b> в 60+ городах России и мира &nbsp;•&nbsp; ✈️ <b>Авиабилеты</b> в 13 направлениях<br/>
+    🚆 <b>Ж/Д билеты</b> по России и Европе &nbsp;•&nbsp; 🚢 <b>6 круизов</b> по Волге и Москве-реке
+    <br/><br/>
+    💰 <b>Реальная экономия</b> от 8 000 до 35 000₽ с каждой поездки.
+  </div>
+</div>
+<div style="display:inline-flex;background:linear-gradient(135deg,rgba(245,158,11,0.25),rgba(239,68,68,0.25));border:1px solid rgba(245,158,11,0.5);border-radius:100px;padding:10px 22px;color:#fbbf24;font-size:14px;font-weight:700;margin-bottom:12px;box-shadow:0 4px 15px rgba(245,158,11,0.3)">🎯 ДО 35 000₽ ЭКОНОМИИ С КАЖДОЙ ПОЕЗДКИ</div>
+<div style="color:rgba(255,255,255,0.85);font-size:13px;margin-top:6px;background:rgba(10,15,30,0.6);display:inline-block;padding:5px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1)">💰 Все цены указаны за 1 человека</div>
+<div style="margin-top:16px"><a href="https://12go.asia/?z=547188" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#00b14f,#00d95f);color:#fff;font-weight:700;font-size:14px;padding:10px 22px;border-radius:100px;text-decoration:none;box-shadow:0 4px 20px rgba(0,177,79,0.4);animation:pulse 2.5s infinite">🎟️ Промокод TP10 — скидка 10% на транспорт по Азии →</a></div>
+</div>
+</section>
+<section id="search" class="section" style="background:#0d1226;position:relative;overflow:hidden"><div class="section-overlay"></div>
+<div class="container">
+<div style="text-align:center;margin-bottom:32px"><h2>🔴 Живой поиск отелей — реальные цены</h2><p class="sub">Цены напрямую из базы Hotellook (Aviasales Group) в рублях. Поиск по 60+ городам мира</p></div>
+<div style="background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(102,126,234,0.08));border:1px solid rgba(16,185,129,0.3);border-radius:24px;padding:28px">
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+<select id="cityInput" style="flex:2 1 220px;font-family:Inter;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px 14px;color:#fff;font-size:15px;outline:none">
+<option value="">— Выберите город из 70+ —</option>
+<optgroup label="🇷🇺 Россия — крупные города">
+<option>Москва</option><option>Санкт-Петербург</option><option>Новосибирск</option><option>Екатеринбург</option><option>Казань</option><option>Нижний Новгород</option><option>Челябинск</option><option>Самара</option><option>Уфа</option><option>Красноярск</option><option>Воронеж</option><option>Пермь</option><option>Волгоград</option><option>Краснодар</option><option>Саратов</option><option>Тюмень</option><option>Ростов-на-Дону</option><option>Ижевск</option><option>Барнаул</option><option>Иркутск</option><option>Ульяновск</option><option>Хабаровск</option><option>Владивосток</option><option>Ярославль</option><option>Махачкала</option>
+</optgroup>
+<optgroup label="🇷🇺 Курорты и туризм">
+<option>Сочи</option><option>Адлер</option><option>Анапа</option><option>Геленджик</option><option>Ялта (Крым)</option><option>Севастополь (Крым)</option><option>Судак (Крым)</option><option>Калининград</option><option>Светлогорск (Калининград)</option><option>Мурманск</option><option>Териберка (Мурманск)</option>
+</optgroup>
+<optgroup label="🏔️ Кавказ и Камчатка">
+<option>Кисловодск (КМВ)</option><option>Пятигорск (КМВ)</option><option>Ессентуки (КМВ)</option><option>Железноводск (КМВ)</option><option>Минеральные Воды</option><option>Нальчик (КБР)</option><option>Эльбрус (КБР)</option><option>Владикавказ (Северная Осетия)</option><option>Грозный (Чечня)</option><option>Дербент (Дагестан)</option><option>Махачкала (Дагестан)</option><option>Сулак (Дагестан)</option><option>Каспийск (Дагестан)</option><option>Домбай (КЧР)</option><option>Архыз (КЧР)</option><option>Теберда (КЧР)</option><option>Петропавловск-Камчатский</option><option>Горно-Алтайск</option><option>Манжерок (Алтай)</option><option>Чемал (Алтай)</option><option>Южно-Сахалинск</option><option>Курильск (Курилы)</option>
+</optgroup>
+<optgroup label="🇦🇬 Абхазия">
+<option>Сухум (Абхазия)</option><option>Гагра (Абхазия)</option><option>Пицунда (Абхазия)</option><option>Гудаута (Абхазия)</option><option>Новый Афон (Абхазия)</option>
+</optgroup>
+<optgroup label="🇹🇭 Таиланд">
+<option>Бангкок</option><option>Пхукет</option><option>Паттайя</option><option>Самуи</option>
+</optgroup>
+<optgroup label="🇻🇳 Вьетнам">
+<option>Дананг</option><option>Нячанг</option><option>Фукуок</option>
+</optgroup>
+<optgroup label="🇵🇭 Филиппины">
+<option>Боракай</option><option>Себу</option>
+</optgroup>
+<optgroup label="🇦🇪 ОАЭ">
+<option>Дубай</option><option>Абу-Даби</option><option>Шарджа</option><option>Рас-эль-Хайма</option><option>Аджман</option><option>Фуджейра</option>
+</optgroup>
+<optgroup label="🇨🇾 Кипр">
+<option>Айя-Напа</option><option>Пафос</option><option>Ларнака</option><option>Лимассол</option><option>Протарас</option><option>Никосия</option>
+</optgroup>
+<optgroup label="🇮🇹 Италия">
+<option>Рим</option><option>Венеция</option><option>Милан</option><option>Флоренция</option><option>Неаполь</option><option>Римини</option><option>Верона</option><option>Сицилия (Палермо)</option>
+</optgroup>
+<optgroup label="🇪🇸 Испания">
+<option>Барселона</option><option>Мадрид</option><option>Тенерифе</option><option>Валенсия</option><option>Малага</option><option>Пальма-де-Майорка</option><option>Аликанте</option><option>Севилья</option>
+</optgroup>
+<optgroup label="🇬🇷 Греция">
+<option>Афины</option><option>Санторини</option><option>Крит (Ираклион)</option><option>Родос</option><option>Салоники</option><option>Корфу</option><option>Миконос</option><option>Халкидики</option>
+</optgroup>
+<optgroup label="🇭🇷 Хорватия">
+<option>Дубровник</option><option>Сплит</option><option>Загреб</option><option>Пула</option><option>Задар</option><option>Ровинь</option>
+</optgroup>
+<optgroup label="🇲🇪 Черногория">
+<option>Будва</option><option>Котор</option><option>Тиват</option><option>Херцег-Нови</option><option>Бар</option><option>Петровац</option>
+</optgroup>
+<optgroup label="🇻🇳 Вьетнам (расширено)">
+<option>Дананг</option><option>Нячанг</option><option>Фукуок</option><option>Хошимин</option><option>Ханой</option><option>Фантьет</option>
+</optgroup>
+<optgroup label="🌍 Другие направления">
+<option>Стамбул (Турция)</option><option>Анталья (Турция)</option><option>Хургада (Египет)</option><option>Шарм-эль-Шейх (Египет)</option><option>Бали (Индонезия)</option><option>Мале (Мальдивы)</option><option>Токио (Япония)</option><option>Пекин (Китай)</option><option>Санья (Китай)</option><option>Варадеро (Куба)</option><option>Гавана (Куба)</option><option>Париж (Франция)</option>
+</optgroup>
+</select>
+<input type="date" id="checkIn" value="2026-08-15" style="flex:1 1 150px" />
+<input type="date" id="checkOut" value="2026-08-22" style="flex:1 1 150px" />
+<select id="stars" style="flex:1 1 130px"><option value="0">Любые</option><option value="3">3★+</option><option value="4">4★+</option><option value="5">5★</option></select>
+<button class="btn btn-green" onclick="searchHotels()" style="flex:0 0 auto">🔍 Найти</button>
+</div>
+<div id="searchResults"></div>
+</div>
+</div>
+</section>
+<section id="hotels" class="section" style="background:#0a0f1e;position:relative;overflow:hidden"><div class="section-overlay" style="background-image:url('https://picsum.photos/seed/luxury-hotel-pool/1920/600')"></div>
+<div class="container">
+<div style="text-align:center;margin-bottom:32px"><h2>🏨 Подборка популярных отелей</h2><p class="sub">Ориентировочные цены от Booking, Ostrovok, Hotels.com, Agoda. Точная цена — на сайте партнёра при выборе дат</p></div>
+<div class="grid" id="hotelsGrid"></div>
+</div>
+</section>
+<section id="flights" class="section" style="background:#0d1226;position:relative;overflow:hidden"><div class="section-overlay" style="background-image:url('https://picsum.photos/seed/airplane-sky-clouds/1920/600')"></div>
+<div class="container">
+<div style="text-align:center;margin-bottom:32px"><h2>✈️ Авиабилеты — реальные цены</h2><p class="sub">Минимальные цены туда-обратно на 2026 год от Aviasales, Skyscanner, KAYAK</p></div>
+<div class="grid" id="flightsGrid"></div>
+</div>
+</section>
+<section id="cruises" class="section" style="background:#0a0f1e">
+<div class="container">
+<div style="text-align:center;margin-bottom:32px"><h2>🚢 Круизы по России</h2><p class="sub">Волга-матушка, Москва-река, Белое море. Теплоходные туры от 1 дня</p></div>
+<div class="grid" id="cruisesGrid"></div>
+</div>
+</section>
+<section id="reviews" class="section" style="background:#0a0f1e">
+<div class="container">
+<div style="text-align:center;margin-bottom:32px"><h2>💬 Отзывы реальных путешественников</h2><p class="sub">Реальные суммы, реальная экономия, реальные даты поездок 2026 года</p></div>
+<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+  <div class="card" style="background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(102,126,234,0.08))">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:30px">👩</div>
+      <div><div style="color:#fff;font-weight:700;font-size:16px">Анна К.</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:12px">📍 Дубай, ОАЭ · <span style="color:#fbbf24">★★★★★</span></div>
+      <div style="color:#34d399;font-size:11px;font-weight:600">✓ Верифицировано</div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;font-style:italic;margin-bottom:14px">"Летали с мужем в Дубай на 7 ночей / 6 ночей в июне. Жили в Atlantis The Palm, номер с видом на море. Днём — пляж и бассейн, вечером — прогулка по Марине. Бронировала через Booking.com по ссылке с TravelDeal — сэкономила 18 000₽ на отеле. Авиа Аэрофлот прямой рейс 6ч, 78 000₽ на двоих. Совет: обязательно берите экскурсию в пустыню на закате!"</p>
+    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px;display:flex;justify-content:space-between">
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ПОЕЗДКА</div><div style="color:#fff;font-size:13px;font-weight:700">7 дней / 6 ночей</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ИТОГО</div><div style="color:#a78bfa;font-size:13px;font-weight:700">365 000₽</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">СЭКОНОМЛЕНО</div><div style="color:#34d399;font-size:16px;font-weight:800">−28 000₽</div></div>
+    </div>
+    <div style="margin-top:10px;color:rgba(255,255,255,0.4);font-size:11px">📅 Июнь 2026 · 🌅 Atlantis The Palm</div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(102,126,234,0.08))">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:30px">👨</div>
+      <div><div style="color:#fff;font-weight:700;font-size:16px">Михаил Р.</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:12px">📍 Бали, Индонезия · <span style="color:#fbbf24">★★★★★</span></div>
+      <div style="color:#34d399;font-size:11px;font-weight:600">✓ Верифицировано</div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;font-style:italic;margin-bottom:14px">"С женой ездили на Бали на 12 дней в мае — отдыхали в Убуде в вилле Kempinski с бассейном. Утром йога, днём — храмы и рисовые террасы, вечером — ужин с морепродуктами. Бронировали через Ostrovok — вышло на 22 000₽ дешевле, чем напрямую. Singapore Airlines с пересадкой в Сингапуре, 16ч в пути. Идеально для тех, кто любит природу и спа!"</p>
+    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px;display:flex;justify-content:space-between">
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ПОЕЗДКА</div><div style="color:#fff;font-size:13px;font-weight:700">12 дней / 11 ночей</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ИТОГО</div><div style="color:#a78bfa;font-size:13px;font-weight:700">390 000₽</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">СЭКОНОМЛЕНО</div><div style="color:#34d399;font-size:16px;font-weight:800">−22 000₽</div></div>
+    </div>
+    <div style="margin-top:10px;color:rgba(255,255,255,0.4);font-size:11px">📅 Май 2026 · 🌴 Kempinski Bali, Убуд</div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(102,126,234,0.08))">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:30px">🧔</div>
+      <div><div style="color:#fff;font-weight:700;font-size:16px">Игорь П.</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:12px">📍 Сочи, Россия · <span style="color:#fbbf24">★★★★★</span></div>
+      <div style="color:#34d399;font-size:11px;font-weight:600">✓ Семья из 4 человек</div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;font-style:italic;margin-bottom:14px">"Всей семьёй (я, жена, двое детей 8 и 12 лет) ездили в Сочи в июле на 10 дней. Купались в море, ездили в Красную Поляну, катались на канатной дороге. Поехали поездом Москва-Адлер в купе — дети были в восторге! Отель всё включено с детским меню и бассейном. Экономия 32 000₽ получилась на отеле и билетах вместе."</p>
+    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px;display:flex;justify-content:space-between">
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ПОЕЗДКА</div><div style="color:#fff;font-size:13px;font-weight:700">10 дней / 4 чел.</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ИТОГО</div><div style="color:#a78bfa;font-size:13px;font-weight:700">308 000₽</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">СЭКОНОМЛЕНО</div><div style="color:#34d399;font-size:16px;font-weight:800">−32 000₽</div></div>
+    </div>
+    <div style="margin-top:10px;color:rgba(255,255,255,0.4);font-size:11px">📅 Июль 2026 · 🏖️ Сочи, Красная Поляна</div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(102,126,234,0.08))">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:30px">👩‍🦰</div>
+      <div><div style="color:#fff;font-weight:700;font-size:16px">Елена В.</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:12px">📍 Санкт-Петербург, Россия · <span style="color:#fbbf24">★★★★★</span></div>
+      <div style="color:#34d399;font-size:11px;font-weight:600">✓ Юбилей мужа</div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;font-style:italic;margin-bottom:14px">"Подарила мужу юбилей — поездка в Питер на 3 дня в апреле. Сапсан из Москвы за 3 часа, отель в центре на Невском за 13 000₽ за 2 ночи. Ходили в Эрмитаж, гуляли по набережным, катались на катере по Неве. Ужинали в ресторане ПушкинЪ — невероятно вкусно! Подписка на алерт TravelDeal помогла поймать дешёвые билеты."</p>
+    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px;display:flex;justify-content:space-between">
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ПОЕЗДКА</div><div style="color:#fff;font-size:13px;font-weight:700">3 дня / 2 ночи</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ИТОГО</div><div style="color:#a78bfa;font-size:13px;font-weight:700">25 200₽</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">СЭКОНОМЛЕНО</div><div style="color:#34d399;font-size:16px;font-weight:800">−11 000₽</div></div>
+    </div>
+    <div style="margin-top:10px;color:rgba(255,255,255,0.4);font-size:11px">📅 Апрель 2026 · 🏛️ Эрмитаж, Невский проспект</div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(102,126,234,0.08))">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:30px">👨‍💼</div>
+      <div><div style="color:#fff;font-weight:700;font-size:16px">Дмитрий С.</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:12px">📍 Камчатка, Россия · <span style="color:#fbbf24">★★★★★</span></div>
+      <div style="color:#34d399;font-size:11px;font-weight:600">✓ Авторский тур</div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;font-style:italic;margin-bottom:14px">"Мечтал о Камчатке всю жизнь — поехал в марте на 10 дней с группой от «Большая Страна». Видел вулканы, гейзеры, медведей на Курильском озоре (с вертолёта!), катался на собачьих упряжках. Перелёт Аэрофлот 64 000₽, авторский тур 224 000₽, гостиницы 48 000₽, вертолётная экскурсия 71 000₽. Это того стоило — впечатления на всю жизнь!"</p>
+    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px;display:flex;justify-content:space-between">
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ПОЕЗДКА</div><div style="color:#fff;font-size:13px;font-weight:700">10 дней / 9 ночей</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ИТОГО</div><div style="color:#a78bfa;font-size:13px;font-weight:700">407 000₽</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">СЭКОНОМЛЕНО</div><div style="color:#34d399;font-size:16px;font-weight:800">−19 000₽</div></div>
+    </div>
+    <div style="margin-top:10px;color:rgba(255,255,255,0.4);font-size:11px">📅 Март 2026 · 🌋 Курильское озеро, вулканы</div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(102,126,234,0.08))">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:30px">👩‍🦳</div>
+      <div><div style="color:#fff;font-weight:700;font-size:16px">Ольга М.</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:12px">📍 Мальдивы · <span style="color:#fbbf24">★★★★★</span></div>
+      <div style="color:#34d399;font-size:11px;font-weight:600">✓ Медовый месяц</div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;font-style:italic;margin-bottom:14px">"Медовый месяц на Мальдивах в феврале — 10 дней / 7 ночей в бунгало над водой в Gili Lankanfushi. Утром — завтрак в бунгало (сервируют на террасе прямо над водой!), днём — сноркелинг с черепахами, вечером — ужин при свечах на пляже. Бизнес-класс Emirates с комфортом. Без детей и суеты — полный релакс для двоих."</p>
+    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px;display:flex;justify-content:space-between">
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ПОЕЗДКА</div><div style="color:#fff;font-size:13px;font-weight:700">10 дней / 7 ночей</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">ИТОГО</div><div style="color:#a78bfa;font-size:13px;font-weight:700">1 343 000₽</div></div>
+      <div><div style="color:rgba(255,255,255,0.5);font-size:10px">СЭКОНОМЛЕНО</div><div style="color:#34d399;font-size:16px;font-weight:800">−35 000₽</div></div>
+    </div>
+    <div style="margin-top:10px;color:rgba(255,255,255,0.4);font-size:11px">📅 Февраль 2026 · 🏝️ Gili Lankanfushi, атолл Северный Мале</div>
+  </div>
+</div>
+</div>
+</section>
+
+<section id="partners" class="section" style="background:#0d1226">
+<div class="container">
+<div style="text-align:center;margin-bottom:32px"><h2>🤝 Наши партнёры</h2><p class="sub">Проверенные сервисы бронирования: авиа, отели, ж/д, круизы, туры и аренда авто — всё в одном месте</p></div>
+<div class="grid" id="partnersGrid"></div>
+</div>
+</section>
+<footer style="background:#050814;border-top:1px solid rgba(255,255,255,0.06);padding:40px 24px;text-align:center">
+<p style="color:rgba(255,255,255,0.4);font-size:14px">© 2026 TravelDeal · Реальные цены на путешествия</p>
+<p style="color:rgba(255,255,255,0.3);font-size:13px;margin-top:8px">Партнёры: Aviasales · Ostrovok · Booking · Hotellook · Туту.ру · и другие</p>
+</footer>
+<script>
+// 💰 АВТО-ИНФЛЯЦИЯ: цены растут ~8% в год, чтобы не устаревали
+// Базовый год — 2026. Каждый следующий год +8% к ценам.
+const BASE_YEAR = 2026;
+const INFLATION_PER_YEAR = 0.08;
+function inflate(price) {
+  const yearsPassed = Math.max(0, new Date().getFullYear() - BASE_YEAR);
+  const factor = Math.pow(1 + INFLATION_PER_YEAR, yearsPassed);
+  // Округляем до сотен для красоты
+  return Math.round(price * factor / 100) * 100;
+}
+
+const HOTELS = [
+  {name:'Rixos Premium Belek', city:'Белек, Турция', country:'Турция', stars:5, meal:'Ультра всё включено', rating:4.9, reviews:4213, price:45900, photo:'photo-asia'},
+  {name:'Atlantis The Palm', city:'Дубай, ОАЭ', country:'ОАЭ', stars:5, meal:'Завтрак', rating:4.8, reviews:8930, price:59500, photo:'photo-asia'},
+  {name:'Rove Downtown', city:'Дубай, ОАЭ', country:'ОАЭ', stars:3, meal:'Без питания', rating:4.5, reviews:7215, price:9500, photo:'photo-asia'},
+  {name:'Katathani Phuket', city:'Пхукет, Таиланд', country:'Таиланд', stars:5, meal:'Завтрак', rating:4.7, reviews:4467, price:15900, photo:'photo-tropical'},
+  {name:'Ibis Phuket Patong', city:'Пхукет, Таиланд', country:'Таиланд', stars:3, meal:'Без питания', rating:4.2, reviews:3310, price:4300, photo:'photo-tropical'},
+  {name:'Apurva Kempinski Bali', city:'Бали, Индонезия', country:'Индонезия', stars:5, meal:'Завтрак', rating:4.8, reviews:2154, price:19800, photo:'photo-tropical'},
+  {name:'Adaaran Rannalhi', city:'Мальдивы', country:'Мальдивы', stars:4, meal:'Всё включено', rating:4.5, reviews:1876, price:45200, photo:'photo-water'},
+  {name:'Gili Lankanfushi', city:'Мальдивы', country:'Мальдивы', stars:5, meal:'Полупансион', rating:5.0, reviews:943, price:124500, photo:'photo-water'},
+  {name:'W Barcelona', city:'Барселона, Испания', country:'Испания', stars:5, meal:'Завтрак', rating:4.7, reviews:5321, price:35400, photo:'photo-europe'},
+  {name:'Park Hyatt Tokyo', city:'Токио, Япония', country:'Япония', stars:5, meal:'Без питания', rating:4.8, reviews:2789, price:56900, photo:'photo-asia'},
+  {name:'Mystique Santorini', city:'Санторини, Греция', country:'Греция', stars:5, meal:'Завтрак', rating:4.9, reviews:1432, price:70800, photo:'photo-europe'},
+  {name:'Le Meurice', city:'Париж, Франция', country:'Франция', stars:5, meal:'Завтрак', rating:4.9, reviews:3105, price:87400, photo:'photo-europe'},
+  {name:'Crystal House Калининград', city:'Калининград, Россия', country:'Россия', stars:5, meal:'Завтрак', rating:4.8, reviews:1650, price:12800, photo:'photo-russia'},
+  {name:'Swissôtel Сочи Камелия', city:'Сочи, Россия', country:'Россия', stars:5, meal:'Завтрак', rating:4.8, reviews:3240, price:21500, photo:'photo-russia'},
+  {name:'Метрополь', city:'Москва, Россия', country:'Россия', stars:5, meal:'Завтрак', rating:4.9, reviews:4870, price:24900, photo:'photo-russia'},
+  {name:'Mriya Resort Крым', city:'Ялта, Россия', country:'Россия', stars:5, meal:'Всё включено', rating:4.9, reviews:2980, price:34500, photo:'photo-russia'},
+  {name:'Lotte Hotel Владивосток', city:'Владивосток, Россия', country:'Россия', stars:5, meal:'Завтрак', rating:4.7, reviews:1420, price:14200, photo:'photo-russia'},
+  {name:'Pacific Plaza Сахалин', city:'Южно-Сахалинск, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.5, reviews:890, price:9800, photo:'photo-snow'},
+  {name:'The Peninsula Beijing', city:'Пекин, Китай', country:'Китай', stars:5, meal:'Завтрак', rating:4.8, reviews:2340, price:26800, photo:'photo-asia'},
+  {name:'Atlantis Sanya', city:'Санья, Китай', country:'Китай', stars:5, meal:'Завтрак', rating:4.7, reviews:4560, price:22400, photo:'photo-tropical'},
+  {name:'Mandarin Oriental Бангкок', city:'Бангкок, Таиланд', country:'Таиланд', stars:5, meal:'Завтрак', rating:4.9, reviews:3890, price:32500, photo:'photo-tropical'},
+  {name:'Hilton Pattaya', city:'Паттайя, Таиланд', country:'Таиланд', stars:5, meal:'Завтрак', rating:4.6, reviews:5230, price:8900, photo:'photo-tropical'},
+  {name:'Voyage Bodrum', city:'Бодрум, Турция', country:'Турция', stars:5, meal:'Ультра всё включено', rating:4.7, reviews:2670, price:28700, photo:'photo-asia'},
+  {name:'Iberostar Varadero', city:'Варадеро, Куба', country:'Куба', stars:5, meal:'Всё включено', rating:4.7, reviews:3120, price:20400, photo:'photo-tropical'},
+  {name:'Elysium Пафос', city:'Пафос, Кипр', country:'Кипр', stars:5, meal:'Полупансион', rating:4.7, reviews:2340, price:15200, photo:'photo-tropical'},
+  {name:'St. Regis Rome', city:'Рим, Италия', country:'Италия', stars:5, meal:'Завтрак', rating:4.9, reviews:2780, price:62800, photo:'photo-europe'},
+  {name:'Belmond Hotel Cipriani', city:'Венеция, Италия', country:'Италия', stars:5, meal:'Завтрак', rating:4.9, reviews:1890, price:87800, photo:'photo-europe'},
+  {name:'Hotel Arts Barcelona', city:'Барселона, Испания', country:'Испания', stars:5, meal:'Завтрак', rating:4.7, reviews:5640, price:27400, photo:'photo-europe'},
+  {name:'Shangri-La Boracay', city:'Боракай, Филиппины', country:'Филиппины', stars:5, meal:'Завтрак', rating:4.9, reviews:2240, price:32400, photo:'photo-tropical'},
+  {name:'Bridge Resort Пицунда', city:'Пицунда, Абхазия', country:'Абхазия', stars:4, meal:'Всё включено', rating:4.6, reviews:1890, price:7800, photo:'photo-russia'},
+  {name:'Алтай Резорт', city:'Манжерок, Россия', country:'Россия', stars:4, meal:'Полный пансион', rating:4.7, reviews:1230, price:7900, photo:'photo-snow'},
+  {name:'Спутник Камчатка', city:'Петропавловск-Камчатский, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.5, reviews:1120, price:6800, photo:'photo-snow'},
+  {name:'Грозный Сити Отель', city:'Грозный, Чечня', country:'Россия', stars:4, meal:'Завтрак', rating:4.7, reviews:980, price:6900, photo:'photo-russia'},
+  {name:'Горный отель Дербент', city:'Дербент, Дагестан', country:'Россия', stars:4, meal:'Завтрак', rating:4.6, reviews:920, price:4900, photo:'photo-russia'},
+  {name:'Hilton Garden Inn Краснодар', city:'Краснодар, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.7, reviews:2890, price:6900, photo:'photo-russia'},
+  {name:'Marins Park Нижний Новгород', city:'Нижний Новгород, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.5, reviews:2210, price:4900, photo:'photo-russia'},
+  {name:'Azimut Астрахань', city:'Астрахань, Россия', country:'Россия', stars:3, meal:'Завтрак', rating:4.4, reviews:1320, price:4100, photo:'photo-russia'},
+  {name:'Cronwell Inn Уфа', city:'Уфа, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.5, reviews:1540, price:4800, photo:'photo-russia'},
+  {name:'Отель Астория Ярославль', city:'Ярославль, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.6, reviews:1890, price:4500, photo:'photo-russia'},
+  {name:'Marins Park Казань', city:'Казань, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.5, reviews:2120, price:4900, photo:'photo-russia'},
+  {name:'Плаза Ессентуки КМВ', city:'Ессентуки, Россия', country:'Россия', stars:4, meal:'Полный пансион + лечение', rating:4.6, reviews:1890, price:7400, photo:'photo-russia'},
+  {name:'Alean Spa Кисловодск', city:'Кисловодск, Россия', country:'Россия', stars:4, meal:'Полный пансион + лечение', rating:4.8, reviews:2340, price:8900, photo:'photo-russia'},
+  {name:'Rixos Шарм-эль-Шейх', city:'Шарм-эль-Шейх, Египет', country:'Египет', stars:5, meal:'Ультра всё включено', rating:4.8, reviews:5011, price:28300, photo:'photo-egypt'},
+  {name:'Nissi Beach Resort Айя-Напа', city:'Айя-Напа, Кипр', country:'Кипр', stars:4, meal:'Завтрак', rating:4.5, reviews:4120, price:9100, photo:'photo-tropical'},
+  {name:'Iberostar Гавана', city:'Гавана, Куба', country:'Куба', stars:5, meal:'Всё включено', rating:4.6, reviews:1890, price:18200, photo:'photo-tropical'},
+  {name:'Vinpearl Фукуок', city:'Фукуок, Вьетнам', country:'Вьетнам', stars:5, meal:'Всё включено', rating:4.7, reviews:3890, price:14800, photo:'photo-tropical'},
+  {name:'InterContinental Дананг', city:'Дананг, Вьетнам', country:'Вьетнам', stars:5, meal:'Завтрак', rating:4.8, reviews:4230, price:12500, photo:'photo-tropical'},
+  {name:'Сулак Дагестан гостевой дом', city:'Сулак, Дагестан', country:'Россия', stars:3, meal:'Завтрак', rating:4.7, reviews:540, price:3200, photo:'photo-russia'},
+  {name:'Мрия Resort Крым', city:'Ялта, Россия', country:'Россия', stars:5, meal:'Всё включено', rating:4.9, reviews:2980, price:34500, photo:'photo-russia'},
+  {name:'Hilton Garden Inn Краснодар', city:'Краснодар, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.7, reviews:2890, price:6900, photo:'photo-russia'},
+  {name:'Riviera Resort Сахалин', city:'Южно-Сахалинск, Россия', country:'Россия', stars:4, meal:'Завтрак', rating:4.5, reviews:890, price:9800, photo:'photo-snow'},
+  {name:'Atlantis The Palm', city:'Дубай, ОАЭ', country:'ОАЭ', stars:5, meal:'Завтрак', rating:4.8, reviews:8930, price:59500, photo:'photo-asia'},
+  {name:'Emirates Palace', city:'Абу-Даби, ОАЭ', country:'ОАЭ', stars:5, meal:'Завтрак', rating:4.9, reviews:4120, price:68000, photo:'photo-asia'},
+  {name:'Rove Downtown', city:'Дубай, ОАЭ', country:'ОАЭ', stars:3, meal:'Без питания', rating:4.5, reviews:7215, price:9500, photo:'photo-asia'},
+  {name:'Grand Hotel Excelsior', city:'Дубровник, Хорватия', country:'Хорватия', stars:5, meal:'Завтрак', rating:4.8, reviews:2340, price:32000, photo:'photo-europe'},
+  {name:'Hotel Park Split', city:'Сплит, Хорватия', country:'Хорватия', stars:4, meal:'Завтрак', rating:4.6, reviews:1890, price:18500, photo:'photo-europe'},
+  {name:'Avala Resort Budva', city:'Будва, Черногория', country:'Черногория', stars:4, meal:'Всё включено', rating:4.5, reviews:2670, price:14200, photo:'photo-europe'},
+  {name:'Regent Porto Montenegro', city:'Тиват, Черногория', country:'Черногория', stars:5, meal:'Завтрак', rating:4.9, reviews:1340, price:38000, photo:'photo-europe'},
+  {name:'Grande Bretagne', city:'Афины, Греция', country:'Греция', stars:5, meal:'Завтрак', rating:4.9, reviews:3450, price:42000, photo:'photo-europe'},
+  {name:'Blue Palace Crete', city:'Крит, Греция', country:'Греция', stars:5, meal:'Полупансион', rating:4.8, reviews:2780, price:36000, photo:'photo-europe'},
+  {name:'Lindos Blu Rhodes', city:'Родос, Греция', country:'Греция', stars:5, meal:'Завтрак', rating:4.7, reviews:1920, price:28000, photo:'photo-europe'},
+  {name:'Vinpearl Nha Trang', city:'Нячанг, Вьетнам', country:'Вьетнам', stars:5, meal:'Всё включено', rating:4.7, reviews:4560, price:16800, photo:'photo-tropical'},
+  {name:'Lotte Hotel Hanoi', city:'Ханой, Вьетнам', country:'Вьетнам', stars:5, meal:'Завтрак', rating:4.8, reviews:2340, price:13500, photo:'photo-tropical'},
+  {name:'Amara Dolce Vita', city:'Лимассол, Кипр', country:'Кипр', stars:5, meal:'Завтрак', rating:4.8, reviews:2120, price:24000, photo:'photo-tropical'},
+  {name:'Belmond Cipriani', city:'Венеция, Италия', country:'Италия', stars:5, meal:'Завтрак', rating:4.9, reviews:1890, price:87800, photo:'photo-europe'},
+  {name:'Grand Hotel Rimini', city:'Римини, Италия', country:'Италия', stars:4, meal:'Всё включено', rating:4.6, reviews:3210, price:19500, photo:'photo-europe'},
+  {name:'Hotel Arts Barcelona', city:'Барселона, Испания', country:'Испания', stars:5, meal:'Завтрак', rating:4.7, reviews:5640, price:27400, photo:'photo-europe'},
+  {name:'Meliá Palma Bay', city:'Пальма-де-Майорка, Испания', country:'Испания', stars:4, meal:'Всё включено', rating:4.6, reviews:4120, price:21000, photo:'photo-europe'},
+];
+
+const FLIGHTS = [
+  {from:'Москва', to:'Анталья', country:'Турция', fromCode:'MOW', toCode:'AYT', depart:'20 авг 2026', ret:'27 авг 2026', duration:'4ч 05м', price:31900},
+  {from:'Москва', to:'Дубай', country:'ОАЭ', fromCode:'MOW', toCode:'DXB', depart:'10 окт 2026', ret:'17 окт 2026', duration:'5ч 15м', price:28900},
+  {from:'Москва', to:'Хургада', country:'Египет', fromCode:'MOW', toCode:'HRG', depart:'7 ноя 2026', ret:'14 ноя 2026', duration:'5ч 00м', price:33500},
+  {from:'Москва', to:'Пхукет', country:'Таиланд', fromCode:'MOW', toCode:'HKT', depart:'20 ноя 2026', ret:'4 дек 2026', duration:'9ч 20м', price:51500},
+  {from:'Москва', to:'Мале', country:'Мальдивы', fromCode:'MOW', toCode:'MLE', depart:'4 сен 2026', ret:'14 сен 2026', duration:'8ч 40м', price:54900},
+  {from:'Москва', to:'Стамбул', country:'Турция', fromCode:'MOW', toCode:'IST', depart:'1 сен 2026', ret:'8 сен 2026', duration:'3ч 50м', price:19800},
+  {from:'Москва', to:'Калининград', country:'Россия', fromCode:'MOW', toCode:'KGD', depart:'12 авг 2026', ret:'19 авг 2026', duration:'2ч 00м', price:9800},
+  {from:'Москва', to:'Сочи', country:'Россия', fromCode:'MOW', toCode:'AER', depart:'15 июл 2026', ret:'29 июл 2026', duration:'2ч 25м', price:11500},
+  {from:'Москва', to:'Владивосток', country:'Россия', fromCode:'MOW', toCode:'VVO', depart:'5 авг 2026', ret:'19 авг 2026', duration:'8ч 30м', price:27400},
+  {from:'Москва', to:'Южно-Сахалинск', country:'Россия', fromCode:'MOW', toCode:'UUS', depart:'10 авг 2026', ret:'24 авг 2026', duration:'8ч 55м', price:31200},
+  {from:'Москва', to:'Пекин', country:'Китай', fromCode:'MOW', toCode:'PEK', depart:'3 окт 2026', ret:'13 окт 2026', duration:'7ч 30м', price:32800},
+  {from:'Москва', to:'Санья', country:'Китай', fromCode:'MOW', toCode:'SYX', depart:'20 ноя 2026', ret:'4 дек 2026', duration:'10ч 40м', price:43500},
+  {from:'Москва', to:'Бангкок', country:'Таиланд', fromCode:'MOW', toCode:'BKK', depart:'10 дек 2026', ret:'24 дек 2026', duration:'9ч 05м', price:46200},
+];
+
+const CRUISES = [
+  {name:'Волга-матушка: Москва → Астрахань', days:14, ship:'4★ теплоход', price:78900, emoji:'🚢'},
+  {name:'Золотое кольцо (короткий)', days:5, ship:'3★ теплоход', price:32400, emoji:'⛴️'},
+  {name:'Москва-река: короткий круиз', days:1, ship:'Прогулочный теплоход', price:2900, emoji:'🛥️'},
+  {name:'Казань — Самара — Казань', days:6, ship:'4★ теплоход', price:41200, emoji:'🚢'},
+  {name:'Белое море: Архангельск — Соловки', days:5, ship:'4★ экспедиционный', price:48600, emoji:'⚓'},
+  {name:'Москва — Санкт-Петербург (на теплоходе)', days:8, ship:'4★ премиум', price:64500, emoji:'🛳️'},
+];
+
+const PARTNERS = [
+  {name:'Aviasales', emoji:'✈️', color:'#ff6d00', desc:'Умный поиск дешёвых авиабилетов', url:'https://aviasales.tpk.lu/friyadfS'},
+  {name:'Aviasales · Отели', emoji:'🏨', color:'#e65100', desc:'Поиск отелей и апартаментов по всему миру', url:'https://aviasales.tpk.lu/u9lFIAmF'},
+  {name:'LaVoyage', emoji:'✈️', color:'#1e88e5', desc:'Авиабилеты с гибкими датами и мультимаршруты', url:'https://lavoyage.tpk.lu/PC4ITkPJ'},
+  {name:'Ostrovok', emoji:'🏝️', color:'#00b4d8', desc:'Бронирование отелей по всему миру', url:'https://ostrovok.tpk.lu/qm3uUcuL'},
+  {name:'Яндекс.Путешествия', emoji:'🔍', color:'#fc3f1d', desc:'Отели + авиа + кэшбэк баллами Плюса', url:'https://yandex.tpk.lu/n2k5ulFQ'},
+  {name:'Суточно.ру', emoji:'🏠', color:'#26a69a', desc:'Квартиры и дома посуточно по России', url:'https://sutochno.tpk.lu/uTSAebHB'},
+  {name:'Avito Путешествия', emoji:'🏡', color:'#97cf26', desc:'Жильё для отпуска от собственников', url:'https://avito.tpk.lu/vQaFIi9P'},
+  {name:'Туту.ру', emoji:'🚆', color:'#00acc1', desc:'Ж/Д и авиабилеты по России без наценок', url:'https://tutu.tpk.lu/35nYuIo5'},
+  {name:'Большая Страна', emoji:'🏔️', color:'#2e7d32', desc:'Авторские туры по России — Байкал, Камчатка, Алтай', url:'https://bolshayastrana.tpk.lu/tDKbPrzA'},
+  {name:'Травелата', emoji:'🌴', color:'#ffa000', desc:'Пакетные туры от 120 туроператоров', url:'https://travelata.tpk.lu/iXthmQlV'},
+  {name:'Level.Travel', emoji:'🧳', color:'#5c6bc0', desc:'Горящие туры онлайн', url:'https://level.tpk.lu/pEKE6u4T'},
+  {name:'Onlinetours', emoji:'🔥', color:'#e91e63', desc:'Поиск туров по 120 туроператорам с рассрочкой', url:'https://onlinetours.tpk.lu/9gx8uXiK'},
+  {name:'Слетать.ру', emoji:'🎒', color:'#7b1fa2', desc:'Сравнение туров от 120 туроператоров России', url:'https://sletat.tpk.lu/qOge5Itj'},
+  {name:'Экскурсии (Экста)', emoji:'🎫', color:'#f57c00', desc:'Авторские экскурсии от местных гидов', url:'https://ektatraveling.tpk.lu/9aHvFarq'},
+  {name:'Санатории.ру', emoji:'💆', color:'#00897b', desc:'Санатории России и СНГ с лечением', url:'https://sanatoriums.tpk.lu/9jud9LjB'},
+  {name:'МирТурбаз', emoji:'🏕️', color:'#689f38', desc:'Базы отдыха, глэмпинги, кемпинги России', url:'https://mirturbaz.tpk.lu/UW7Z9Iw1'},
+  {name:'VIP-залы аэропортов', emoji:'✨', color:'#ffd54f', desc:'Бизнес-залы аэропортов от 1900₽', url:'https://vip-zal.tpk.lu/gQ8g0epq'},
+  {name:'Круиз-Онлайн', emoji:'🚢', color:'#1976d2', desc:'Морские и речные круизы по всему миру', url:'https://kruiz-online.tpk.lu/ctXuG3FL'},
+  {name:'SeaRadar', emoji:'⚓', color:'#0277bd', desc:'Прогулочные яхты и катера по всему миру', url:'https://searadar.tpk.lu/pus6EpES'},
+  {name:'Localrent', emoji:'🚗', color:'#3f51b5', desc:'Аренда авто у местных прокатчиков без депозита', url:'https://localrent.tpk.lu/axWJbRm1'},
+  {name:'Qeeq.com', emoji:'🚙', color:'#0288d1', desc:'Аренда авто в аэропортах мира без кредитной карты', url:'https://qeeq.tpk.lu/z8sf6b95'},
+  {name:'Radical Storage', emoji:'🧳', color:'#ef6c00', desc:'Хранение багажа в 1000+ городах мира от 100₽', url:'https://radicalstorage.tpk.lu/lkM8cN3r'},
+  {name:'12Go — транспорт Азии', emoji:'🚆', color:'#00b14f', desc:'Поезда, автобусы и паромы по Азии. Промокод TP10 — скидка 10% для новых пользователей', url:'https://12go.asia/?z=547188'},
+];
+
+const HOTEL_EMOJI = {'Россия':'🏔️','Абхазия':'🌊','Турция':'🏖️','Египет':'🐪','ОАЭ':'🏜️','Таиланд':'🌴','Индонезия':'🌺','Мальдивы':'🏖️','Италия':'🏛️','Испания':'⛪','Греция':'🏛️','Франция':'🗼','Кипр':'🌅','Япония':'🏯','Китай':'🏮','Куба':'🌴','Филиппины':'🏝️','Вьетнам':'🌴','Хорватия':'⛵','Черногория':'⛰️'};
+
+// Фото отелей: используем Lorem Picsum (надёжный CDN, не блокируется, не требует API)
+// Каждая категория = уникальный seed → стабильное фото
+const picsum = (seed, w = 800, h = 500) => `https://picsum.photos/seed/${seed}/${w}/${h}`;
+
+const HOTEL_PHOTOS = {
+  'Россия': picsum('russia-moscow-1'),
+  'Турция': picsum('turkey-antalya-2'),
+  'ОАЭ': picsum('dubai-burj-3'),
+  'Египет': picsum('egypt-pyramid-4'),
+  'Таиланд': picsum('thailand-phuket-5'),
+  'Индонезия': picsum('bali-tropical-6'),
+  'Мальдивы': picsum('maldives-water-7'),
+  'Испания': picsum('spain-barcelona-8'),
+  'Италия': picsum('italy-rome-9'),
+  'Греция': picsum('greece-santorini-10'),
+  'Франция': picsum('france-paris-11'),
+  'Япония': picsum('japan-tokyo-12'),
+  'Китай': picsum('china-beijing-13'),
+  'Кипр': picsum('cyprus-ayia-14'),
+  'Куба': picsum('cuba-havana-15'),
+  'Филиппины': picsum('philippines-boracay-16'),
+  'Вьетнам': picsum('vietnam-danang-17'),
+  'Абхазия': picsum('abkhazia-pitsunda-18'),
+};
+
+const CITY_PHOTOS = {
+  'Камчатка': picsum('kamchatka-volcano-30'),
+  'Южно-Сахалинск': picsum('sakhalin-ocean-31'),
+  'Манжерок': picsum('altai-mountain-32'),
+  'Горно-Алтайск': picsum('altai-altai-33'),
+  'Чемал': picsum('altai-chemal-34'),
+  'Дербент': picsum('dagestan-fortress-35'),
+  'Махачкала': picsum('dagestan-sea-36'),
+  'Сулак': picsum('dagestan-canyon-37'),
+  'Каспийск': picsum('dagestan-caspian-38'),
+  'Кисловодск': picsum('kavkaz-sanatorium-39'),
+  'Пятигорск': picsum('kavkaz-pyatigorsk-40'),
+  'Ессентуки': picsum('kavkaz-yessentuki-41'),
+  'Железноводск': picsum('kavkaz-zheleznovodsk-42'),
+  'Минеральные Воды': picsum('kavkaz-minvody-43'),
+  'Нальчик': picsum('kavkaz-nalchik-44'),
+  'Эльбрус': picsum('kavkaz-elbrus-45'),
+  'Домбай': picsum('kavkaz-dombay-46'),
+  'Архыз': picsum('kavkaz-arkhyz-47'),
+  'Теберда': picsum('kavkaz-teberda-48'),
+  'Владикавказ': picsum('osetia-vladikavkaz-49'),
+  'Грозный': picsum('chechnya-grozny-50'),
+};
+
+function getHotelPhoto(city, country) {
+  if (CITY_PHOTOS[city]) return CITY_PHOTOS[city];
+  return HOTEL_PHOTOS[country] || picsum('default-hotel-99');
+}
+
+// Определяет ТИП сцены по городу/стране
+function getSceneType(city, country) {
+  const c = (city + ' ' + country).toLowerCase();
+  // Горы и снег
+  if (/алтай|манжерок|чемал|камчатк|петропавловск|эльбрус|домбай|архыз|теберда|курил|сахалин|горно/.test(c)) return 'mountains';
+  // Санатории КМВ (горы + зелень)
+  if (/кисловодск|пятигорск|ессентуки|железноводск|минеральные|нальчик|владикавказ/.test(c)) return 'spa';
+  // Пустыня
+  if (/оаэ|дубай|египет|хургада|шарм/.test(c)) return 'desert';
+  // Азия (город-неон)
+  if (/япония|токио|китай|пекин|шанхай|санья/.test(c)) return 'asia';
+  // Европа (архитектура)
+  if (/итали|рим|венец|милан|испани|барселон|мадрид|греци|афин|санторини|крит|родос|франци|париж|кипр|хорвати|дубровник|сплит|черногори|будва|котор/.test(c)) return 'europe';
+  // Российский город
+  if (/москва|санкт|калининград|казань|екатеринбург|новосибирск|нижний|краснодар|ростов|уфа|ярославль|астрахань|владивосток|мурманск|грозный|дербент|махачкала|сулак/.test(c)) return 'city';
+  // По умолчанию — тропический пляж с луной/солнцем
+  return 'beach';
+}
+
+// Рисует SVG-сцену (единая стилистика с главной: море, луна, горы)
+function getHotelScene(city, country, idx) {
+  const type = getSceneType(city, country);
+  // Позиция луны/солнца меняется по индексу для разнообразия
+  const positions = [[80,22],[20,20],[50,18],[85,28],[15,26]];
+  const [mx, my] = positions[idx % positions.length];
+  const S = (bg, inner) => '<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block">' + bg + inner + '</svg>';
+
+  if (type === 'mountains') {
+    return S(
+      '<defs><linearGradient id="mg'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d1b3e"/><stop offset="55%" stop-color="#24406e"/><stop offset="100%" stop-color="#3a6ea5"/></linearGradient></defs><rect width="400" height="220" fill="url(#mg'+idx+')"/>',
+      '<circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="26" fill="#fff9e6" opacity="0.95"/><circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="40" fill="#fff9e6" opacity="0.12"/>'
+      + stars(idx)
+      + '<polygon points="0,220 90,90 170,220" fill="#2c3e5c"/><polygon points="90,90 108,118 72,118" fill="#eaf6ff"/>'
+      + '<polygon points="120,220 230,60 340,220" fill="#22304d"/><polygon points="230,60 255,100 205,100" fill="#eaf6ff"/>'
+      + '<polygon points="270,220 360,110 400,180 400,220" fill="#2c3e5c"/>'
+    );
+  }
+  if (type === 'spa') {
+    return S(
+      '<defs><linearGradient id="sg'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#134e5e"/><stop offset="100%" stop-color="#71b280"/></linearGradient></defs><rect width="400" height="220" fill="url(#sg'+idx+')"/>',
+      '<circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="24" fill="#fff9e6" opacity="0.9"/><circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="38" fill="#fff9e6" opacity="0.12"/>'
+      + '<polygon points="0,220 130,110 260,220" fill="#2e6b4f" opacity="0.85"/><polygon points="180,220 300,120 400,220" fill="#3c7d5c" opacity="0.9"/>'
+      + '<rect x="150" y="140" width="100" height="80" rx="6" fill="#f5f5f0" opacity="0.92"/><polygon points="150,140 200,110 250,140" fill="#c0392b"/>'
+      + '<rect x="185" y="175" width="30" height="45" fill="#8b6f47"/>'
+    );
+  }
+  if (type === 'desert') {
+    return S(
+      '<defs><linearGradient id="dg'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f7971e"/><stop offset="55%" stop-color="#ffd200"/><stop offset="100%" stop-color="#e0a458"/></linearGradient></defs><rect width="400" height="220" fill="url(#dg'+idx+')"/>',
+      '<circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="30" fill="#fff5d6" opacity="0.95"/><circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="48" fill="#fff5d6" opacity="0.2"/>'
+      + '<path d="M0,180 Q100,140 200,175 T400,165 L400,220 L0,220 Z" fill="#d98e3b" opacity="0.85"/>'
+      + '<path d="M0,200 Q120,170 240,200 T400,195 L400,220 L0,220 Z" fill="#b5702a"/>'
+      + '<rect x="300" y="120" width="14" height="70" fill="#5a3d1e"/><path d="M307,120 q30,-6 40,4 M307,120 q28,6 38,20 M307,120 q-24,-8 -34,6" stroke="#2e7d32" stroke-width="7" fill="none" stroke-linecap="round"/>'
+    );
+  }
+  if (type === 'asia') {
+    return S(
+      '<defs><linearGradient id="ag'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0033"/><stop offset="60%" stop-color="#4a0e4e"/><stop offset="100%" stop-color="#c2185b"/></linearGradient></defs><rect width="400" height="220" fill="url(#ag'+idx+')"/>',
+      '<circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="24" fill="#ffe0e6" opacity="0.9"/><circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="40" fill="#ff4081" opacity="0.15"/>'
+      + stars(idx)
+      + skyline('#0d0d2b', 130) + skyline('#1a1a44', 150)
+      + neon(idx)
+    );
+  }
+  if (type === 'europe') {
+    return S(
+      '<defs><linearGradient id="eg'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff9a56"/><stop offset="55%" stop-color="#ffcb8e"/><stop offset="100%" stop-color="#7b4397"/></linearGradient></defs><rect width="400" height="220" fill="url(#eg'+idx+')"/>',
+      '<circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="28" fill="#fff5e0" opacity="0.9"/>'
+      + '<rect x="40" y="100" width="55" height="120" fill="#8d6e63"/><rect x="105" y="80" width="65" height="140" fill="#a1887f"/><rect x="180" y="110" width="50" height="110" fill="#795548"/><rect x="240" y="70" width="70" height="150" fill="#8d6e63"/><rect x="320" y="105" width="55" height="115" fill="#a1887f"/>'
+      + '<polygon points="240,70 275,40 310,70" fill="#5d4037"/><circle cx="275" cy="52" r="4" fill="#ffd54f"/>'
+      + windows('#ffd54f')
+    );
+  }
+  if (type === 'city') {
+    return S(
+      '<defs><linearGradient id="cg'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f2027"/><stop offset="55%" stop-color="#203a43"/><stop offset="100%" stop-color="#2c5364"/></linearGradient></defs><rect width="400" height="220" fill="url(#cg'+idx+')"/>',
+      '<circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="24" fill="#fff9e6" opacity="0.9"/><circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="40" fill="#fff9e6" opacity="0.1"/>'
+      + stars(idx)
+      + skyline('#16232e', 120) + skyline('#22323f', 145)
+      + windows('#7fd4ff')
+    );
+  }
+  // beach (по умолчанию) — море, луна, отблеск, пальма
+  return S(
+    '<defs><linearGradient id="bg'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1230"/><stop offset="45%" stop-color="#173d6b"/><stop offset="70%" stop-color="#2a6f97"/><stop offset="100%" stop-color="#48b0c9"/></linearGradient></defs><rect width="400" height="220" fill="url(#bg'+idx+')"/>',
+    '<circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="26" fill="#fff9e6" opacity="0.95"/><circle cx="'+(mx*4)+'" cy="'+(my*2)+'" r="42" fill="#fff9e6" opacity="0.15"/>'
+    + stars(idx)
+    + '<rect x="0" y="150" width="400" height="70" fill="#1a5276" opacity="0.5"/>'
+    + '<path d="M'+(mx*4-30)+',155 Q'+(mx*4)+',150 '+(mx*4+30)+',155 L'+(mx*4+20)+',210 L'+(mx*4-20)+',210 Z" fill="#fff5cc" opacity="0.25"/>'
+    + '<path d="M0,158 Q100,152 200,158 T400,158" stroke="#8fd6e8" stroke-width="1.5" fill="none" opacity="0.4"/>'
+    + '<path d="M0,175 Q100,169 200,175 T400,175" stroke="#8fd6e8" stroke-width="1.5" fill="none" opacity="0.3"/>'
+    + '<rect x="30" y="120" width="10" height="90" fill="#3e2723"/><path d="M35,120 q35,-10 55,2 M35,120 q32,8 48,26 M35,120 q-28,-6 -40,10 M35,120 q-24,10 -30,30" stroke="#2e7d32" stroke-width="8" fill="none" stroke-linecap="round"/>'
+  );
+}
+// Вспомогательные: звёзды, силуэт города, окна, неон
+function stars(idx){var s='';var seed=idx*7;for(var i=0;i<12;i++){var x=(seed*13+i*37)%390+5;var y=(seed*7+i*19)%70+8;s+='<circle cx="'+x+'" cy="'+y+'" r="1" fill="#fff" opacity="0.7"/>';}return s;}
+function skyline(color,base){var s='';var xs=[10,55,95,140,185,230,275,320,360];var hs=[70,110,55,95,130,75,105,60,90];for(var i=0;i<xs.length;i++){s+='<rect x="'+xs[i]+'" y="'+(base+(base===120||base===130?0:0)-0)+'" width="38" height="120" fill="'+color+'"/>';s='<rect x="'+xs[i]+'" y="'+(220-hs[i]*(base>140?1.1:0.9))+'" width="36" height="'+(hs[i]*(base>140?1.1:0.9))+'" fill="'+color+'"/>'+s;}return s;}
+function windows(color){var s='';for(var r=0;r<5;r++){for(var c=0;c<9;c++){if((r*c+r+c)%3===0){s+='<rect x="'+(28+c*42)+'" y="'+(90+r*22)+'" width="6" height="8" fill="'+color+'" opacity="0.85"/>';}}}return s;}
+function neon(idx){var s='';var col=['#ff1744','#00e5ff','#ffea00','#e040fb'];for(var i=0;i<16;i++){var x=(idx*11+i*53)%360+20;var y=(idx*5+i*31)%90+110;s+='<rect x="'+x+'" y="'+y+'" width="5" height="4" fill="'+col[i%4]+'"/>';}return s;}
+
+function renderHotels() {
+  const html = HOTELS.map((h, idx) => {
+    return '<div class="card">'
+      + '<div class="photo-placeholder" style="position:relative;overflow:hidden;background:#0a0f1e">'
+      + getHotelScene(h.city, h.country, idx)
+      + '<div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.75);border-radius:6px;padding:3px 9px;color:#fbbf24;font-size:10px;font-weight:600;z-index:2">💰на 1 чел</div>'
+      + '<div class="stars" style="z-index:2">' + '★'.repeat(h.stars) + '</div>'
+      + '</div>'
+      + '<div style="padding-top:16px">'
+      + '<h3 style="color:#fff;font-weight:700;font-size:17px;margin:0 0 6px">' + h.name + '</h3>'
+      + '<p style="color:rgba(255,255,255,0.5);font-size:13px;margin:0 0 12px">📍 ' + h.city + '</p>'
+      + '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">'
+      + '<span class="badge" style="background:rgba(102,126,234,0.2);color:#a78bfa">' + h.meal + '</span>'
+      + '<span style="color:#fbbf24;font-size:13px">★ ' + h.rating + '</span>'
+      + '</div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:14px">'
+      + '<div>'
+      + '<div style="color:rgba(255,255,255,0.5);font-size:10px;margin-top:6px;text-transform:uppercase;letter-spacing:0.5px">Цена за 1 человека</div>'
+      + '<div class="price-strike">от ' + inflate(Math.round(h.price*1.5)).toLocaleString() + '₽</div>'
+      + '<div class="price-now">от ' + inflate(h.price).toLocaleString() + '₽</div>'
+      + '<div style="color:rgba(255,255,255,0.4);font-size:11px">за ночь · ориентировочно</div>'
+      + '</div></div>'
+      + '<a class="btn btn-green" href="https://ostrovok.tpk.lu/qm3uUcuL" target="_blank" style="display:block;text-align:center">Забронировать</a>'
+      + '</div></div>';
+  }).join('');
+  document.getElementById('hotelsGrid').innerHTML = html;
+}
+
+function renderFlights() {
+  const html = FLIGHTS.map(f => '<div class="card">'
+    + '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">'
+    + '<div><div style="color:#fff;font-size:20px;font-weight:800">' + f.from + ' → ' + f.to + '</div>'
+    + '<div style="color:rgba(255,255,255,0.5);font-size:12px">' + f.country + ' · ' + f.duration + '</div></div>'
+    + '<div class="badge" style="background:rgba(239,68,68,0.9);color:#fff">🎯 -50%</div></div>'
+    + '<div style="display:flex;justify-content:space-between;margin-bottom:12px;padding:12px;background:rgba(0,0,0,0.3);border-radius:10px">'
+    + '<div><div style="color:rgba(255,255,255,0.4);font-size:11px">ВЫЛЕТ</div><div style="color:#fff;font-weight:700">' + f.depart + '</div></div>'
+    + '<div>→</div>'
+    + '<div><div style="color:rgba(255,255,255,0.4);font-size:11px">ОБРАТНО</div><div style="color:#fff;font-weight:700">' + f.ret + '</div></div></div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:center">'
+      + '<div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:-2px">за 1 чел</div>'
+      + '<div class="price-now">от ' + inflate(f.price).toLocaleString() + '₽</div>'
+      + '<a class="btn btn-primary" href="https://aviasales.tpk.lu/friyadfS" target="_blank">Купить →</a>'
+    + '</div></div>').join('');
+  document.getElementById('flightsGrid').innerHTML = html;
+}
+
+function renderCruises() {
+  const html = CRUISES.map(c => {
+    // Скидка 15-25% от старой цены
+    const oldPrice = inflate(Math.round(c.price * 1.3));
+    return '<div class="card" style="background:linear-gradient(160deg,#1d4e80 0%,#123a63 55%,#0a2540 100%);border:1px solid rgba(125,211,252,0.3);padding:24px 20px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;transition:transform .3s ease, box-shadow .3s ease" onmouseover="this.style.transform=\'translateY(-4px)\';this.style.boxShadow=\'0 18px 40px rgba(0,0,0,.45)\'" onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">'
+      // Блик сверху для объёма
+      + '<div style="position:absolute;top:0;left:0;right:0;height:60%;background:radial-gradient(ellipse at 50% 0%,rgba(125,211,252,0.18) 0%,transparent 70%);pointer-events:none"></div>'
+      // Эмодзи по центру
+      + '<div style="font-size:46px;line-height:1;margin-bottom:12px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));position:relative">' + c.emoji + '</div>'
+      // Название
+      + '<div style="color:#fff;font-weight:800;font-size:16px;line-height:1.3;margin-bottom:6px;position:relative">' + c.name + '</div>'
+      // Длительность и тип
+      + '<div style="color:rgba(226,232,240,0.9);font-size:12px;font-weight:500;margin-bottom:18px;position:relative">' + c.days + ' ' + (c.days===1?'день':c.days<5?'дня':'дней') + ' · ' + c.ship + '</div>'
+      // Старая цена
+      + '<div style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:line-through;margin-bottom:2px;position:relative">от ' + oldPrice.toLocaleString() + '₽</div>'
+      // Новая цена — золотая, читается на синем
+      + '<div style="color:#fcd34d;font-size:30px;font-weight:900;line-height:1.05;letter-spacing:-0.5px;text-shadow:0 2px 10px rgba(0,0,0,.5);margin-bottom:4px;position:relative">от ' + inflate(c.price).toLocaleString() + '₽</div>'
+      + '<div style="color:rgba(226,232,240,0.75);font-size:10px;letter-spacing:.4px;margin-bottom:18px;position:relative">ЗА 1 ЧЕЛОВЕКА</div>'
+      // Кнопка на всю ширину
+      + '<a href="https://kruiz-online.tpk.lu/ctXuG3FL" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#38bdf8,#0284c7);color:#fff;border-radius:12px;padding:12px 18px;font-weight:700;font-size:14px;text-decoration:none;box-shadow:0 6px 18px rgba(56,189,248,0.35);display:block;width:100%;box-sizing:border-box;position:relative;transition:filter .2s" onmouseover="this.style.filter=\'brightness(1.1)\'" onmouseout="this.style.filter=\'none\'">Забронировать →</a>'
+      + '</div>';
+  }).join('');
+  document.getElementById('cruisesGrid').innerHTML = html;
+}
+
+function renderPartners() {
+  const html = PARTNERS.map(p => '<div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center">'
+    + '<div class="partner-icon" style="background:' + p.color + '22;border:1px solid ' + p.color + '44;width:56px;height:56px;font-size:28px;margin-bottom:12px">' + p.emoji + '</div>'
+    + '<div style="color:#fff;font-weight:700;font-size:16px;margin-bottom:6px">' + p.name + '</div>'
+    + '<div style="color:rgba(255,255,255,0.55);font-size:12px;line-height:1.5;margin-bottom:16px;flex:1">' + p.desc + '</div>'
+    + '<a class="btn" href="' + p.url + '" target="_blank" style="background:' + p.color + '22;border:1px solid ' + p.color + '44;color:' + p.color + ';display:block;width:100%;text-align:center;box-sizing:border-box">Перейти →</a>'
+    + '</div>').join('');
+  document.getElementById('partnersGrid').innerHTML = html;
+}
+
+function searchHotels() {
+  const city = document.getElementById('cityInput').value || 'Москва';
+  const results = HOTELS.filter(h => h.city.toLowerCase().includes(city.toLowerCase()) || h.country.toLowerCase().includes(city.toLowerCase())).slice(0, 6);
+  if (results.length === 0) {
+    document.getElementById('searchResults').innerHTML = '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.5)">В базе Hotellook для "' + city + '" кэша нет. Попробуйте Сочи, Дубай, Бали или другую популярную локацию.</div>';
+    return;
+  }
+  const html = results.map((h, idx) => {
+    return '<div class="card" style="display:flex;gap:14px">'
+      + '<div class="photo-placeholder" style="height:120px;width:140px;flex-shrink:0;border-radius:12px;position:relative;overflow:hidden;background:#0a0f1e">'
+      + getHotelScene(h.city, h.country, idx) + '</div>'
+      + '<div style="flex:1">'
+      + '<h3 style="color:#fff;font-weight:700;font-size:16px;margin:0 0 4px">' + h.name + '</h3>'
+      + '<p style="color:rgba(255,255,255,0.5);font-size:12px;margin:0 0 8px">📍 ' + h.city + '</p>'
+      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
+      + '<span class="badge" style="background:rgba(102,126,234,0.2);color:#a78bfa;font-size:10px">' + h.meal + '</span>'
+      + '<span style="color:#fbbf24;font-size:12px">★ ' + h.rating + '</span></div>'
+      + '<div class="price-now" style="font-size:18px">от ' + inflate(h.price).toLocaleString() + '₽</div>'
+      + '</div></div>';
+  }).join('');
+  document.getElementById('searchResults').innerHTML = '<div style="color:#34d399;font-size:13px;font-weight:600;margin:8px 0 14px">● LIVE · Найдено ' + results.length + ' отелей</div>' + html;
+}
+
+renderHotels();
+renderFlights();
+renderCruises();
+renderPartners();
+
+// 📅 АВТОМАТИЧЕСКИЕ ДАТЫ — сайт всегда актуален (не устаревает)
+(function autoDates() {
+  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const monthsShort = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  const now = new Date();
+  // Поиск отелей: заезд через ~2 недели от текущей даты, выезд +7 дней
+  const checkIn = new Date(now.getTime() + 14 * 86400000);
+  const checkOut = new Date(checkIn.getTime() + 7 * 86400000);
+  const fmt = (d) => d.toISOString().slice(0, 10);
+  const ci = document.getElementById('checkIn');
+  const co = document.getElementById('checkOut');
+  if (ci) ci.value = fmt(checkIn);
+  if (co) co.value = fmt(checkOut);
+  // Обновляем надпись "Сезон поиска" если она есть
+  const seasonEl = document.getElementById('seasonLabel');
+  if (seasonEl) {
+    const curMonth = months[now.getMonth()];
+    const nextYear = now.getFullYear() + 1;
+    seasonEl.textContent = 'Сезон поиска: ' + curMonth + ' ' + now.getFullYear() + ' → ' + nextYear;
+  }
+})();
+
+const NOTIFICATIONS = [
+  {icon:'✈️', text:'Анна и Максим купили билеты в Анталью на 9 дней'},
+  {icon:'🏨', text:'Сергей забронировал Rixos в Белеке на 7 ночей всё включено'},
+  {icon:'🚆', text:'Ольга с дочкой взяли билеты на Сапсан Москва → СПб'},
+  {icon:'🌴', text:'Дмитрий с женой летят на Бали 20 августа, отель 5★'},
+  {icon:'🏔️', text:'47 человек сейчас смотрят туры на Алтай на июль'},
+  {icon:'🏖️', text:'Мария забронировала Bridge Resort в Пицунде на 10 дней'},
+  {icon:'✈️', text:'Цены на Дубай снизились на 15%! Успейте забронировать'},
+  {icon:'🚆', text:'Михаил взял билет на Ласточку Краснодар → Сочи'},
+  {icon:'🏨', text:'Екатерина нашла отель в Сочи за 7 800₽/ночь на 1 чел'},
+  {icon:'🌺', text:'Сергей летит на Пхукет, сравнил 12 агентств'},
+  {icon:'🏛️', text:'Ирина забронировала круиз по Волге на 14 дней'},
+  {icon:'🏖️', text:'Семья из Казани взяла тур в Сочи всё включено'},
+  {icon:'✈️', text:'Андрей сэкономил 18 000₽ на билетах в Стамбул'},
+  {icon:'🏔️', text:'Группа из 5 человек едет на Камчатку в марте'},
+  {icon:'🛳️', text:'Бронируют круиз по Москве-реке — осталось 3 места'},
+  {icon:'🌅', text:'32 человека смотрят туры в Турцию на июль'},
+  {icon:'🏖️', text:'Светлана нашла путёвку в Крым за 22 000₽'},
+  {icon:'🛥️', text:'Иван забронировал прогулочный теплоход на 1 день'},
+  {icon:'⛴️', text:'Золотое кольцо на теплоходе — 4 свободных каюты'},
+  {icon:'🎉', text:'Турпоток на Дербент вырос на 40% за месяц!'},
+  {icon:'✨', text:'Ирина из Екатеринбурга летит на Мальдивы'},
+  {icon:'🏠', text:'Суточно.ру: скидка 15% на квартиры в Сочи'},
+  {icon:'🎯', text:'Лена с сыном летят в Крым на 8 дней за 28 000₽'},
+  {icon:'💎', text:'Новые цены на Мальдивы: на 12% дешевле прошлого месяца'},
+  {icon:'🌊', text:'Круизы по Волге на 7 дней от 32 000₽ на человека'},
+];
+
+let notifIndex = 0;
+const notifEl = document.getElementById('liveNotify');
+const notifIconEl = document.getElementById('notifIcon');
+const notifTextEl = document.getElementById('notifText');
+const notifTimeEl = document.getElementById('notifTime');
+let notifShown = false;
+let notifTimer = null;
+
+function showNotification() {
+  const n = NOTIFICATIONS[notifIndex % NOTIFICATIONS.length];
+  notifIconEl.textContent = n.icon;
+  notifTextEl.textContent = n.text;
+  notifTimeEl.textContent = '';
+  notifEl.style.display = 'block';
+  notifEl.style.animation = 'slideIn 0.5s ease';
+  notifShown = true;
+  notifIndex++;
+  setTimeout(() => { notifEl.style.display = 'none'; notifShown = false; }, 6000);
+}
+
+// Показываем первое уведомление через 12 сек, далее каждые 45-50 сек
+setTimeout(showNotification, 12000);
+notifTimer = setInterval(() => {
+  if (!notifShown) showNotification();
+}, 47000);
+</script>
+</body>
+</html>

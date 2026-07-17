@@ -1,0 +1,71 @@
+# ============================================================
+# TravelDeal — защита сайта (для Apache-хостинга)
+#
+# ⚠️ ВАЖНО: этот файл нужно ПЕРЕИМЕНОВАТЬ!
+# 1. Загрузите этот файл в папку TravelDeal на хостинге
+# 2. Переименуйте его из "htaccess.txt" в ".htaccess" (с точкой в начале, без .txt)
+# 3. Готово — защита включится
+# ============================================================
+
+# --- HTTPS: принудительное перенаправление на защищённое соединение ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# --- Защитные HTTP-заголовки ---
+<IfModule mod_headers.c>
+  # Запрет встраивания сайта в чужие iframe (защита от clickjacking)
+  Header always set X-Frame-Options "SAMEORIGIN"
+  # Запрет "додумывания" типов файлов (защита от MIME-sniffing)
+  Header always set X-Content-Type-Options "nosniff"
+  # Защита от XSS
+  Header always set X-XSS-Protection "1; mode=block"
+  # Не передавать полный адрес сайта третьим лицам
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # Ограничение доступа к камере, микрофону, геолокации
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+  # HSTS — только HTTPS на год
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  # Content-Security-Policy — разрешены только доверенные источники
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://tpembars.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'self'; base-uri 'self';"
+</IfModule>
+
+# --- Защита файлов от просмотра ---
+<FilesMatch "\.(env|htaccess|htpasswd|ini|log|sh|bak|sql)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Запрет листинга папок (чтобы не было видно список файлов)
+Options -Indexes
+
+# --- Защита от ботов-скраперов (плохие User-Agent) ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_USER_AGENT} (ahrefsbot|semrushbot|mj12bot|dotbot|petalbot|megaindex) [NC]
+  RewriteRule .* - [F,L]
+</IfModule>
+
+# --- Блокировка подозрительных запросов (защита от инъекций в URL) ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+  RewriteCond %{QUERY_STRING} (union|select|insert|drop|update|md5|benchmark) [NC,OR]
+  RewriteCond %{QUERY_STRING} (\.\./|\.\.\\) [NC]
+  RewriteRule .* - [F,L]
+</IfModule>
+
+# --- Кэширование для скорости ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+</IfModule>
+
+# --- Сжатие для скорости ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript
+</IfModule>
