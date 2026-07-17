@@ -169,8 +169,12 @@ const CruisesSection = () => {
           ))}
         </div>
 
-        {/* Список круизов */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {/* Список круизов — сетка 3 на 3 */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
+          gap: 20 
+        }}>
           {filtered.map((c) => {
             const discount = Math.round((1 - c.price / c.oldPrice) * 100);
             return (
@@ -179,16 +183,20 @@ const CruisesSection = () => {
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 16,
+                  borderRadius: 20,
                   overflow: 'hidden',
-                  transition: 'all 0.3s',
+                  transition: 'all 0.4s ease',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(2,119,189,0.5)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 40px rgba(2,119,189,0.2)';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(79, 195, 247, 0.4)';
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-5px)';
+                  (e.currentTarget as HTMLElement).style.boxShadow = '0 20px 40px rgba(0,0,0,0.4)';
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
                   (e.currentTarget as HTMLElement).style.boxShadow = 'none';
                 }}
               >

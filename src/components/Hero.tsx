@@ -2,489 +2,128 @@ import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 
 const slides = [
-  {
-    bg: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1600&q=80',
-    city: 'Дубай',
-    country: 'ОАЭ',
-    tagline: 'Город золота и небоскрёбов',
-    price: '45 000₽',
-  },
-  {
-    bg: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1600&q=80',
-    city: 'Бали',
-    country: 'Индонезия',
-    tagline: 'Остров богов и рисовых террас',
-    price: '38 000₽',
-  },
-  {
-    bg: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600&q=80',
-    city: 'Париж',
-    country: 'Франция',
-    tagline: 'Вечная романтика на берегах Сены',
-    price: '52 000₽',
-  },
-  {
-    bg: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1600&q=80',
-    city: 'Токио',
-    country: 'Япония',
-    tagline: 'Будущее и традиции в одном городе',
-    price: '65 000₽',
-  },
-];
-
-const suggestions = ['Дубай', 'Бали', 'Париж', 'Токио', 'Барселона', 'Мальдивы', 'Рим', 'Нью-Йорк', 'Бангкок', 'Амстердам'];
-
-const notifications = [
-  { text: 'Анна из Москвы купила тур на Бали', time: '2 мин назад', icon: '🎉' },
-  { text: 'Цена на Дубай снизилась на 15%', time: '5 мин назад', icon: '📉' },
-  { text: 'Михаил забронировал отель в Париже', time: '8 мин назад', icon: '🏨' },
-  { text: '47 человек смотрят Токио прямо сейчас', time: '1 мин назад', icon: '👀' },
+  { city: 'Пхукет', country: 'Таиланд', tagline: 'Тропики, пляжи и длинные зимние бронирования заранее', price: '84 200₽' },
+  { city: 'Дубай', country: 'ОАЭ', tagline: 'Город золота и небоскрёбов', price: '67 900₽' },
+  { city: 'Алтай', country: 'Россия', tagline: 'Горы, эко-отели и самостоятельные маршруты', price: '54 600₽' },
+  { city: 'Камчатка', country: 'Россия', tagline: 'Вулканы, гейзеры и дикая природа', price: '74 000₽' },
 ];
 
 const Hero = () => {
   const [slide, setSlide] = useState(0);
   const [search, setSearch] = useState('');
-  const [showSugg, setShowSugg] = useState(false);
-  const [tourists, setTourists] = useState(2);
-  const [dateRange, setDateRange] = useState('7');
-  const [notif, setNotif] = useState(0);
-  const [showNotif, setShowNotif] = useState(true);
 
   useEffect(() => {
-    const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 5000);
+    const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 8000);
     return () => clearInterval(t);
   }, []);
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      setShowNotif(false);
-      setTimeout(() => {
-        setNotif((n) => (n + 1) % notifications.length);
-        setShowNotif(true);
-      }, 500);
-    }, 47000);
-    return () => clearInterval(t);
-  }, []);
-
-  const filtered = suggestions.filter(
-    (s) => s.toLowerCase().includes(search.toLowerCase()) && search.length > 0,
-  );
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    const q = search || slides[slide].city;
-    window.open(`https://aviasales.ru/search/${encodeURIComponent(q)}`, '_blank');
+    window.open(`https://aviasales.ru/search/${encodeURIComponent(search || slides[slide].city)}`, '_blank');
   };
 
   return (
-    <section style={{ position: 'relative', height: '100vh', minHeight: 600, overflow: 'hidden' }}>
-      {slides.map((s, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${s.bg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: i === slide ? 1 : 0,
-            transition: 'opacity 1.2s ease',
-            zIndex: 0,
-          }}
-        />
-      ))}
+    <section style={{ 
+      position: 'relative', 
+      height: '100vh', 
+      minHeight: 650, 
+      overflow: 'hidden',
+      background: '#0a0f1e',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
+      {/* Эффект ночного моря и неба */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(180deg, #0a1230 0%, #132758 35%, #1e4785 65%, #2a5a9e 100%)',
+        zIndex: 0
+      }} />
 
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-          background:
-            'linear-gradient(to bottom, rgba(10,15,30,0.5) 0%, rgba(10,15,30,0.3) 40%, rgba(10,15,30,0.85) 100%)',
-        }}
-      />
+      {/* Звезды */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 1,
+        backgroundImage: 'radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 60% 20%, #fff, transparent), radial-gradient(1px 1px at 80% 40%, #fff, transparent), radial-gradient(1px 1px at 40% 15%, #fff, transparent)',
+        opacity: 0.5
+      }} />
 
-      <div
-        style={{
-          position: 'absolute',
-          top: 90,
-          right: 24,
-          zIndex: 10,
-          opacity: showNotif ? 1 : 0,
-          transform: showNotif ? 'translateX(0)' : 'translateX(100px)',
-          transition: 'all 0.5s ease',
-        }}
-      >
-        <div
-          style={{
-            background: 'rgba(10,15,30,0.9)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(102,126,234,0.3)',
-            borderRadius: 12,
-            padding: '12px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            maxWidth: 280,
-          }}
-        >
-          <span style={{ fontSize: 24 }}>{notifications[notif].icon}</span>
-          <div>
-            <div style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{notifications[notif].text}</div>
-            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>{notifications[notif].time}</div>
-          </div>
-          <div
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              background: '#10b981',
-              boxShadow: '0 0 8px #10b981',
-              animation: 'pulse 2s infinite',
-              flexShrink: 0,
-            }}
-          />
-        </div>
-      </div>
+      {/* Луна */}
+      <div style={{
+        position: 'absolute',
+        top: '15%',
+        right: '20%',
+        width: '80px',
+        height: '80px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle at 30% 30%, #fff9e6 0%, #ffd97a 100%)',
+        boxShadow: '0 0 50px 10px rgba(255, 217, 122, 0.3)',
+        zIndex: 1
+      }} />
 
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 2,
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          padding: '0 24px',
-          paddingTop: 80,
-        }}
-      >
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            background: 'rgba(102,126,234,0.2)',
-            border: '1px solid rgba(102,126,234,0.4)',
-            borderRadius: 100,
-            padding: '6px 16px',
-            marginBottom: 20,
-            backdropFilter: 'blur(10px)',
-          }}
-        >
-          <div
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              background: '#10b981',
-              animation: 'pulse 2s infinite',
-            }}
-          />
-          <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>Экономьте до 60% на путешествиях</span>
+      {/* Рябь на воде */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: '40%',
+        background: 'repeating-linear-gradient(180deg, transparent 0px, transparent 10px, rgba(255,255,255,0.03) 11px, transparent 12px)',
+        zIndex: 2,
+        maskImage: 'linear-gradient(to bottom, transparent, black)'
+      }} />
+
+      {/* Затемнение для читаемости текста */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(circle at center, transparent 0%, rgba(10,15,30,0.4) 100%)',
+        zIndex: 2
+      }} />
+
+      <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '900px', textAlign: 'center', padding: '0 24px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(52, 211, 153, 0.1)', border: '1px solid rgba(52, 211, 153, 0.3)', borderRadius: '100px', padding: '6px 16px', marginBottom: '24px' }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
+          <span style={{ color: '#34d399', fontSize: '13px', fontWeight: 600 }}>Сезон поиска: июль 2026 → 2027</span>
         </div>
 
-        <h1
-          style={{
-            fontSize: 'clamp(36px, 7vw, 80px)',
-            fontWeight: 900,
-            color: '#fff',
-            marginBottom: 8,
-            lineHeight: 1.1,
-            textShadow: '0 2px 30px rgba(0,0,0,0.5)',
-          }}
-        >
-          {slides[slide].city}
+        <h1 style={{ fontSize: 'clamp(40px, 8vw, 84px)', fontWeight: 950, color: '#fff', lineHeight: 1.1, marginBottom: '8px', letterSpacing: '-1px' }}>
+          Найдите идеальный тур
         </h1>
-        <p style={{ fontSize: 'clamp(14px, 2vw, 20px)', color: 'rgba(255,255,255,0.8)', marginBottom: 4 }}>
-          {slides[slide].country}
-        </p>
-        <p style={{ fontSize: 'clamp(14px, 1.5vw, 18px)', color: 'rgba(255,255,255,0.6)', marginBottom: 16 }}>
+        <h2 style={{ fontSize: '28px', fontWeight: 700, color: '#fff', marginBottom: '16px' }}>{slides[slide].city} · {slides[slide].country}</h2>
+        <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.7)', marginBottom: '32px', maxWidth: '600px', margin: '0 auto 32px' }}>
           {slides[slide].tagline}
         </p>
 
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32 }}>
-          <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, textDecoration: 'line-through' }}>
-            от 68 000₽
-          </span>
-          <span
-            style={{
-              background: 'linear-gradient(135deg, #667eea, #a78bfa)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              fontSize: 28,
-              fontWeight: 800,
-            }}
-          >
-            от {slides[slide].price}
-          </span>
+        <div style={{ marginBottom: '40px' }}>
+          <span style={{ fontSize: '20px', color: 'rgba(255,255,255,0.5)', textDecoration: 'line-through', marginRight: '12px' }}>от 94 400₽</span>
+          <span style={{ fontSize: '36px', fontWeight: 900, color: '#a78bfa' }}>от {slides[slide].price} <span style={{fontSize: '18px', fontWeight: 500}}>на двоих</span></span>
         </div>
 
-        <form
-          onSubmit={handleSearch}
-          style={{
-            background: 'rgba(10,15,30,0.8)',
-            backdropFilter: 'blur(30px)',
-            border: '1px solid rgba(102,126,234,0.3)',
-            borderRadius: 20,
-            padding: 20,
-            width: '100%',
-            maxWidth: 720,
-            marginBottom: 24,
-          }}
-        >
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
-            <div style={{ flex: '1 1 200px', position: 'relative' }}>
-              <div
-                style={{
-                  color: 'rgba(255,255,255,0.5)',
-                  fontSize: 11,
-                  marginBottom: 6,
-                  textTransform: 'uppercase',
-                  letterSpacing: 1,
-                }}
-              >
-                Направление
-              </div>
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setShowSugg(true);
-                }}
-                onFocus={() => setShowSugg(true)}
-                onBlur={() => setTimeout(() => setShowSugg(false), 200)}
-                placeholder={`🔍 ${slides[slide].city}`}
-                style={{
-                  width: '100%',
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  borderRadius: 10,
-                  padding: '10px 14px',
-                  color: '#fff',
-                  fontSize: 15,
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-              {showSugg && filtered.length > 0 && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    right: 0,
-                    background: 'rgba(10,15,40,0.98)',
-                    border: '1px solid rgba(102,126,234,0.3)',
-                    borderRadius: 10,
-                    marginTop: 4,
-                    overflow: 'hidden',
-                    zIndex: 100,
-                  }}
-                >
-                  {filtered.map((s) => (
-                    <div
-                      key={s}
-                      onMouseDown={() => {
-                        setSearch(s);
-                        setShowSugg(false);
-                      }}
-                      style={{
-                        padding: '10px 14px',
-                        color: '#fff',
-                        cursor: 'pointer',
-                        fontSize: 14,
-                        transition: 'background 0.15s',
-                      }}
-                      onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLElement).style.background = 'rgba(102,126,234,0.2)')
-                      }
-                      onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLElement).style.background = 'transparent')
-                      }
-                    >
-                      ✈️ {s}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div style={{ flex: '1 1 150px' }}>
-              <div
-                style={{
-                  color: 'rgba(255,255,255,0.5)',
-                  fontSize: 11,
-                  marginBottom: 6,
-                  textTransform: 'uppercase',
-                  letterSpacing: 1,
-                }}
-              >
-                Длительность
-              </div>
-              <select
-                value={dateRange}
-                onChange={(e) => setDateRange(e.target.value)}
-                style={{
-                  width: '100%',
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  borderRadius: 10,
-                  padding: '10px 14px',
-                  color: '#fff',
-                  fontSize: 15,
-                  outline: 'none',
-                  cursor: 'pointer',
-                  boxSizing: 'border-box',
-                }}
-              >
-                <option value="7" style={{ background: '#1a1f35' }}>
-                  1 неделя
-                </option>
-                <option value="14" style={{ background: '#1a1f35' }}>
-                  2 недели
-                </option>
-                <option value="21" style={{ background: '#1a1f35' }}>
-                  3 недели
-                </option>
-                <option value="30" style={{ background: '#1a1f35' }}>
-                  Месяц
-                </option>
-              </select>
-            </div>
-
-            <div style={{ flex: '1 1 140px' }}>
-              <div
-                style={{
-                  color: 'rgba(255,255,255,0.5)',
-                  fontSize: 11,
-                  marginBottom: 6,
-                  textTransform: 'uppercase',
-                  letterSpacing: 1,
-                }}
-              >
-                Туристы
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  borderRadius: 10,
-                  padding: '8px 14px',
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setTourists(Math.max(1, tourists - 1))}
-                  style={{
-                    background: 'rgba(255,255,255,0.1)',
-                    border: 'none',
-                    borderRadius: 6,
-                    width: 28,
-                    height: 28,
-                    color: '#fff',
-                    cursor: 'pointer',
-                    fontSize: 18,
-                  }}
-                >
-                  −
-                </button>
-                <span style={{ color: '#fff', fontWeight: 600, flex: 1, textAlign: 'center' }}>
-                  👤 {tourists}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setTourists(Math.min(10, tourists + 1))}
-                  style={{
-                    background: 'rgba(255,255,255,0.1)',
-                    border: 'none',
-                    borderRadius: 6,
-                    width: 28,
-                    height: 28,
-                    color: '#fff',
-                    cursor: 'pointer',
-                    fontSize: 18,
-                  }}
-                >
-                  +
-                </button>
-              </div>
-            </div>
+        <form onSubmit={handleSearch} style={{ background: 'rgba(10,15,30,0.7)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '24px', padding: '24px', marginBottom: '32px' }}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
+            <input 
+              type="text" 
+              placeholder={`Куда? Например, ${slides[slide].city}`}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{ flex: '1 1 300px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '14px 20px', color: '#fff', outline: 'none' }}
+            />
+            <select style={{ flex: '1 1 150px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '14px 20px', color: '#fff', outline: 'none' }}>
+              <option value="7">1 неделя</option>
+              <option value="14">2 недели</option>
+            </select>
           </div>
-
-          <button
-            type="submit"
-            style={{
-              width: '100%',
-              padding: '14px',
-              background: 'linear-gradient(135deg, #667eea, #764ba2)',
-              border: 'none',
-              borderRadius: 12,
-              color: '#fff',
-              fontSize: 16,
-              fontWeight: 700,
-              cursor: 'pointer',
-              boxShadow: '0 8px 25px rgba(102,126,234,0.5)',
-              transition: 'all 0.2s',
-              letterSpacing: 0.5,
-            }}
-          >
-            🔍 Найти лучшую цену — {tourists} {tourists === 1 ? 'турист' : tourists < 5 ? 'туриста' : 'туристов'} ·{' '}
-            {dateRange} дней
+          <button type="submit" style={{ width: '100%', background: 'linear-gradient(135deg, #667eea, #764ba2)', border: 'none', borderRadius: '12px', padding: '16px', color: '#fff', fontWeight: 800, fontSize: '18px', cursor: 'pointer', boxShadow: '0 10px 25px rgba(102,126,234,0.3)' }}>
+            🔍 Найти лучшую цену — 2 туриста · 7 дней
           </button>
         </form>
 
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 24 }}>
-          {['🔥 Горящие туры', '🏖️ Пляжный отдых', '🏔️ Горы', '🌆 Города', '💑 Романтика'].map((tag) => (
-            <button
-              key={tag}
-              onClick={() => window.open('https://aviasales.ru', '_blank')}
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: 100,
-                padding: '8px 16px',
-                color: 'rgba(255,255,255,0.8)',
-                cursor: 'pointer',
-                fontSize: 13,
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = 'rgba(102,126,234,0.3)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(102,126,234,0.5)';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.2)';
-              }}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-
-        <div style={{ display: 'flex', gap: 8 }}>
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setSlide(i)}
-              style={{
-                width: i === slide ? 28 : 8,
-                height: 8,
-                borderRadius: 4,
-                background: i === slide ? '#667eea' : 'rgba(255,255,255,0.3)',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s',
-                padding: 0,
-              }}
-            />
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {['🔥 Туры', '🚆 Ж/Д по России', '🏖️ Пляжный отдых', '🏔️ Горы', '💑 Романтика'].map(tag => (
+            <span key={tag} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', padding: '6px 16px', fontSize: '13px', color: 'rgba(255,255,255,0.8)' }}>{tag}</span>
           ))}
         </div>
       </div>
