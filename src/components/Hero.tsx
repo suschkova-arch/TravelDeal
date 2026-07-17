@@ -56,49 +56,14 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
-    // Реалистичные уведомления: первый показ через 25 сек после входа на сайт,
-    // затем 1 раз в 90 сек (полторы минуты) — спокойный ритм.
-    // Показываются только после небольшой прокрутки (пользователь реально листает).
-    let mounted = true;
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    let scrolled = false;
-
-    const showNext = () => {
-      if (!mounted) return;
+    const t = setInterval(() => {
       setShowNotif(false);
       setTimeout(() => {
-        if (!mounted) return;
         setNotif((n) => (n + 1) % notifications.length);
         setShowNotif(true);
-      }, 600);
-    };
-
-    const schedule = () => {
-      if (!mounted) return;
-      timer = setTimeout(showNext, scrolled ? 90000 : 25000);
-    };
-
-    const onScroll = () => {
-      if (window.scrollY > 200 && !scrolled) {
-        scrolled = true;
-        // При первой прокрутке — сразу покажем через 8 сек
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(showNext, 8000);
-      }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    schedule();
-    const interval = setInterval(() => {
-      if (scrolled) showNext();
-    }, 90000);
-
-    return () => {
-      mounted = false;
-      if (timer) clearTimeout(timer);
-      clearInterval(interval);
-      window.removeEventListener('scroll', onScroll);
-    };
+      }, 500);
+    }, 47000);
+    return () => clearInterval(t);
   }, []);
 
   const filtered = suggestions.filter(

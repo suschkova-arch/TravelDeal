@@ -107,6 +107,14 @@ export async function fetchLiveHotels(
   limit = 12,
 ): Promise<LiveHotel[]> {
   try {
+    // Сначала пробуем ваш PHP сервер (для sushkova-emma.ru)
+    const phpRes = await fetch(`/api/hotels.php?query=${encodeURIComponent(location)}&checkIn=${checkIn}&checkOut=${checkOut}`, { signal: withTimeout(3000) }).catch(() => null);
+    if (phpRes && phpRes.ok) {
+      const phpData = await phpRes.json();
+      if (phpData.success && phpData.hotels.length > 0) return phpData.hotels;
+    }
+
+    // Если сервера нет (для GitHub Pages) — идем напрямую в Hotellook
     const url =
       `https://engine.hotellook.com/api/v2/cache.json` +
       `?location=${encodeURIComponent(location)}` +
