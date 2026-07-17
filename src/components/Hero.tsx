@@ -28,51 +28,63 @@ const Hero = () => {
       height: '100vh', 
       minHeight: 650, 
       overflow: 'hidden',
-      background: '#0a0f1e',
+      background: '#0a152a',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center'
     }}>
-      {/* Эффект ночного моря и неба */}
+      {/* 🌌 Небо и глубокое море (Градиент) */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        background: 'linear-gradient(180deg, #0a1230 0%, #132758 35%, #1e4785 65%, #2a5a9e 100%)',
+        background: 'radial-gradient(ellipse at 50% 0%, #1a2a4a 0%, #0a152a 70%, #050a18 100%)',
         zIndex: 0
       }} />
 
-      {/* Звезды */}
+      {/* ✨ Звезды (разбросаны по небу) */}
       <div style={{
         position: 'absolute',
         inset: 0,
         zIndex: 1,
-        backgroundImage: 'radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 60% 20%, #fff, transparent), radial-gradient(1px 1px at 80% 40%, #fff, transparent), radial-gradient(1px 1px at 40% 15%, #fff, transparent)',
-        opacity: 0.5
+        backgroundImage: `
+          radial-gradient(1px 1px at 15% 25%, #fff, transparent),
+          radial-gradient(1.5px 1.5px at 35% 15%, #fff, transparent),
+          radial-gradient(1px 1px at 65% 35%, #fff, transparent),
+          radial-gradient(1.2px 1.2px at 85% 10%, #fff, transparent),
+          radial-gradient(1.5px 1.5px at 5% 45%, #fff, transparent),
+          radial-gradient(1px 1px at 95% 55%, #fff, transparent),
+          radial-gradient(1.2px 1.2px at 45% 65%, #fff, transparent)
+        `,
+        opacity: 0.6
       }} />
 
-      {/* Луна */}
+      {/* 🌕 Луна (с мягким золотистым свечением) */}
       <div style={{
         position: 'absolute',
-        top: '15%',
-        right: '20%',
-        width: '80px',
-        height: '80px',
+        top: '12%',
+        right: '22%',
+        width: '110px',
+        height: '110px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle at 30% 30%, #fff9e6 0%, #ffd97a 100%)',
-        boxShadow: '0 0 50px 10px rgba(255, 217, 122, 0.3)',
-        zIndex: 1
+        background: 'radial-gradient(circle at 35% 35%, #fff9e6 0%, #ffedb3 40%, #ffd97a 100%)',
+        boxShadow: '0 0 80px 20px rgba(255, 237, 179, 0.35)',
+        zIndex: 2,
+        opacity: 0.95
       }} />
 
-      {/* Рябь на воде */}
+      {/* 〰️ Рябь на воде (нижняя часть) */}
       <div style={{
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        height: '40%',
-        background: 'repeating-linear-gradient(180deg, transparent 0px, transparent 10px, rgba(255,255,255,0.03) 11px, transparent 12px)',
-        zIndex: 2,
-        maskImage: 'linear-gradient(to bottom, transparent, black)'
+        height: '35%',
+        background: `
+          repeating-linear-gradient(180deg, transparent 0px, transparent 8px, rgba(255, 255, 255, 0.02) 9px, transparent 10px),
+          linear-gradient(to top, rgba(10, 20, 45, 0.9) 0%, transparent 100%)
+        `,
+        zIndex: 3,
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)'
       }} />
 
       {/* Затемнение для читаемости текста */}
